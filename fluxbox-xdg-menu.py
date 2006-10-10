@@ -30,7 +30,7 @@ To update only the backgrounds: fluxbox-fdo-menugen.py --bg-path=~/some/path --b
 
 __author__ = "Rudolf Kastl , Antonio Gomes, Michael Rice"
 __version__ = "$Revision: 1.2 $"
-__date__ = "$Date: 2006/08/01 22:17:10 $"
+__date__ = "$Date: 2006/10/09 23:20:10 $"
 __license__ = "GPL"
 
 
@@ -46,7 +46,7 @@ def header(wm="fluxbox"):
 [begin] (Fluxbox)
 	[exec] (Web Browser) {htmlview}
 	[exec] (Email) {evolution}
-	[exec] (Terminal) {gnome-terminal}
+	[exec] (Terminal) {$TERM}
 	[exec] (Irc) {xchat}
 	[separator]\n"""
 
@@ -104,10 +104,7 @@ def findIcon(icon, theme):
 
 	return (retval + "").encode('utf8')
 
-def parseMenu(menu,depth=1):
-	global wm
-	global use_icons
-	global theme
+def parseMenu(menu,wm,use_icons,theme,depth=1):
 	if use_icons:
 		print "%s[submenu] (%s) <%s> " % ( (depth*"\t"), menu.getName().encode('utf8'),  findIcon(menu.getIcon(), theme) )
 	else:
@@ -115,7 +112,7 @@ def parseMenu(menu,depth=1):
 	depth += 1
 	for entry in menu.getEntries():
 		if isinstance(entry, xdg.Menu.Menu):
-			parseMenu(entry,depth)
+			parseMenu(entry,wm,use_icons,theme,depth)
 		elif isinstance(entry, xdg.Menu.MenuEntry):
 			checkWm(entry,wm)
 			if entry.Show == False: continue
@@ -137,8 +134,8 @@ def get_bgimgs_and_parse(xPath):
     except OSError:
         pass
     h = {}
-    bg_paths =["~/.fluxbox/backgrounds","/usr/share/wallpapers",\
-            "/usr/share/backgrounds","/usr/share/backgrounds/images"]
+    bg_paths =["~/.fluxbox/backgrounds","/usr/share/wallpapers",
+		"/usr/share/backgrounds","/usr/share/backgrounds/images"]
     try:
         if xPath == None:
            pass
@@ -186,23 +183,16 @@ def get_bgimgs_and_parse(xPath):
 
 def main(argv):
 # Setting the default values
-	global locs
-	locs=[]
-	global wm
 	wm = "fluxbox"
-	global file
 	file = "~/.fluxbox/menu"
-	global use_icons
 	use_icons = False
-	global use_bg 
     use_bg = False
     bg_Xpath = False
-	global theme
 	theme = "gnome"
 	lang = os.getenv("LANG","C")
 	file = os.path.expanduser("~/.fluxbox/menu")
-	do_submenu = 0
-	use_stdout = 0
+	do_submenu = False
+	use_stdout = False
 	
 	try:
 		opts, args = getopt.getopt(argv, "hf:dl:d", ["help","lang=","file=","with-icons","stdout",\
@@ -224,8 +214,7 @@ def main(argv):
 		elif opt in ("-t", "--theme"):
 			theme = arg
 		elif opt == '--stdout':
-			use_stdout = 1
-			#file = sys.stdout
+			use_stdout = True
 		elif opt == '--stdout':
 			file = sys.stdout
 		elif opt == '--bg-path':
@@ -241,7 +230,7 @@ def main(argv):
 				raise SystemExit
 			  
 		elif opt == '--submenu':
-			do_submenu = 1
+			do_submenu = True
 
 	if not use_stdout:
 		fsock = open(file,'w')
@@ -254,7 +243,7 @@ def main(argv):
 
 	if not do_submenu:
         print header()
-	parseMenu(menu)
+	parseMenu(menu,wm,use_icons,theme)
 	if not do_submenu and use_bg and bg_Xpath:
 	    get_bgimgs_and_parse(xPath) 
 	    print "[include] (~/.fluxbox/bgmenu)"
@@ -263,17 +252,9 @@ def main(argv):
 		get_bgimgs_and_parse(None)
     if not do_submenu:
         print footer()
-	
-
-
 	if not use_stdout:
 		sys.stdout = saveout
 
 #	print menu
 if __name__ == "__main__":
 	main(sys.argv[1:])
-
-#WindowMaker Reminder
-#>>> p=re.compile("(\).*),(\s*\))")
-#>>> p.search("((ola),(ola),)").groups()
-#('),(ola)', ')')
