@@ -18,7 +18,7 @@ __date__ = "$Date: 2006/10/12 18:20:10 $"
 __license__ = "GPL"
 
 import xdg.Menu,xdg.DesktopEntry
-import getopt,os
+import getopt,os,sys
 
 def usage():
 	print __doc__
@@ -51,7 +51,7 @@ def parseMenu(menu,depth=1):
 			print "%s%s" % ( (depth*"\t"), entry.Name )
 	depth -= 1
 	print "%s}" % (depth*"\t")
-def main():
+def main(argv):
 	lang = os.getenv("LANG","C")
 	try:
 	    opts, args = getopt.getopt(argv, "hf:dl:d", ["help","lang="])
@@ -71,4 +71,4 @@ def main():
 	print "}"
 
 if __name__ == "__main__":
-	main()
+	main(sys.argv[1:])
