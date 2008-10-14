@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # vim: noexpandtab:ts=8:sts=4:sw=4
 
 """Menu Generator for Fluxbox
@@ -140,6 +141,8 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
             checkWm(entry,wm)
 
             if entry.Show == False:
+                continue
+            if "" == entry.DesktopEntry.getExec():
                 continue
             if not exists_in_path(entry.DesktopEntry.getExec().split()[0]):
                 continue
