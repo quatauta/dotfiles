@@ -154,6 +154,9 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
             else:
                 cmd = remove_wildcards(entry.DesktopEntry.getExec())
 
+	    if entry.DesktopEntry.getTerminal():
+		cmd = "xterm -e %s" % cmd
+
             name = entry.DesktopEntry.getName().encode("utf8")
             name = re.sub(r'\)', r'\\)', name)
 
