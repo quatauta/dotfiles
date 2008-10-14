@@ -123,14 +123,14 @@ def remove_wildcards(cmd):
 
 def parseMenu(menu, wm, use_icons, theme, depth = 1):
     if use_icons:
-        print "%s[submenu] (%s) <%s> " % (
+        print "%s[submenu] (%s) <%s>" % (
             indent(depth),
             menu.getName().encode('utf8'),
             findIcon(menu.getIcon(), theme)
             )
     else:
-        print "%s[submenu] (%s) " % (indent(depth),
-                                     menu.getName().encode('utf8'))
+        print "%s[submenu] (%s)" % (indent(depth),
+                                    menu.getName().encode('utf8'))
 
     depth += 1
 
@@ -146,17 +146,25 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
                 continue
             if not exists_in_path(entry.DesktopEntry.getExec().split()[0]):
                 continue
+
+            if entry.DesktopEntry.getPath():
+                cmd = "cd \"%s\" && %s" % \
+                    (entry.DesktopEntry.getPath(),
+                     remove_wildcards(entry.DesktopEntry.getExec()))
+            else:
+                cmd = remove_wildcards(entry.DesktopEntry.getExec())
+
             if use_icons:
-                print "%s[exec] (%s) {%s} <%s> " % \
+                print "%s[exec] (%s) {%s} <%s>" % \
                     (indent(depth),
                      entry.DesktopEntry.getName().encode("utf8"),
-                     remove_wildcards(entry.DesktopEntry.getExec()),
+                     cmd,
                      findIcon(entry.DesktopEntry.getIcon(), theme))
             else:
-                print "%s[exec] (%s) {%s} " % \
+                print "%s[exec] (%s) {%s}" % \
                     (indent(depth),
                      entry.DesktopEntry.getName().encode("utf8"),
-                     remove_wildcards(entry.DesktopEntry.getExec()))
+                     cmd)
         elif isinstance(entry,xdg.Menu.Separator):
             print "%s[separator]" % indent(depth)
         elif isinstance(entry.xdg.Menu.Header):
