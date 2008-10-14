@@ -73,7 +73,7 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[workspaces]   (Workspace List)\n" +
             indent(2) +     "[submenu] (Tools)\n" +
             indent(3) +       "[exec] (Window name) {xprop WM_CLASS|" +
-                                     "cut -d \" -f 2|xmessage -file - -center}\n" +
+                                     "cut -d \\\" -f 2|xmessage -file - -center}\n" +
             indent(3) +       "[exec] (Screenshot) {import -border -frame " +
                                      "\"$HOME/Documents/_temp/screen_`date " +
                                      "+%Y-%m-%d_%H:%M:%S%:z`.png\"}\n" +
@@ -154,17 +154,16 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
             else:
                 cmd = remove_wildcards(entry.DesktopEntry.getExec())
 
+            name = entry.DesktopEntry.getName().encode("utf8")
+            name = re.sub(r'\)', r'\\)', name)
+
             if use_icons:
                 print "%s[exec] (%s) {%s} <%s>" % \
-                    (indent(depth),
-                     entry.DesktopEntry.getName().encode("utf8"),
-                     cmd,
+                    (indent(depth), name, cmd,
                      findIcon(entry.DesktopEntry.getIcon(), theme))
             else:
                 print "%s[exec] (%s) {%s}" % \
-                    (indent(depth),
-                     entry.DesktopEntry.getName().encode("utf8"),
-                     cmd)
+                    (indent(depth), name, cmd)
         elif isinstance(entry,xdg.Menu.Separator):
             print "%s[separator]" % indent(depth)
         elif isinstance(entry.xdg.Menu.Header):
