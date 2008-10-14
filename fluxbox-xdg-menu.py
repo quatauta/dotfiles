@@ -136,9 +136,9 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
 
     for entry in menu.getEntries():
         if isinstance(entry, xdg.Menu.Menu):
-            parseMenu(entry, wm,use_icons, theme, depth)
+            parseMenu(entry, wm, use_icons, theme, depth)
         elif isinstance(entry, xdg.Menu.MenuEntry):
-            checkWm(entry,wm)
+            checkWm(entry, wm)
 
             if entry.Show == False:
                 continue
@@ -154,8 +154,8 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
             else:
                 cmd = remove_wildcards(entry.DesktopEntry.getExec())
 
-	    if entry.DesktopEntry.getTerminal():
-		cmd = "xterm -e %s" % cmd
+            if entry.DesktopEntry.getTerminal():
+                cmd = "xterm -e %s" % cmd
 
             name = entry.DesktopEntry.getName().encode("utf8")
             name = re.sub(r'\)', r'\\)', name)
@@ -167,7 +167,7 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
             else:
                 print "%s[exec] (%s) {%s}" % \
                     (indent(depth), name, cmd)
-        elif isinstance(entry,xdg.Menu.Separator):
+        elif isinstance(entry, xdg.Menu.Separator):
             print "%s[separator]" % indent(depth)
         elif isinstance(entry.xdg.Menu.Header):
             print "%s%s" % (indent(depth), entry.Name)
@@ -317,7 +317,7 @@ def main(argv):
             do_submenu = True
 
     if not use_stdout:
-        fsock = open(file,'w')
+        fsock = open(file, 'w')
         saveout = sys.stdout
         sys.stdout = fsock
 
