@@ -82,13 +82,13 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[submenu] (Window)\n" +
             indent(3) +       "[restart] (gnome) {gnome-session}\n" +
             indent(2) +     "[end]\n" +
-            indent(2) +     "[exec] (Lock screen) {gnome-screensaver-command --lock}\n" +
+            indent(2) +     "[exec] (Lock screen) {xdg-screensaver lock}\n" +
             indent(2) +     "[commanddialog] (Fluxbox Command)\n" +
             indent(2) +     "[reconfig] (Reload Config)\n" +
             indent(2) +     "[exec] (Regen Menu) {fluxbox-xdg-menu}\n" +
             indent(2) +     "[exec] (Info) {sh -c '(fluxbox -v; fluxbox -info | " +
                                    "sed 1d) 2>/dev/null' | " +
-                                   "xmessage -file - -center}\n" +
+                                   "zenity --text-info}\n" +
             indent(1) +   "[end]\n" +
             indent(1) +   "[exec] (Hibernate) {xterm -e sudo hibernate}\n" +
             indent(1) +   "[restart] (Restart Fluxbox)\n" +
