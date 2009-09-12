@@ -90,7 +90,7 @@ def footer(wm = "fluxbox"):
                                    "sed 1d) 2>/dev/null' | " +
                                    "zenity --text-info}\n" +
             indent(1) +   "[end]\n" +
-            indent(1) +   "[exec] (Hibernate) {xterm -e sudo pm-hibernate}\n" +
+            indent(1) +   "[exec] (Hibernate) {gksudo pm-hibernate}\n" +
             indent(1) +   "[restart] (Restart Fluxbox)\n" +
             indent(1) +   "[exit] (Exit Fluxbox)\n" +
             indent(0) + "[end]")
