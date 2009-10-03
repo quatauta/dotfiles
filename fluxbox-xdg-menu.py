@@ -45,6 +45,7 @@ import xdg.IconTheme
 import xdg.Menu
 
 from os.path import isfile
+from xdg.Exceptions import *
 
 def usage():
     print __doc__
@@ -321,14 +322,22 @@ def main(argv):
         saveout = sys.stdout
         sys.stdout = fsock
 
-    menu = xdg.Menu.parse()
+    for filename in ["applications.menu", "gnome-applications.menu", "kde-4.3-applications"]:
+	try:
+	    menu = xdg.Menu.parse(filename)
+	    break
+	except ParsingError:
+	    continue
 
     if not do_submenu:
         print header()
-    for filename in ["applications.menu", "settings.menu"]:
-        for entry in xdg.Menu.parse(filename).getEntries():
-            if isinstance(entry, xdg.Menu.Menu):
-                parseMenu(entry, wm, use_icons, theme)
+    for filename in ["applications.menu", "gnome-applications.menu", "settings.menu"]:
+	try:
+	    for entry in xdg.Menu.parse(filename).getEntries():
+		if isinstance(entry, xdg.Menu.Menu):
+		    parseMenu(entry, wm, use_icons, theme)
+	except ParsingError:
+	    continue
     if not do_submenu and use_bg and bg_Xpath:
         get_bgimgs_and_parse(xPath)
         print "[include] (~/.fluxbox/bgmenu)"
