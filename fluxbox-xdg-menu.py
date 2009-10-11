@@ -73,8 +73,12 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[end]\n" +
             indent(2) +     "[workspaces]   (Workspace List)\n" +
             indent(2) +     "[submenu] (Tools)\n" +
-            indent(3) +       "[exec] (Window name) {xprop WM_CLASS|" +
-                                     "cut -d \\\" -f 2|xmessage -file - -center}\n" +
+            indent(3) +       "[exec] (Window Name) {zenity --info " +
+				     "--title='X Window Properties' --no-wrap " +
+				     "--text=\"Identifing properties of the selected window:  \\n\\n" +
+				     "<tt>" +
+				     "$(xprop | grep '^WM_\(CLASS\|NAME\|WINDOW_ROLE\)')" +
+				     "</tt>\"}\n" +
             indent(3) +       "[exec] (Screenshot) {import -border -frame " +
                                      "\"$HOME/Documents/_temp/screen_`date " +
                                      "+%Y-%m-%d_%H:%M:%S%:z`.png\"}\n" +
