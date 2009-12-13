@@ -84,19 +84,21 @@ def footer(wm = "fluxbox"):
                                      "+%Y-%m-%d_%H:%M:%S%:z`.png\"}\n" +
             indent(3) +       "[exec] (Run) {gmrun}\n" +
             indent(2) +     "[end]\n" +
-            indent(2) +     "[submenu] (Window)\n" +
-            indent(3) +       "[restart] (gnome) {gnome-session}\n" +
+            indent(2) +     "[submenu] (Window Manager)\n" +
+            indent(3) +       "[restart] (Fluxbox) {fluxbox}\n" +
+            indent(3) +       "[restart] (Gnome) {gnome-session}\n" +
+            indent(3) +       "[restart] (Xmonad) {xmonad}\n" +
             indent(2) +     "[end]\n" +
             indent(2) +     "[exec] (Lock screen) {xdg-screensaver lock}\n" +
             indent(2) +     "[commanddialog] (Fluxbox Command)\n" +
             indent(2) +     "[reconfig] (Reload Config)\n" +
             indent(2) +     "[exec] (Regen Menu) {fluxbox-xdg-menu}\n" +
+            indent(2) +     "[restart] (Restart Fluxbox)\n" +
             indent(2) +     "[exec] (Info) {sh -c '(fluxbox -v; fluxbox -info | " +
                                    "sed 1d) 2>/dev/null' | " +
                                    "zenity --text-info}\n" +
             indent(1) +   "[end]\n" +
             indent(1) +   "[exec] (Hibernate) {gksudo pm-hibernate}\n" +
-            indent(1) +   "[restart] (Restart Fluxbox)\n" +
             indent(1) +   "[exit] (Exit Fluxbox)\n" +
             indent(0) + "[end]")
 
