@@ -74,7 +74,7 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[workspaces]   (Workspace List)\n" +
             indent(2) +     "[submenu] (Tools)\n" +
             indent(3) +       "[exec] (Window Name) {zenity --info " +
-				     "--title='X Window Properties' --no-wrap " +
+				     "--title='X Window Properties' " +
 				     "--text=\"Identifing properties of the selected window:  \\n\\n" +
 				     "<tt>" +
 				     "$(xprop | grep '^WM_\(CLASS\|NAME\|WINDOW_ROLE\)')" +
@@ -94,9 +94,7 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[reconfig] (Reload Config)\n" +
             indent(2) +     "[exec] (Regen Menu) {fluxbox-xdg-menu}\n" +
             indent(2) +     "[restart] (Restart Fluxbox)\n" +
-            indent(2) +     "[exec] (Info) {sh -c '(fluxbox -v; fluxbox -info | " +
-                                   "sed 1d) 2>/dev/null' | " +
-                                   "zenity --text-info}\n" +
+            indent(2) +     "[exec] (Info) {zenity --info --title='Fluxbox Info' --text=\"<tt>$(fluxbox -v; fluxbox -info | sed 1d) 2>/dev/null')</tt>\"}\n" +
             indent(1) +   "[end]\n" +
             indent(1) +   "[exec] (Hibernate) {gksudo pm-hibernate}\n" +
             indent(1) +   "[exit] (Exit Fluxbox)\n" +
