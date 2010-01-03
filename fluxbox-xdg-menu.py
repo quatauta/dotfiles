@@ -94,7 +94,7 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[reconfig] (Reload Config)\n" +
             indent(2) +     "[exec] (Regen Menu) {fluxbox-xdg-menu}\n" +
             indent(2) +     "[restart] (Restart Fluxbox)\n" +
-            indent(2) +     "[exec] (Info) {zenity --info --title='Fluxbox Info' --text=\"<tt>$(fluxbox -v; fluxbox -info | sed 1d) 2>/dev/null')</tt>\"}\n" +
+            indent(2) +     "[exec] (Info) {zenity --info --title='Fluxbox Info' --text=\"<tt>$(fluxbox -v; fluxbox -info | sed 1d 2>/dev/null)</tt>\"}\n" +
             indent(1) +   "[end]\n" +
             indent(1) +   "[exec] (Hibernate) {gksudo pm-hibernate}\n" +
             indent(1) +   "[exit] (Exit Fluxbox)\n" +
