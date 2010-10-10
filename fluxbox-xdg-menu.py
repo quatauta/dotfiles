@@ -55,9 +55,10 @@ def indent(depth = 1):
 
 def header(wm = "fluxbox"):
     return (indent(0) + "[begin] (Fluxbox)\n" +
-            indent(1) +   "[exec] (Xterm) {xterm}\n" +
-            indent(1) +   "[exec] (Opera) {opera}\n" +
-            indent(1) +   "[exec] (Run)   {gmrun}\n" +
+            indent(1) +   "[exec] (xterm)   {xterm}\n" +
+            indent(1) +   "[exec] (Opera)   {opera}\n" +
+            indent(1) +   "[exec] (Liferea) {liferea}\n" +
+            indent(1) +   "[exec] (gmrun)   {gmrun}\n" +
             indent(1) +   "[separator]")
 
 def footer(wm = "fluxbox"):
@@ -85,6 +86,7 @@ def footer(wm = "fluxbox"):
             indent(3) +       "[exec] (Run) {gmrun}\n" +
             indent(2) +     "[end]\n" +
             indent(2) +     "[submenu] (Window Manager)\n" +
+            indent(3) +       "[restart] (Compiz) {compiz-manager}\n" +
             indent(3) +       "[restart] (Fluxbox) {fluxbox}\n" +
             indent(3) +       "[restart] (Gnome) {gnome-session}\n" +
             indent(3) +       "[restart] (Xmonad) {xmonad}\n" +
@@ -93,11 +95,11 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[commanddialog] (Fluxbox Command)\n" +
             indent(2) +     "[reconfig] (Reload Config)\n" +
             indent(2) +     "[exec] (Regen Menu) {fluxbox-xdg-menu}\n" +
-            indent(2) +     "[restart] (Restart)\n" +
             indent(2) +     "[exec] (Info) {zenity --info --title='Fluxbox Info' --text=\"<tt>$(fluxbox -v; fluxbox -info | sed 1d 2>/dev/null)</tt>\"}\n" +
             indent(1) +   "[end]\n" +
             indent(1) +   "[exec] (Hibernate) {gksudo pm-hibernate}\n" +
-            indent(1) +   "[exit] (Exit Fluxbox)\n" +
+            indent(1) +   "[restart] (Restart Fluxbox)\n" +
+            indent(1) +   "[exec] (Exit Fluxbox) {fluxbox-exit}\n" +
             indent(0) + "[end]")
 
 def checkWm(entry, wm = "fluxbox"):
