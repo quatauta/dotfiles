@@ -55,11 +55,12 @@ def indent(depth = 1):
 
 def header(wm = "fluxbox"):
     return (indent(0) + "[begin] (Fluxbox)\n" +
-            indent(1) +   "[exec] (Terminal) {xterm}\n" +
-            indent(1) +   "[exec] (Opera)    {opera}\n" +
-            indent(1) +   "[exec] (Liferea)  {liferea}\n" +
-            indent(1) +   "[exec] (Sonos)    {sonos}\n" +
-            indent(1) +   "[exec] (Gmrun)    {gmrun}\n" +
+            indent(1) +   "[exec] (Terminal)   {xterm}\n" +
+            indent(1) +   "[exec] (Opera)      {opera}\n" +
+            indent(1) +   "[exec] (Opera Next) {opera-next}\n" +
+            indent(1) +   "[exec] (Liferea)    {liferea}\n" +
+            indent(1) +   "[exec] (Sonos)      {sonos}\n" +
+            indent(1) +   "[exec] (Gmrun)      {gmrun}\n" +
             indent(1) +   "[separator]")
 
 def footer(wm = "fluxbox"):
