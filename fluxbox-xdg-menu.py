@@ -166,7 +166,7 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
             if entry.DesktopEntry.getTerminal():
                 cmd = "xterm -e %s" % cmd
 
-            name = entry.DesktopEntry.getName().encode("utf8")
+            name = entry.DesktopEntry.getName()
             name = re.sub(r'\)', r'\\)', name)
 
             if use_icons:
@@ -174,8 +174,8 @@ def parseMenu(menu, wm, use_icons, theme, depth = 1):
                     (indent(depth), name, cmd,
                      findIcon(entry.DesktopEntry.getIcon(), theme))
             else:
-                print "%s[exec] (%s) {%s}" % \
-                    (indent(depth), name, cmd)
+                print ("%s[exec] (%s) {%s}" % \
+                         (indent(depth), name, cmd)).encode('utf8')
         elif isinstance(entry, xdg.Menu.Separator):
             print "%s[separator]" % indent(depth)
         elif isinstance(entry.xdg.Menu.Header):
