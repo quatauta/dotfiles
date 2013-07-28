@@ -55,12 +55,13 @@ def indent(depth = 1):
 
 def header(wm = "fluxbox"):
     return (indent(0) + "[begin] (Fluxbox)\n" +
-            indent(1) +   "[exec] (Terminal)   {xterm}\n" +
-            indent(1) +   "[exec] (Opera)      {opera}\n" +
-            indent(1) +   "[exec] (Opera Next) {opera-next}\n" +
-            indent(1) +   "[exec] (Liferea)    {liferea}\n" +
-            indent(1) +   "[exec] (Sonos)      {sonos}\n" +
-            indent(1) +   "[exec] (Gmrun)      {gmrun}\n" +
+            indent(1) +   "[exec] (Terminal) {xterm}\n" +
+            indent(1) +   "[exec] (Nemo)     {nemo --no-desktop}\n" +
+            indent(1) +   "[exec] (Opera)    {$HOME/bin/opera-best}\n" +
+            indent(1) +   "[exec] (Firefox)  {firefox}\n" +
+            indent(1) +   "[exec] (Liferea)  {liferea}\n" +
+            indent(1) +   "[exec] (Sonos)    {sonos}\n" +
+            indent(1) +   "[exec] (Gmrun)    {gmrun}\n" +
             indent(1) +   "[separator]")
 
 def footer(wm = "fluxbox"):
@@ -88,10 +89,8 @@ def footer(wm = "fluxbox"):
             indent(3) +       "[exec] (Run) {gmrun}\n" +
             indent(2) +     "[end]\n" +
             indent(2) +     "[submenu] (Window Manager)\n" +
-            indent(3) +       "[restart] (Compiz) {compiz-manager}\n" +
             indent(3) +       "[restart] (Fluxbox) {fluxbox}\n" +
-            indent(3) +       "[restart] (Gnome) {gnome-session}\n" +
-            indent(3) +       "[restart] (Xmonad) {xmonad}\n" +
+            indent(3) +       "[restart] (Cinnamon) {cinnamon}\n" +
             indent(2) +     "[end]\n" +
             indent(2) +     "[exec] (Lock screen) {xdg-screensaver lock}\n" +
             indent(2) +     "[commanddialog] (Fluxbox Command)\n" +
@@ -99,7 +98,7 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[exec] (Regen Menu) {fluxbox-xdg-menu}\n" +
             indent(2) +     "[exec] (Info) {zenity --info --title='Fluxbox Info' --text=\"<tt>$(fluxbox -v; fluxbox -info | sed 1d 2>/dev/null)</tt>\"}\n" +
             indent(1) +   "[end]\n" +
-            indent(1) +   "[exec] (Hibernate) {gksudo pm-hibernate}\n" +
+            indent(1) +   "[exec] (Hibernate) {systemctl hybrid-sleep}\n" +
             indent(1) +   "[restart] (Restart Fluxbox)\n" +
             indent(1) +   "[exec] (Exit Fluxbox) {fluxbox-exit}\n" +
             indent(0) + "[end]")
@@ -330,7 +329,7 @@ def main(argv):
         saveout = sys.stdout
         sys.stdout = fsock
 
-    for filename in ["applications.menu", "gnome-applications.menu", "kde-4.3-applications"]:
+    for filename in ["applications.menu", "gnome-applications.menu", "gnomecc.menu", "settings.menu"]:
 	try:
 	    menu = xdg.Menu.parse(filename)
 	    break
