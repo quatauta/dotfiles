@@ -1,0 +1,3 @@
+# vim:syntax=zsh:
+
+bindkey -e

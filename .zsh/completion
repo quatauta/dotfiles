@@ -1,0 +1,9 @@
+# vim:syntax=zsh:
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${ZSH_CONF_DIR}/_cache"
+zstyle :compinstall filename "~/.zshrc"
+zstyle ':completion:*:(cp|mv|rm):*' ignore-line yes
+
+autoload -Uz compinit
+compinit -d "${ZSH_CONF_DIR}/_compdump"

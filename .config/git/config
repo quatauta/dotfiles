@@ -1,0 +1,32 @@
+[user]
+email = EMAIL
+name = NAME
+
+[github]
+email = EMAIL
+name = NAME
+token = TOKEN
+user = USER
+
+[color]
+ui = true
+
+[alias]
+br = branch
+ci = commit -S
+co = checkout
+di = diff
+st = status
+
+[merge]
+conflictstyle = diff3
+tool = meld
+
+[credential]
+helper = cache
+
+[push]
+default = simple
+
+[core]
+pager =

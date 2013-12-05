@@ -1,0 +1,74 @@
+lla .z*
+ls /usr/bin/addbuiltin
+ls /usr/bin/
+find
+ll -R
+rmdir _cache
+cat completion
+compinit -d "~/${ZSH_CONF_DIR}/_compdump"
+compinit -d "~/${ZSH_CONF_DIR}/compdump"
+compinit --help
+type compinit
+qlist zsh | xargs grep compinit
+vi /usr/share/zsh/5.0.2/functions/Completion/compinit
+gvim completion
+ls
+echo $_comp_dumpfile
+git ls-files Dokumente
+true
+false
+mailcheck
+offlineimap
+pses
+compdump -h
+compdump
+type compdump
+compfiles
+set
+eix zsh
+la
+exit
+cd .zsh
+vi options
+cd ../Dokumente/misc
+echo $PROMPT
+PROMPT='%B%F{green}%n@%m%k %B%F{blue}%1~ % %b%f%k'
+PROMPT='%B%F{green}%n@%m%k %B%F{blue}%1~ %# '
+PROMPT='%B%F{green}%n@%m%k %B%F{blue}%1~ %# %b%f%k'
+PROMPT='%F{green}%n@%m%k %F{blue}%1~ %# %b%f%k'
+PROMPT='%F{green}%n@%m%k %B%F{blue}%1~ %> %b%f%k'
+PROMPT='%F{green}%n@%m%k %B%F{blue}%1~ %# %b%f%k'
+PROMPT='%F{green}%n@%m%k %B%F{blue}%~ %# %b%f%k'
+cd custom-rom
+PROMPT='%F{green}%n@%m%k %B%F{blue}%2~ %# %b%f%k'
+PROMPT='%F{green}%n@%m%k %B%F{blue}%6~ %# %b%f%k'
+PROMPT='%F{green}%n@%m%k %B%F{blue}%3~ %# %b%f%k'
+PROMPT='%F{green}%n@%m%k %B%F{blue}%5~ %# %b%f%k'
+PROMPT='%F{green}%n@%m%k %B%F{blue}%4~ %# %b%f%k'
+..
+popd
+cd
+PROMPT='%F{green}%n@%F{gray}%m%k %B%F{blue}%5~ %# %b%f%k'
+PROMPT='%F{green}%n%F{gray}@%m%k %B%F{blue}%5~ %# %b%f%k'
+PROMPT='%F{green}%n%F{gray}@%m%k %B%F{yellow}%5~ %# %b%f%k'
+PROMPT='%F{green}%n%F{gray}@%m%k %F{yellow}%5~ %# %b%f%k'
+PROMPT='%F{green}%n%F{gray}@%m%k %F{yellow}%5~ %F{green}># %b%f%k'
+PROMPT='%F{green}%n%F{gray}@%m%k %F{yellow}%5~ %F{green}%# %b%f%k'
+PROMPT='%F{green}%n%F{gray}@%m%k %F{yellow}%5~ %F{green}%(!.#.>) %b%f%k'
+gvim .zsh/prompt
+qlist zsh | grep promp
+vi /usr/share/zsh/5.0.2/functions/Misc/promptnl
+echo /bin/bash
+ps -p$$
+s
+cd Dokumente
+cd misc/razr-hd
+cd clamav
+cd twrp-backups
+cd BACKUPS
+cd TA6740151G
+cd 2013-11-08--17-51-28
+gvim ~/.zsh/prompt
+fg
+ll
+sudo -i

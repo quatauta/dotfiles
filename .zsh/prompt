@@ -1,0 +1,7 @@
+# vim:syntax=zsh:
+
+autoload -U promptinit
+promptinit
+prompt gentoo
+
+export PROMPT='%B%F{green}%n%b%F{gray}@%m%k %F{yellow}%4~ %F{green}%(!.#.>) %b%f%k'
