@@ -1,7 +1,7 @@
 Quatauta's dotfiles
 ===================
 
-Based on Romain Chossart (sitaktif) [dotfiles repository(https://github.com/sitaktif/dotfiles).
+Based on Romain Chossart (sitaktif) [dotfiles repository](https://github.com/sitaktif/dotfiles).
 
 Notes
 -----
