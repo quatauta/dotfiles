@@ -1,0 +1,41 @@
+#!/bin/bash
+
+[ -r "${BASH_CONF_DIR}/colors" ] && source "${BASH_CONF_DIR}/colors"
+
+prompt_black="\[$color_black\]"
+prompt_blue="\[$color_blue\]"
+prompt_green="\[$color_green\]"
+prompt_cyan="\[$color_cyan\]"
+prompt_red="\[$color_red\]"
+prompt_purple="\[$color_purple\]"
+prompt_brown="\[$color_brown\]"
+prompt_light_gray="\[$color_light_gray\]"
+prompt_drak_gray="\[$color_drak_gray\]"
+prompt_light_blue="\[$color_light_blue\]"
+prompt_light_green="\[$color_light_green\]"
+prompt_light_cyan="\[$color_light_cyan\]"
+prompt_light_red="\[$color_light_red\]"
+prompt_light_purple="\[$color_light_purple\]"
+prompt_yellow="\[$color_yellow\]"
+prompt_white="\[$color_white\]"
+prompt_none="\[$color_none\]"
+
+export PROMPT_DIRTRIM=3
+export PS1="$prompt_green\u$prompt_none@\h$prompt_none $prompt_brown\w$prompt_none $prompt_green>$prompt_none "
+export PS2="$prompt_green>$prompt_none "
+
+# Change the window title of X terminals 
+if [ "${DISPLAY}" ] ; then
+    case "${TERM}" in
+        xterm*|rxvt|Eterm|eterm)
+            export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/${HOME}/~}\007"'
+            ;;
+        *)
+            case "$(ps -o comm= -p ${PPID})" in
+                xterm*)
+                    export PROMPT_COMMAND='echo -n -e "\033k\033\\"'
+                    ;;
+            esac
+            ;;
+    esac
+fi
