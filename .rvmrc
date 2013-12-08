@@ -1,0 +1,7 @@
+# ~/.rvmrc
+
+rvm_configure_env=(CFLAGS="-O2 -pipe -march=native -mtune=native") 
+rvm_gem_options="--no-rdoc --no-ri"
+rvm_path="$HOME/.rvm"
+rvm_pretty_print_flag=1
+rvm_project_rvmrc_default=1
