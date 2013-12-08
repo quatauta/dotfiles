@@ -1,0 +1,29 @@
+application/pdf; evince %s;   nametemplate=%s.pdf; test=test -n "$DISPLAY" && which evince   1>/dev/null 2>&1
+application/pdf; acroread %s; nametemplate=%s.pdf; test=test -n "$DISPLAY" && which acroread 1>/dev/null 2>&1
+application/pdf; xpdf %s;     nametemplate=%s.pdf; test=test -n "$DISPLAY" && which xpdf     1>/dev/null 2>&1
+
+application/pdf;        pdftotext %s - | fmt -u;  copiousoutput; nametemplate=%s.pdf; test=which pdftotext 1>/dev/null 2>&1
+application/postscript; ps2ascii | fmt -u;        copiousoutput; nametemplate=%s.ps;  test=which ps2ascii  1>/dev/null 2>&1
+
+application/x-java-jnlp-file; javaws %s; nametemplate=%s.jnlp; test=test -n "$DISPLAY" && which javaws 1>/dev/null 2>&1
+
+image/*; geeqie %s; test=test -n "$DISPLAY" && which geeqie 1>/dev/null 2>&1
+video/*; totem %s;  test=test -n "$DISPLAY" && which totem  1>/dev/null 2>&1
+
+application/x-bzip2;        als %s; copiousoutput; nametemplate=%s.tar.bz2
+application/x-compress;     als %s; copiousoutput; nametemplate=%s.z
+application/x-gzip;         als %s; copiousoutput; nametemplate=%s.tar.gz
+application/x-java-archive; als %s; copiousoutput; nametemplate=%s.jar
+application/x-rar;          als %s; copiousoutput; nametemplate=%s.rar
+application/x-tar;          als %s; copiousoutput; nametemplate=%s.tar
+application/x-xz;           als %s; copiousoutput; nametemplate=%s.tar.xz
+application/x-zip;          als %s; copiousoutput; nametemplate=%s.zip
+application/zip;            als %s; copiousoutput; nametemplate=%s.zip
+
+text/html; mutt_bgrun opera-best %s; description=HTML Text (Opera); nametemplate=%s.html; test=test -n "$DISPLAY" && which opera-best 1>/dev/null 2>&1
+# text/html; mutt_bgrun chromium %s  ; description=HTML Text (Chromium);   nametemplate=%s.html; test=test -n "$DISPLAY" && which chromium   1>/dev/null 2>&1
+# text/html; mutt_bgrun chrome %s    ; description=HTML Text (Chrome);     nametemplate=%s.html; test=test -n "$DISPLAY" && which chrom      1>/dev/null 2>&1
+# text/html; mutt_bgrun firefox %s   ; description=HTML Text (Firefox);    nametemplate=%s.html; test=test -n "$DISPLAY" && which firefox    1>/dev/null 2>&1
+
+#text/html; w3m -dump -cols 70 -I%{charset} -Outf8 %s; copiousoutput; description=HTML Text; nametemplate=%s.html; test=which w3m 1>/dev/null 2>&1
+text/html; lynx -assume_local_charset=%{charset} -display_charset=UTF-8 -dump %s; copiousoutput; description=HTML Text; nametemplate=%s.html; test=which w3m 1>/dev/null 2>&1
