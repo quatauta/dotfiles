@@ -1,0 +1,16 @@
+# ~/.config/env
+# vim:syntax=sh:
+
+export LANG="de_DE.UTF-8"
+export LC_COLLATE="POSIX"
+
+test -d "$HOME/bin" && PATH="${HOME}/bin:${PATH}"
+test -d "$HOME/man" && MANPATH="${HOME}/man:${MANPATH}"
+
+if [ -n "${DISPLAY}" ] ; then
+    export EDITOR="gvim -f"
+    export ALTERNATE_EDITOR="emacs"
+else
+    export EDITOR="vi"
+    export ALTERNATE_EDITOR="vi"
+fi
