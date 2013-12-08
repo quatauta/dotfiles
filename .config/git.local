@@ -1,0 +1,7 @@
+[user]
+email = EMAIL
+name = NAME
+
+[github]
+token = TOKEN
+user = USER
