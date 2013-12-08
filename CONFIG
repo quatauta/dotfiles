@@ -5,7 +5,8 @@
 #    don't want to symlink .config directly in ~/ because it is probably used by
 #    other applications. Instead, you want to symlink .config/foo inside
 #    ~/.config)
-# 3- all the other files will be symlinked directly in the home
+# 3- which files should be copied such that changes get not tracked by vcs
+# 4- all the other files will be symlinked directly in the home
 
 # Ignore these
 cfg_ignore=("CONFIG" "README.md" "bin" "todo"
@@ -17,6 +18,8 @@ cfg_ignore=("CONFIG" "README.md" "bin" "todo"
 
 # As explained above, link what's inside
 cfg_first_child=(".config")
+
+cfg_copy=("*.local")
 
 # Destination: home directory
 cfg_dest_dir="${HOME}"

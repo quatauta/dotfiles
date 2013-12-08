@@ -50,15 +50,19 @@ element_in() {
 }
 
 # Create a symlink in $1 that points to $2
+# Copy $2 to $1 if $1 matches $cfg_copy
 # Optionally prepend target with $3 if using relative paths
-do_symlink() {
+do_symlink_or_copy() {
     local target="$1"
     local dest="$2"
     local prepend_target="${3:-}"
+    local symlink_or_copy="symlink" # or "copy"
+
     if [[ -L $dest ]]; then
         echo "${YLW}Warning${CRESET}: '$dest' is already a link. Skipping." 1>&2
         return 0
     fi
+
     if [[ -e $dest ]]; then
         echo "${RED}Warning${CRESET}: '$dest' is a file. Skipping." 1>&2
         return 0
@@ -70,14 +74,24 @@ do_symlink() {
     else
         target="${prepend_target}$cfg_dotfiles_relative_path/$target"
     fi
-    if [[ $DEBUG == 1 ]]; then
-        echo "${GREEN}Info${CRESET}: (dry run) would create '$dest' -> '$target'"
-    else
-        echo "${GREEN}Info${CRESET}: creating '$dest' -> '$target'"
-        ln -s "$target" "$dest"
-    fi
-}
 
+    if element_in "${target}" "${cfg_copy[@]}" ; then
+        symlink_or_copy="copy"
+    else
+        symlink_or_copy="symlink"
+    fi
+
+    case "${symlink_or_copy}" in
+        "symlink" )
+            echo "${GREEN}Info${CRESET}: creating '$dest' -> '$target'"
+            [[ "${DEBUG}" == 1 ]] || ln -s "$target" "$dest"
+            ;;
+        "copy" )
+            echo "${GREEN}Info${CRESET}: copying  '$dest' from '$target'"
+            [[ "${DEBUG}" == 1 ]] || cp "$target" "$dest"
+            ;;
+    esac
+}
 
 doit() {
     local i j
@@ -90,11 +104,12 @@ doit() {
         if element_in "$i" "${cfg_first_child[@]}"; then
             for j in "$i"/*; do
                 mkdir -p "$cfg_dest_dir/${j#$i}"
-                do_symlink "$j" "$cfg_dest_dir/$j" ../
+                do_symlink_or_copy "$j" "$cfg_dest_dir/$j" ../
             done
             continue
         fi
-        do_symlink "$i" "$cfg_dest_dir/$i"
+
+        do_symlink_or_copy "$i" "$cfg_dest_dir/$i"
     done
 }
 
