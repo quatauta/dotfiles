@@ -1,6 +1,10 @@
 .*.sw[opnm]
 .*sh/_*
 .DS_Store
+.aria2/dht.dat
+.emacs.d/auctex
+.emacs.d/places.el
+.emacs.d/recentf.el
 .fluxbox/lastwallpaper
 .fluxbox/menu
 .vim/.netrwhist
