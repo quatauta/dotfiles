@@ -1,3 +1,4 @@
+# ~/.zsh/propmt
 # vim:syntax=zsh:
 
 autoload -U promptinit

@@ -1,6 +1,4 @@
-#
-# Daniels ~/.zshrc
-#
+# ~/.zshrc
 
 ZSH_CONF_DIR="${HOME}/.zsh"
 

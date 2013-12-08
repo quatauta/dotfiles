@@ -1,3 +1,4 @@
+# ~/.zsh/keys
 # vim:syntax=zsh:
 
 bindkey -e
