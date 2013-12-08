@@ -10,7 +10,7 @@ br = branch
 ci = commit -S
 co = checkout
 di = diff
-st = status -s
+st = status -b -s
 
 [merge]
 conflictstyle = diff3
