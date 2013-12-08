@@ -1,0 +1,26 @@
+! multimedia keys of Cherry Evolution Stream (G85-2300)
+keycode 174 = XF86AudioLowerVolume
+keycode 160 = XF86AudioMute
+keycode 176 = XF86AudioRaiseVolume
+keycode 144 = XF86AudioPrev
+keycode 162 = XF86AudioPlay
+keycode 153 = XF86AudioNext
+
+! disable XF86Ungrab and XF86ClearGrab
+keycode  63 = KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply
+keycode 106 = KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide
+
+clear Lock
+keycode  66 = Control_L NoSymbol Control_L NoSymbol Control_L
+add Control = Control_L
+
+! On german keyboard layouts, braces and brackets are only available with altGr+[7-0].
+! This is anoing for Java, Bash of LaTeX coding, so map them to altGr+[öä] (and +shift).
+! This way, there are reachable with the thumb, middle- or ringfinger and the small-(?)-finger
+keycode 0x2F = odiaeresis   Odiaeresis  odiaeresis  Odiaeresis  braceleft   bracketleft
+keycode 0x30 = adiaeresis   Adiaeresis  adiaeresis  Adiaeresis  braceright  bracketright
+keycode 0x3D = minus        underscore  minus       underscore  slash       backslash
+keycode 0x21 = p            P           p           P           parenleft
+keycode 0x22 = udiaeresis   Udiaeresis  udiaeresis  Udiaeresis  parenright
+keycode 0x3B = comma        semicolon   comma       semicolon   less        guillemotleft
+keycode 0x3C = period       colon       period      colon       greater     guillemotright

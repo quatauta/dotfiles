@@ -1,0 +1,114 @@
+! ~/.Xresources
+
+! load color-specific resources for clients that have them
+*customization: -color
+
+Xcursor.theme: jaguarx
+
+*Font:         -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+*font:         -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+*FontList:     -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+*fontList:     -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+*Tip*font:     -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+*Tip*fontList: -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+*tip*font:     -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+*tip*fontList: -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+
+XTerm*font:   -*-fixed-medium-r-normal-*-13-*-*-*-*-*-iso10646-1
+XTerm*font1:  -*-fixed-medium-r-normal-*-6-*-*-*-*-*-iso10646-1
+XTerm*font2:  -*-fixed-medium-r-normal-*-8-*-*-*-*-*-iso10646-1
+XTerm*font3:  -*-fixed-medium-r-normal-*-10-*-*-*-*-*-iso10646-1
+XTerm*font4:  -*-fixed-medium-r-normal-*-15-*-*-*-*-*-iso10646-1
+XTerm*font5:  -*-fixed-medium-r-normal-*-17-*-*-*-*-*-iso10646-1
+XTerm*font6:  -*-fixed-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
+UXTerm*font:  -*-fixed-medium-r-normal-*-13-*-*-*-*-*-iso10646-1
+UXTerm*font1: -*-fixed-medium-r-normal-*-6-*-*-*-*-*-iso10646-1
+UXTerm*font2: -*-fixed-medium-r-normal-*-8-*-*-*-*-*-iso10646-1
+UXTerm*font3: -*-fixed-medium-r-normal-*-10-*-*-*-*-*-iso10646-1
+UXTerm*font4: -*-fixed-medium-r-normal-*-15-*-*-*-*-*-iso10646-1
+UXTerm*font5: -*-fixed-medium-r-normal-*-17-*-*-*-*-*-iso10646-1
+UXTerm*font6: -*-fixed-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
+
+xmessage*Command*Font: -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+
+emacs*font:     Inconsolata-10
+Emacs*font:     Inconsolata-10
+Xmessage*font:  -misc-fixed-medium-r-normal--13-*-*-*-*-*-*-*
+xmessage*font:  -misc-fixed-medium-r-normal--13-*-*-*-*-*-*-*
+emacs*geometry: 105x50
+gv*font:        -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+xdvi*font:      -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
+
+*lprCommand:            /usr/bin/gtklp
+Ghostview.pageMedia:    A4
+Scrollbar.JumpCursor:   True
+xdvi*editor:            emacsclient -n +%l %f
+xdvi*highlight:         black
+xdvi*linkStyle:         1
+xdvi*watchFile:         1
+xdvi*wwwBrowser:        opera -newpage
+xterm*background:       black
+xterm*boldMode:         false
+xterm*charClass:        33:48,37:48,45-47:48,64:48
+xterm*colorBDMode:      false
+xterm*forceBoxChars:    true
+xterm*foreground:       lightgray
+xterm*geometry:         130x75
+xterm*multiScroll:      true
+xterm*saveLines:        5000
+xterm*scrollBar:        true
+xterm*scrollKey:        true
+xterm*scrollTtyOutput:  false
+xterm*sessionMgt:       false
+xterm*termName:         xterm-256color
+xterm*visualBell:       true
+
+*Command.background:    #e6e1d4
+*Composite.background:  #e6e1d4
+*Form.background:       #c8bca1
+*Label.background:      #e6e1d4
+*main.background:       #c8bca1
+*MenuButton.background: #e6e1d4
+*MenuButton.foreground: black
+*Scrollbar.background:  #a69c85
+*Scrollbar.foreground:  #e6e1d4
+*ScrollbarBackground:   #a69c85
+*ScrollbarForeground:   #e6e1d4
+*SimpleMenu.background: #c8bca1
+*SimpleMenu.foreground: black
+*Text.background:       #e6e1d4
+*TransientShell.Dialog.background:  #c8bca1
+
+Xpdf*background: #c8bca1
+
+! FontForge
+Gdraw.GButton.Font:         Ubuntu 10pt
+Gdraw.GCheckBox.Font:       Ubuntu 10pt
+Gdraw.GGroup.Font:          Ubuntu 10pt
+Gdraw.GLabel.Font:          Ubuntu 10pt
+Gdraw.GLine.Font:           Ubuntu 10pt
+Gdraw.GList.Font:           Ubuntu 10pt
+Gdraw.GMenu.Font:           Ubuntu 10pt
+Gdraw.GMenuBar.Font:        Ubuntu 10pt
+Gdraw.GRadio.Font:          Ubuntu 10pt
+Gdraw.GScrollBar.Font:      Ubuntu 10pt
+Gdraw.GScrollBarThumb.Font: Ubuntu 10pt
+Gdraw.GTabSet.Font:         Ubuntu 10pt
+Gdraw.GTextField.Font:      Ubuntu 10pt
+
+! Mausrad für Motif aktivieren.  Das Mausrad funktioniert nur auf den Scrollleisten.  Nur Mausrad
+! scrollt um fünf Zeilen, mit Strg um eine Zeile und mit Shift um eine Seite.
+*XmScrollBar.baseTranslations: #augment \n\
+Ctrl<Btn4Down>: IncrementUpOrLeft(0) IncrementUpOrLeft(1)\n\
+Ctrl<Btn5Down>: IncrementDownOrRight(0) IncrementDownOrRight(1)\n\
+Shift<Btn4Down>: PageUpOrLeft(0) PageUpOrLeft(1)\n\
+Shift<Btn5Down>: PageDownOrRight(0) PageDownOrRight(1)\n\
+<Btn4Down>: IncrementUpOrLeft(0) IncrementUpOrLeft(0) \
+IncrementUpOrLeft(0) IncrementUpOrLeft(0) IncrementUpOrLeft(0) \
+IncrementUpOrLeft(1) IncrementUpOrLeft(1) IncrementUpOrLeft(1) \
+IncrementUpOrLeft(1) IncrementUpOrLeft(1)\n\
+<Btn5Down>: IncrementDownOrRight(0) IncrementDownOrRight(0) \
+IncrementDownOrRight(0) IncrementDownOrRight(0) \
+IncrementDownOrRight(0) IncrementDownOrRight(1) \
+IncrementDownOrRight(1) IncrementDownOrRight(1) \
+IncrementDownOrRight(1) IncrementDownOrRight(1)\n
