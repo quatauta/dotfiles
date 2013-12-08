@@ -52,6 +52,7 @@ set nobackup
 set nobomb
 set nofoldenable
 set nojoinspaces
+set noswapfile
 set number
 set printoptions=number:y
 set printoptions=paper:A4,left:15mm,right:8mm,top:8mm,bottom:8mm,syntax:y,number:y,wrap:y
