@@ -42,7 +42,6 @@ set incsearch
 set laststatus=2
 set linebreak
 set list
-set listchars=tab:>-,trail:.,nbsp:.
 set matchpairs=
 set modeline
 set modelines=20
