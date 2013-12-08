@@ -41,7 +41,6 @@ set ignorecase
 set incsearch
 set laststatus=2
 set linebreak
-set list
 set matchpairs=
 set modeline
 set modelines=20
