@@ -1,0 +1,6 @@
+#!/bin/sh
+# fluxbox startup-script
+
+export WINDOW_MANAGER=fluxbox
+
+bash --login $HOME/.xsession

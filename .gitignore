@@ -1,5 +1,7 @@
 .*.sw[opnm]
 .*sh/_*
 .DS_Store
+.fluxbox/lastwallpaper
+.fluxbox/menu
 .vim/.netrwhist
 .vim/doc/tags

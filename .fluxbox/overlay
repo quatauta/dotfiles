@@ -1,0 +1,5 @@
+*font: Ubuntu-10
+.font: Ubuntu-10
+
+toolbar.iconbar.focused.font: Ubuntu-10:bold
+window.label.focus.font:      Ubuntu-10:bold

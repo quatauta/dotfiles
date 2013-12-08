@@ -1,0 +1,137 @@
+# Fluxbox keys file
+
+# Fluxbox commands
+Shift Mod4 Y         :ExecCommand fluxbox-exit
+Control Shift Mod4 Y :ExecCommand systemctl hybrid-sleep
+
+# Mouse commands
+OnDesktop Mouse1 :HideMenus
+OnDesktop Mouse2 :WorkspaceMenu
+OnDesktop Mouse3 :RootMenu
+OnTitlebar Control Mouse1 :StartTabbing
+OnTitlebar Double Mouse1  :Maximize
+OnTitlebar Mouse1         :MacroCmd {ActivateTab} {Raise}
+OnTitlebar Mouse2         :StartTabbing
+OnTitlebar Mouse3         :WindowMenu
+OnTitlebar Mouse4         :ShadeOn
+OnTitlebar Mouse5         :ShadeOff
+OnTitlebar Move1          :StartMoving
+OnToolbar Mouse4 :PrevWorkspace
+OnToolbar Mouse5 :NextWorkspace
+OnLeftGrip  Move1 :StartResizing bottomleft
+OnRightGrip Move1 :StartResizing bottomright
+OnWindow Mod1 Mouse1 :MacroCmd {Raise} {StartMoving}
+OnWindow Mod1 Mouse2 :Lower
+OnWindow Mod1 Mouse3 :MacroCmd {Raise} {StartResizing NearestCorner}
+OnWindowBorder Move1 :StartMoving
+
+# Workspace commands
+Mod4 Menu              :RootMenu
+Mod4 Shift Menu        :WorkspaceMenu
+Mod1 Tab               :NextWindow {groups} (workspace=[current])
+Mod1 Shift Tab         :PrevWindow {groups} (workspace=[current])
+Mod1 Control Tab       :NextWindow {static groups} (workspace=[current])
+Mod1 Control Shift Tab :PrevWindow {static groups} (workspace=[current])
+Mod4 Tab               :NextTab
+Mod4 Shift Tab         :PrevTab
+Mod4 Left              :MoveTabLeft
+Mod4 Right             :MoveTabRight
+Mod4 Up                :NextWorkspace
+Mod4 Down              :PrevWorkspace
+Mod4 Shift Up          :SendToNextWorkspace
+Mod4 Shift Down        :SendToPrevWorkspace
+Mod4 Control Up        :TakeToNextWorkspace
+Mod4 Control Down      :TakeToPrevWorkspace
+Mod4 1                 :Workspace 1
+Mod4 2                 :Workspace 2
+Mod4 3                 :Workspace 3
+Mod4 4                 :Workspace 4
+Mod4 5                 :Workspace 5
+Mod4 6                 :Workspace 6
+Mod4 7                 :Workspace 7
+Mod4 8                 :Workspace 8
+Mod4 9                 :Workspace 9
+Mod4 KP_1              :Workspace 1
+Mod4 KP_2              :Workspace 2
+Mod4 KP_3              :Workspace 3
+Mod4 KP_4              :Workspace 4
+Mod4 KP_5              :Workspace 5
+Mod4 KP_6              :Workspace 6
+Mod4 KP_7              :Workspace 7
+Mod4 KP_8              :Workspace 8
+Mod4 KP_9              :Workspace 9
+
+# Commands for the focused window
+Mod4 W Mod4 F     :Fullscreen
+Mod4 W Mod4 K     :ExecCommand xkill
+Mod4 W Mod4 D     :ToggleDecor
+Mod4 W Mod4 I     :ExecCommand xprop-popup
+Mod4 W Mod4 M     :KeyMode MoveFocusedWindow
+Mod4 Control plus :MaximizeHorizontal
+Mod4 Shift plus   :MaximizeVertical
+#Mod4 plus         :MaximizeWindow
+Mod4 plus         :Fullscreen
+Mod4 minus        :Minimize
+Mod4 numbersign   :ShadeWindow
+Mod4 D            :ShowDesktop
+Mod4 Control Menu :WindowMenu
+Mod4 Shift 1      :SendToWorkspace 1
+Mod4 Shift 2      :SendToWorkspace 2
+Mod4 Shift 3      :SendToWorkspace 3
+Mod4 Shift 4      :SendToWorkspace 4
+Mod4 Shift 5      :SendToWorkspace 5
+Mod4 Shift 6      :SendToWorkspace 6
+Mod4 Shift 7      :SendToWorkspace 7
+Mod4 Shift 8      :SendToWorkspace 8
+Mod4 Shift 9      :SendToWorkspace 9
+Mod4 Shift KP_1   :SendToWorkspace 1
+Mod4 Shift KP_2   :SendToWorkspace 2
+Mod4 Shift KP_3   :SendToWorkspace 3
+Mod4 Shift KP_4   :SendToWorkspace 4
+Mod4 Shift KP_5   :SendToWorkspace 5
+Mod4 Shift KP_6   :SendToWorkspace 6
+Mod4 Shift KP_7   :SendToWorkspace 7
+Mod4 Shift KP_8   :SendToWorkspace 8
+Mod4 Shift KP_9   :SendToWorkspace 9
+
+MoveFocusedWindow:               Up    :MoveUp    5
+MoveFocusedWindow:               Down  :MoveDown  5
+MoveFocusedWindow:               Left  :MoveLeft  5
+MoveFocusedWindow:               Right :MoveRight 5
+MoveFocusedWindow:         Shift Up    :MoveUp    1
+MoveFocusedWindow:         Shift Down  :MoveDown  1
+MoveFocusedWindow:         Shift Left  :MoveLeft  1
+MoveFocusedWindow:         Shift Right :MoveRight 1
+MoveFocusedWindow: Control       Up    :ResizeVertical   -5
+MoveFocusedWindow: Control       Down  :ResizeVertical    5
+MoveFocusedWindow: Control       Left  :ResizeHorizontal -5
+MoveFocusedWindow: Control       Right :ResizeHorizontal  5
+MoveFocusedWindow: Control Shift Up    :ResizeVertical   -1
+MoveFocusedWindow: Control Shift Down  :ResizeVertical    1
+MoveFocusedWindow: Control Shift Left  :ResizeHorizontal -1
+MoveFocusedWindow: Control Shift Right :ResizeHorizontal  1
+
+# ExecCommands
+Mod4 A         :ExecCommand xterm -e m
+Mod4 C         :ExecCommand exec nice -n1 google-chrome 1>/dev/null 2>&1
+Mod4 Shift C   :ExecCommand qalculate-gtk
+Mod4 E         :ExecCommand emacs
+Mod4 F         :ExecCommand exec nice -n1 firefox
+Mod4 G         :ExecCommand geeqie $HOME/Dokumente/bilder
+Mod4 Shift G   :ExecCommand exec nice -n1 ionice -c3 gimp    1>/dev/null 2>&1
+Mod4 I         :ExecCommand exec nice -n1 pidgin             1>/dev/null 2>&1
+Mod4 Control I :ExecCommand exec nice -n1 skype              1>/dev/null 2>&1
+Mod4 Shift I   :ExecCommand exec nice -n1 hexchat --minimize=2 1>/dev/null 2>&1
+Mod4 L         :ExecCommand gnome-screensaver  1>/dev/null 2>&1 ; gnome-screensaver-command --lock 2>/dev/null
+Mod4 N         :ExecCommand exec nice -n1 ionice -c3 nemo --no-desktop $HOME/Dokumente
+Mod4 Q         :ExecCommand exec nice -n1 opera-best
+Mod4 X         :ExecCommand exec nice -n1 google-chrome-app facebook 1>/dev/null 2>&1
+Mod4 Shift Q   :ExecCommand exec nice -n1 liferea
+Mod4 S         :ExecCommand exec nice -n1 ionice -c3 sonos
+Mod4 Shift S   :ExecCommand exec nice -n1 ionice -c3 sonos wine 1>/dev/null 2>&1
+Mod4 V         :ExecCommand gvim -f
+Mod4 Y         :ExecCommand xterm
+Mod4 Return    :ExecCommand gmrun
+
+Print          :ExecCommand import -frame  "$HOME/Dokumente/_temp/screen_`date +%Y-%m-%d_%H-%M-%S%z`.png"
+Shift Print    :ExecCommand import -screen "$HOME/Dokumente/_temp/screen_`date +%Y-%m-%d_%H-%M-%S%z`.png"
