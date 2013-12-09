@@ -124,7 +124,7 @@ Mod4 Control I :ExecCommand exec nice -n1 skype              1>/dev/null 2>&1
 Mod4 Shift I   :ExecCommand exec nice -n1 hexchat --minimize=2 1>/dev/null 2>&1
 Mod4 L         :ExecCommand gnome-screensaver  1>/dev/null 2>&1 ; gnome-screensaver-command --lock 2>/dev/null
 Mod4 N         :ExecCommand exec nice -n1 ionice -c3 nemo --no-desktop $HOME/Dokumente
-Mod4 Q         :ExecCommand exec nice -n1 opera-best
+Mod4 Q         :ExecCommand exec nice -n1 opera
 Mod4 X         :ExecCommand exec nice -n1 google-chrome-app facebook 1>/dev/null 2>&1
 Mod4 Shift Q   :ExecCommand exec nice -n1 liferea
 Mod4 S         :ExecCommand exec nice -n1 ionice -c3 sonos
