@@ -29,5 +29,5 @@ cfg_dest_dir="${HOME}"
 # cfg_dest_dir.
 # E.g: If cfg_dest_dir is /home/foo and the dotfiles directory is in
 # /home/foo/git/dotfiles, then you should put "git/dotfiles" in there.
-#cfg_dotfiles_relative_path="${HOME}/Dokumente/workspace/dotfiles"
+#cfg_dotfiles_relative_path="${HOME}/.dotfiles"
 cfg_dotfiles_relative_path=""
