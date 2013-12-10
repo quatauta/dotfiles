@@ -74,7 +74,9 @@ prompt_gentoo_daniel() {
     PS1+="\[$reset\] "
     PS1+="\[$brown\]\w" # working directory
     PS1+="\[$reset\]\$(prompt_git \" git:\")" # git repository details
-    PS1+="\[$green\] > \[$reset\]" # $ (and reset color)
+
+    [[ "$EUID" != "0" ]] && PS1+="\[$green\] > \[$reset\]"
+    [[ "$EUID" == "0" ]] && PS1+="\[$red\] $ \[$reset\]"
 
     export PS1
     export PS2="\[$green\]>\[$reset\] "
