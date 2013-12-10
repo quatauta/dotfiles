@@ -118,19 +118,3 @@ set_prompts() {
 export PROMPT_DIRTRIM=3
 export PS1="$prompt_green\u$prompt_none@\h$prompt_none $prompt_brown\w$prompt_none $prompt_green>$prompt_none "
 export PS2="$prompt_green>$prompt_none "
-
-# Change the window title of X terminals 
-if [ "${DISPLAY}" ] ; then
-    case "${TERM}" in
-        xterm*|rxvt|Eterm|eterm)
-            export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/${HOME}/~}\007"'
-            ;;
-        *)
-            case "$(ps -o comm= -p ${PPID})" in
-                xterm*)
-                    export PROMPT_COMMAND='echo -n -e "\033k\033\\"'
-                    ;;
-            esac
-            ;;
-    esac
-fi
