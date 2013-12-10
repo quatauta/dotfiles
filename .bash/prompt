@@ -3,8 +3,11 @@
 # Copied and adapted from Nicolas Gallagher (necolas)
 # https://github.com/necolas/dotfiles/blob/master/shell/bash_prompt
 prompt_git() {
-    local status=""
+    local prefix="$1"
+    local suffix="$2"
+
     local branch=""
+    local status=""
     
     local uncommitted="+"
     local unstaged="!"
@@ -31,7 +34,7 @@ prompt_git() {
 
         [ -n "${status}" ] && status=":${status}"
 
-        printf "%s" "${1}${branch}${status}"
+        printf "%s" "${prefix}${branch}${status}${suffix}"
     else
         return
     fi
@@ -73,7 +76,7 @@ prompt_gentoo_daniel() {
     PS1+="\[$host_style\]\h" # host
     PS1+="\[$reset\] "
     PS1+="\[$brown\]\w" # working directory
-    PS1+="\[$reset\]\$(prompt_git \" git:\")" # git repository details
+    PS1+="\[$reset\]\$(prompt_git \" [\" \"]\")" # git repository details
 
     [[ "$EUID" != "0" ]] && PS1+="\[$green\] > \[$reset\]"
     [[ "$EUID" == "0" ]] && PS1+="\[$red\] $ \[$reset\]"
