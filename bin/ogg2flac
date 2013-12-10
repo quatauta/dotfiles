@@ -1,0 +1,33 @@
+#!/bin/sh
+
+renice 20 $$
+ionice -c3 -p$$
+
+CPUS=$(grep processor /proc/cpuinfo | wc -l)
+
+find $@ -iname "*.ogg" -print0 |
+sed -e 's|"|\\"|g' |
+sort -uz |
+xargs -0r -P${CPUS} -IOGG sh -c 'if [ ! -r "OGG.flac" ] ; then
+                                     echo "$(date +%H:%M:%S) OGG -> flac ..." ;
+                                     oggdec -Q -o "OGG.wav" "OGG" &&
+                                     flac -s --best "OGG.wav" ;
+                                     rm -f "OGG.wav" ;
+                                     echo "$(date +%H:%M:%S) OGG done." ;
+                                 fi'
+
+find $@  -iname "*.ogg" |
+sort |
+while read ogg ; do
+    if [ -r "${ogg}.flac" ] ; then
+        vorbiscomment "${ogg}" |
+        metaflac --import-tags-from=- "${ogg}.flac"
+    fi
+done
+
+find $@ -iname "*.flac" -printf '%h\n' |
+sort -u |
+while read a ; do
+    printf '%s\0' "$a"
+done |
+xargs -0rt -n1 -P${CPUS} -IDIR sh -c 'metaflac --add-replay-gain "DIR"/*.flac'

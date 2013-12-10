@@ -1,0 +1,3 @@
+#!/bin/sh
+
+(emacsclient -n "$@" 2>/dev/null || emacs "$@") &

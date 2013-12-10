@@ -1,0 +1,66 @@
+#!/bin/sh
+
+if [ -t 1 ]; then
+    SUDO="sudo"
+else
+    SUDO="gksudo"
+fi
+
+renice 20 $$    1>/dev/null 2>&1
+ionice -c3 -p$$ 1>/dev/null 2>&1
+
+_vbox_modules() {
+    local MODULES="vboxnetadp vboxnetflt vboxdrv"
+
+    case $1 in
+        rm )
+            for mod in ${MODULES} ; do
+                lsmod | grep -q "${mod}" && ( echo "${mod}" ; ${SUDO} rmmod "${mod}" )
+            done
+            ;;
+        *  )
+            for mod in ${MODULES} ; do
+                lsmod | grep -q "${mod}" || ( echo "${mod}" ; ${SUDO} modprobe "${mod}" )
+            done
+            ;;
+    esac
+}
+
+_vbox_nice() {
+    PID="$(pgrep 'V(irtual)?Box')"
+    echo "${PID}" | xargs -r renice 20                                 1>/dev/null 2>&1
+    echo "${PID}" | xargs -r printf ' -p%d' | xargs -r ionice -c3      1>/dev/null 2>&1
+    echo "${PID}" | xargs -r ${SUDO} renice 20                            1>/dev/null 2>&1
+    echo "${PID}" | xargs -r printf ' -p%d' | xargs -r ${SUDO} ionice -c3 1>/dev/null 2>&1
+}
+
+case "${1}" in
+    mod | modules | modprobe )
+        _vbox_modules
+        ;;
+    rm | rmmod | rmmodules )
+        _vbox_modules rm
+        ;;
+    nice )
+        _vbox_nice
+        ;;
+    manage )
+        _vbox_modules
+        VirtualBox &
+        ;;
+    start )
+        _vbox_modules
+        shift
+        VBoxManage startvm "${@}"
+        _vbox_nice
+        ;;
+    startvm )
+        _vbox_modules
+        VBoxManage "${@}"
+        _vbox_nice
+        ;;
+    * )
+        _vbox_modules
+        VBoxManage "${@}"
+        ;;
+esac

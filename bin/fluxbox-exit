@@ -1,0 +1,38 @@
+#!/bin/sh
+
+windows() {
+    local lines wid desktop pid host name
+
+    lines=""
+
+    lines="$(wmctrl -lp |
+             while read wid desktop pid host name ; do
+                 printf '  - (%d) %s\n' $(($desktop + 1)) "${name}"
+             done)"
+
+    echo "$lines" | sort
+}
+
+question() {
+    local question text windows
+
+    question="$@"
+    windows="$(windows)"
+
+    if [ -z "${windows}" ] ; then
+        return 0
+    fi
+
+    text="${text}Es sind noch Programme gestartet:\n\n"
+    text="${text}${windows}\n\n"
+    text="${text}${question}"
+
+    zenity --question \
+        --title="${question}" \
+        --ok-label="_Ja" \
+        --cancel-label="_Nein" \
+        --text="${text}"
+}
+
+
+question "Fluxbox beenden?" && pkill -QUIT fluxbox

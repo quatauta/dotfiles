@@ -1,0 +1,6 @@
+#!/bin/sh
+
+[ 0 -eq $# ] && exit 1
+echo y | zip -FF "$1" --out aaaa.zip
+echo A | aunpack -Xaaaa aaaa.zip
+nice ionice -c3 shred -zun1 aaaa.zip &

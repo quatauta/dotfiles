@@ -1,0 +1,5 @@
+#!/bin/sh
+
+for x in *.?dx ; do
+    nice makeindex -cqL $x -o ${x%dx}nd
+done

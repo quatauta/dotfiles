@@ -1,0 +1,44 @@
+#!/bin/sh
+
+renice 20 $$
+ionice -c3 -p$$
+
+CPUS=$(grep processor /proc/cpuinfo | wc -l)
+
+find $@ -iname "*.flac" -print0 |
+sed -e 's|"|\\"|g' |
+sort -uz |
+xargs -0r -P${CPUS} -IFLAC sh -c 'if [ ! -r "FLAC.ogg" ] ; then
+                                      echo "$(date +%H:%M:%S) FLAC -> ogg ..." ;
+                                      flac -cds "FLAC" | oggenc -Q -q8 - -o "FLAC.ogg" ;
+                                      echo "$(date +%H:%M:%S) FLAC done." ;
+                                  fi'
+
+find $@ -iname "*.flac" |
+sort |
+while read flac ; do
+    if [ -r "${flac}.ogg" ] ; then
+        ARTIST="`metaflac "$flac" --show-tag=ARTIST | sed s/.*=//g`"
+        TITLE="`metaflac "$flac" --show-tag=TITLE | sed s/.*=//g`"
+        ALBUM="`metaflac "$flac" --show-tag=ALBUM | sed s/.*=//g`"
+        GENRE="`metaflac "$flac" --show-tag=GENRE | sed s/.*=//g`"
+        TRACKNUMBER="`metaflac "$flac" --show-tag=TRACKNUMBER | sed s/.*=//g`"
+        DATE="`metaflac "$flac" --show-tag=DATE | sed s/.*=//g`"
+
+        vorbiscomment -a \
+            -t "TITLE=$TITLE" \
+            -t "TRACKNUMBER=${TRACKNUMBER:-0}" \
+            -t "ARTIST=$ARTIST" \
+            -t "ALBUM=$ALBUM" \
+            -t "DATE=$DATE" \
+            -t "GENRE=${GENRE:-12}" \
+            "${flac}.ogg"
+    fi
+done
+
+find $@ -iname "*.ogg" -printf '%h\n' |
+sort -u |
+while read a ; do
+    printf '%s\0' "$a"
+done |
+xargs -0rt -n1 -P${CPUS} vorbisgain -afnqrs

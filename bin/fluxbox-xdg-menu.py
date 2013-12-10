@@ -1,0 +1,1 @@
+/home/daniel/Dokumente/workspace/fluxbox-xdg-menu/fluxbox-xdg-menu.py

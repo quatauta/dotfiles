@@ -1,0 +1,37 @@
+#!/bin/sh
+
+renice 20 $$
+ionice -c3 -p$$
+
+CPUS=$(grep processor /proc/cpuinfo | wc -l)
+
+find $@ -iname "*.ogg" -print0 |
+sed -e 's|"|\\"|g' |
+sort -uz |
+xargs -0r -P${CPUS} -IOGG sh -c 'if [ ! -r "OGG.mp3" ] ; then
+                                     echo "$(date +%H:%M:%S) OGG -> mp3 ..." ;
+                                     oggdec -Q -o- "OGG" | lame -V4 --quiet - "OGG.mp3" ;
+                                     echo "$(date +%H:%M:%S) OGG done." ;
+                                 fi'
+
+find $@ -iname "*.ogg" |
+sort |
+while read ogg ; do
+    if [ -r "${ogg}.mp3" ] ; then
+        ARTIST="$(vorbiscomment "$ogg" | grep '^ARTIST=' | sed s/.*=//g | recode utf8..latin1)"
+        TITLE="$(vorbiscomment "$ogg" | grep '^TITLE=' | sed s/.*=//g | recode utf8..latin1)"
+        ALBUM="$(vorbiscomment "$ogg" | grep '^ALBUM=' | sed s/.*=//g | recode utf8..latin1)"
+        GENRE="$(vorbiscomment "$ogg" | grep '^GENRE=' | sed s/.*=//g | recode utf8..latin1)"
+        TRACKNUMBER="$(vorbiscomment "$ogg" | grep '^TRACKNUMBER=' | sed s/.*=//g | recode utf8..latin1)"
+        DATE="$(vorbiscomment "$ogg" | grep '^DATE=' | sed s/.*=//g | recode utf8..latin1)"
+
+        id3v2 \
+            -t "$TITLE" \
+            -T "${TRACKNUMBER:-0}" \
+            -a "$ARTIST" \
+            -A "$ALBUM" \
+            -y "$DATE" \
+            -g "${GENRE:-12}" \
+            "${ogg}.mp3"
+    fi
+done

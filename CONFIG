@@ -9,7 +9,7 @@
 # 4- all the other files will be symlinked directly in the home
 
 # Ignore these
-cfg_ignore=("CONFIG" "README.md" "bin" "todo"
+cfg_ignore=("CONFIG" "README.md" "create-symlinks" "todo"
             ".git" ".gitignore" ".gitmodules"
             "*.orig" "*.rej"
             ".*.swp" "*~" "\#*\#"

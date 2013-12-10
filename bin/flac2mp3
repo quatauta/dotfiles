@@ -1,0 +1,37 @@
+#!/bin/sh
+
+renice 20 $$
+ionice -c3 -p$$
+
+CPUS=$(grep processor /proc/cpuinfo | wc -l)
+
+find $@ -iname "*.flac" -print0 |
+sed -e 's|"|\\"|g' |
+sort -uz |
+xargs -0r -P${CPUS} -IFLAC sh -c 'if [ ! -r "FLAC.mp3" ] ; then
+                                      echo "$(date +%H:%M:%S) FLAC -> mp3 ..." ;
+                                      flac -cds "FLAC" | lame -V4 --quiet - "FLAC.mp3" ;
+                                      echo "$(date +%H:%M:%S) FLAC done." ;
+                                  fi'
+
+find $@ -iname "*.flac" |
+sort |
+while read flac ; do
+    if [ -r "${flac}.mp3" ] ; then
+        ARTIST="$(metaflac "$flac" --show-tag=ARTIST | sed s/.*=//g | recode utf8..latin1)"
+        TITLE="$(metaflac "$flac" --show-tag=TITLE | sed s/.*=//g | recode utf8..latin1)"
+        ALBUM="$(metaflac "$flac" --show-tag=ALBUM | sed s/.*=//g | recode utf8..latin1)"
+        GENRE="$(metaflac "$flac" --show-tag=GENRE | sed s/.*=//g | recode utf8..latin1)"
+        TRACKNUMBER="$(metaflac "$flac" --show-tag=TRACKNUMBER | sed s/.*=//g | recode utf8..latin1)"
+        DATE="$(metaflac "$flac" --show-tag=DATE | sed s/.*=//g | recode utf8..latin1)"
+
+        id3v2 \
+            -t "$TITLE" \
+            -T "${TRACKNUMBER:-0}" \
+            -a "$ARTIST" \
+            -A "$ALBUM" \
+            -y "$DATE" \
+            -g "${GENRE:-12}" \
+            "${flac}.mp3"
+    fi
+done

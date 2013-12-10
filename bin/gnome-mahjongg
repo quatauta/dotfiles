@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ulimit -v 2000000
+exec /usr/games/bin/gnome-mahjongg

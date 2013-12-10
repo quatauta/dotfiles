@@ -1,0 +1,58 @@
+Change Log
+0.6.1
+- Fix issue that prevented Janos from detecting Play:5 and SoundBars (and any others that don't have analog line-in)
+- Update to swt version 4.3
+- Small UI improvements
+
+0.6.0
+- add JanosWeb, a web-servlet and web front-end as an alternative to the Swing-
+  version of Janos.
+- fixed Zonebridge-ignoring for Zone Bridges with model number BR100
+
+0.5.2
+- add ability to save the queue, and browse previously saved queues.
+
+0.5.1
+- fixed build script to compile to java 1.5
+
+0.5
+- Updated to svn 3.5
+- Now polls zone players to detect disconnections, and recover for reconnections.
+
+0.4
+- Updated to support sonos 3.0 radio stations
+- Updated to ignore Zone Bridges (this allows janos to start)
+
+0.3
+- Removed the sashbar between zone controls and library
+- Set application name to Janos
+- improved tool-tip display (esp for linux users)
+- Modified linux launcher to use absolute paths
+- Fixed bug 2674384: "Service Event registration uses unreliable return address"
+- Tooltip and Now Playing section now correctly display ampersands and non-ASCII chars
+- removed 0.5 second delay on all event notifications
+- added artwork window
+- added basic key control support
+
+0.2
+- Removed tooltip on zone list
+- Added log4j logging
+- Dispose correctly on close
+- Added icons for zones, library entries
+- Added Radio, Line In to library
+- Browse requests now cancelled when table is disposed
+- Added Search bar
+- Added URL adder bar
+- Added Tooltips to library & queue entries
+- Added Drag & Drop support
+- adjust MusicControlPanel to pin each column width to the ClientArea's width, eliminating "phantom" columns
+
+0.1
+Initial Release. 
+Currently works for: 
+  Browsing Music 
+  Adding to queue (not removing) 
+  Seeking in queue 
+  Changing volume 
+  Next/Previous 
+  Displaying now playing info

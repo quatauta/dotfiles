@@ -1,0 +1,31 @@
+#!/bin/sh
+
+MUSIC_DIR="$HOME/Dokumente/musik"
+REMOTE_HOST="narsbo"
+REMOTE_DIR="qmultimedia"
+REMOTE_USER="admin"
+SMB_URL="smb://WORKGROUP;${REMOTE_USER}@${REMOTE_HOST}/${REMOTE_DIR}"
+CIFS_OPTS="user=${REMOTE_USER},noperm,nosetuids"
+CIFS_URL="//${REMOTE_HOST}/${REMOTE_DIR}"
+
+if [ -d "${MUSIC_DIR}" ] ; then
+    renice 20 $$ 1>/dev/null
+    ionice -c 3 -p$$
+
+    # gvfs-mount "${SMB_URL}"
+    DIR="${HOME}/.gvfs/${REMOTE_DIR} auf ${REMOTE_HOST}"
+    mkdir -p "${DIR}"
+    MOUNT_DIR="$(ls -d ${HOME}/.gvfs/${REMOTE_DIR}*${REMOTE_HOST})"
+    sudo mount.cifs -o "${CIFS_OPTS}" "${CIFS_URL}" "${MOUNT_DIR}" ||
+        rmdir -p "${MOUNT_DIR}" 2>/dev/null
+    echo "mounted to ${MOUNT_DIR}"
+
+    if [ -d "${MOUNT_DIR}" ] ; then
+        sleep 0.5
+        rsync -hrt --verbose --stats --delete-after "${MUSIC_DIR}"/ "${MOUNT_DIR}"/
+    fi
+
+    # gvfs-mount -u "${SMB_URL}"
+    sudo umount "${MOUNT_DIR}"
+    rmdir -p "${MOUNT_DIR}" 2>/dev/null
+fi

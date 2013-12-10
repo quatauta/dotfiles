@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mutt -Z "$@" || mutt -f = "$@"
+touch /var/spool/mail/daniel

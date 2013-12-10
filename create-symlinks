@@ -14,7 +14,7 @@ WHITE=$(tput setaf 7)
 CRESET=$(tput sgr0)
 
 this_dir="$(dirname "$(readlink -f "$0")")"
-base_dir="${this_dir}/.."
+base_dir="${this_dir}"
 
 # Should define arrays: cfg_ignore cfg_first_child and cfg_dest_dir
 source "${base_dir}/CONFIG"
@@ -25,7 +25,7 @@ echo_usage() {
     echo "usage: $(basename "$0") [-h|--help | --noop|--dry-run]"
     echo
     echo "    Create the symlinks to these dotfiles according to the configuration"
-    echo "    (present in '../CONFIG')."
+    echo "    (present in 'CONFIG')."
     echo "    Note that it never replaces existing files."
 }
 

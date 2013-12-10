@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+class Host
+  include(Comparable)
+  
+  attr_accessor(:fqdn)
+
+  def initialize(hostname)
+    self.fqdn = hostname.split(".")
+  end
+  
+  def <=>(other)
+    (self.fqdn() || []).reverse() <=> (other.fqdn() || []).reverse()
+  end
+  
+  def to_s()
+    self.fqdn().join(".")
+  end
+end
+
+class Address
+  include(Comparable)
+  
+  attr_accessor(:name)
+  attr_accessor(:host)
+
+  def initialize(address)
+    self.name, hostname = address.split("@")
+    self.host           = Host.new(hostname)
+  end
+
+  def <=>(other)
+    host_compare = (self.host() || "") <=> (other.host() || "")
+    
+    if (0 != host_compare)
+      host_compare
+    else
+      (self.name() || "") <=> (other.name() || "")
+    end
+  end
+  
+  def to_s()
+    self.name() + "@" + self.host().to_s()
+  end
+end
+
+if (__FILE__ == $0)
+  addresses = []
+  
+  while (line = gets())
+    addresses << Address.new(line.split("\t")[0].downcase())
+  end
+  
+  puts(addresses.sort())
+end

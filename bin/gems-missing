@@ -1,0 +1,88 @@
+#!/usr/bin/env ruby
+
+require 'benchmark'
+require 'pp'
+require 'rubygems'
+
+
+class Gem::Specification
+  include Comparable
+
+  def <=> other
+    [ self.name, self.version ] <=> [ other.name, other.version ]
+  end
+
+  def missing_dependencies(available, cache = nil)
+    missing = nil
+
+    self.dependencies.select { |dep|
+      dep.type == :runtime
+    } .each do |dep|
+      cache_key = dep.to_s.to_sym
+      satisfied = if cache && cache.include?(cache_key)
+                    cache[cache_key]
+                  else
+                    available.any? { |spec| spec.satisfies_requirement? dep }
+                  end
+
+      (missing ||= []) << dep unless satisfied
+      cache[cache_key]  = satisfied if cache
+    end
+
+    missing
+  end
+
+  def to_s
+    "#{self.name} (#{self.version})"
+  end
+end
+
+def specs_missing_deps(specs, available, cache = nil)
+  unsatisfied = {}
+
+  specs.each do |spec|
+    missing = spec.missing_dependencies(available, cache)
+    unsatisfied[spec] = missing if missing
+  end
+
+  unsatisfied
+end
+
+def installed_gems
+  specs = []
+
+  Gem::Specification.each do |spec|
+    specs << spec if spec
+  end
+
+  specs.sort
+end
+
+def benchmark
+  Benchmark.bmbm do |x|
+    n   = 1000
+    c   = {}
+    all = installed_gems
+
+    x.report("plain")         { n.times { specs_missing_deps(all, all) } }
+    x.report("spec cache:")   { n.times { specs_missing_deps(all, all, {}) } }
+    x.report("global cache:") { n.times { specs_missing_deps(all, all, c) } }
+  end
+end
+
+if __FILE__ == $0
+  benchmark if ARGV.any? { |a| /^b(ench)?(m(arks?)?)?$/i =~ a }
+
+  installed   = installed_gems
+  unsatisfied = specs_missing_deps(installed, installed, {})
+
+  width = unsatisfied.keys.inject(0) { |memo, spec|
+    memo < spec.to_s.size ? spec.to_s.size : memo
+  }
+
+  unsatisfied.sort.each do |spec, dependencies|
+    dependencies.each do |dependency|
+      puts("%*s is missing %s" % [ -width, spec, dependency ])
+    end
+  end
+end

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+for CHROME in /usr/bin/google-chrome{,-unstable,-beta,-stable} ; do
+    if [ -x "${CHROME}" ] ; then
+        break
+    fi
+done
+
+exec "${CHROME}" "${@}"

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# screen -wipe >/dev/null
+# 
+# SCREEN="$(screen -ls | awk '/(At|De)tached/ { print $1 }' | head -n1)"
+# 
+# if [ -n "${SCREEN}" ] ; then
+#     exec screen -x "${SCREEN}"
+# else
+#     exec screen "${@}"
+# fi
+
+TMUX="$(tmux list-sessions 2>/dev/null | grep -iv 'attached' | awk '/./ { print $1 }' | head -n1)"
+
+if [ -n "${TMUX}" ] ; then
+    if [ -n "$1" ] ; then
+        tmux new-window "${@}"
+    fi
+
+    exec tmux attach-session -t "${TMUX}"
+else
+    exec tmux new-session "${@}"
+fi
+

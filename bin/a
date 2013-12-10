@@ -1,0 +1,3 @@
+#!/bin/sh
+
+nice ionice -c3 atool "$@"

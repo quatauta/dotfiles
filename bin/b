@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# Invoke bzr. Without arguments, some verbose status about the repository is displayed.
+
+BASE="."
+
+if [ 0 -eq "$#" ] ; then
+    for i in {0..5} ; do
+        [ -d "${BASE}/.bzr" ] && break
+        BASE="../${BASE}"
+    done
+
+    if [ -e "${BASE}/.bzr/branch/location" ] ; then
+        BASE="$(cat "${BASE}/.bzr/branch/location")"
+        BASE="${BASE#*://}"
+    fi
+
+    [ -d "${BASE}/.bzr" ] || BASE=""
+
+    if [ -d "${BASE}" ] ; then
+        if [ -e "${BASE}/.bzr/branch/branch.conf" ] &&
+           grep -q 'parent_location' "${BASE}/.bzr/branch/branch.conf" ; then
+            bzr missing --line
+        fi
+
+        if [ -e "${BASE}/.bzr/branch/self/shelf-"* ] ; then
+            bzr helve --list
+        fi
+
+        if [ -e "${BASE}/.bzr/branch/last-loom" ] ; then
+            bzr show-loom
+        fi
+
+        bzr status .
+        bzr check-text
+    fi
+else
+    bzr "$@"
+fi

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mplayer2 -idx -osdlevel 3 -really-quiet "$@"
