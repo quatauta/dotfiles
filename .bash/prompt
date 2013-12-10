@@ -95,11 +95,11 @@ set_prompts() {
     local bold=""
     local reset="\e[0m"
 
-    local hostStyle="\[$reset\]"
-    local userStyle="\[$green\]"
+    local hostStyle="$reset"
+    local userStyle="$green"
 
-    [[ "$EUID" == "0" ]] && userStyle="\[$red\]"    # logged in as root
-    [[ "$SSH_TTY" ]]     && hostStyle="\[$yellow\]" # connected via ssh
+    [[ "$EUID" == "0" ]] && userStyle="$red"    # logged in as root
+    [[ "$SSH_TTY" ]]     && hostStyle="$yellow" # connected via ssh
 
     # set the terminal title to the current working directory
     PS1="\[\033]0;\${USER}@\${HOSTNAME%%.*} \w\007\]"
