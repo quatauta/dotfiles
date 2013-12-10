@@ -10,6 +10,7 @@ br = branch
 ci = commit -S
 co = checkout
 di = diff
+ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
 st = status -b -s
 
 [merge]
