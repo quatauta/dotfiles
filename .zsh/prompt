@@ -1,8 +1,12 @@
 # ~/.zsh/propmt
 # vim:syntax=zsh:
 
-autoload -U promptinit
+autoload -Uz promptinit
 promptinit
-prompt gentoo
+prompt gentoo_daniel
 
-export PROMPT='%B%F{green}%n%b%F{gray}@%m%k %F{yellow}%4~ %F{green}%(!.#.>) %b%f%k'
+case $TERM in
+    xterm*)
+        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+        ;;
+esac
