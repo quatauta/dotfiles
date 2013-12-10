@@ -1,0 +1,29 @@
+# Daniel Schömer's muttrc
+# vim:syntax=muttrc:
+
+# hooks
+
+folder-hook "^news:"       "push <toggle-read><collapse-all>"
+folder-hook "."            "unset trash"
+folder-hook "=$"           "set trash==.trash"
+folder-hook "=\.local"     "set trash==.trash"
+folder-hook "=\.postponed" "set trash==.trash"
+folder-hook "=\.sent"      "set trash==.trash"
+folder-hook "INBOX"        "set trash==.trash"
+
+mbox-hook "!" "=.local"
+
+save-hook "." "=.INBOX.%[%Y]"
+
+send-hook "."       unmy_hdr From Fcc
+send-hook "\.local" my_hdr Fcc: =.local
+
+send2-hook "."       'set sendmail = "msmtp-enqueue.sh"'
+send2-hook "\.local" 'set sendmail = "/usr/sbin/sendmail -oem -oi"'
+
+open-hook   \\.bz2$ "bzip2 -cd %f >  %t"
+open-hook   \\.gz$  "gzip  -cd %f >  %t"
+append-hook \\.bz2$ "bzip2 -c  %t >> %f"
+append-hook \\.gz$  "gzip  -c  %t >> %f"
+close-hook  \\.bz2$ "bzip2 -c  %t >  %f"
+close-hook  \\.gz$  "gzip  -c  %t >  %f"

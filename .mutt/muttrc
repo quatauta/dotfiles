@@ -1,0 +1,26 @@
+# Daniel Schömer's muttrc
+# vim:syntax=muttrc:
+
+set folder    = "~/Mail"
+set mbox      = "=.local"
+set postponed = "=.postponed"
+set record    = "="
+#set trash    = "=.trash" # Set via folder-hooks in ~/.mutt/muttrc_hooks
+
+mailboxes "!" `~/.mutt/folders $HOME/Mail`
+
+set news_server = "localhost"
+set signature   = "/usr/bin/signify|"
+
+source "/etc/mutt/notmuch-mutt.rc"
+
+source "~/.mutt/muttrc.local"
+
+source "~/.mutt/muttrc.d/autoview"
+source "~/.mutt/muttrc.d/colors"
+source "~/.mutt/muttrc.d/gnupg"
+source "~/.mutt/muttrc.d/headers"
+source "~/.mutt/muttrc.d/hooks"
+source "~/.mutt/muttrc.d/keybindings"
+source "~/.mutt/muttrc.d/macros"
+source "~/.mutt/muttrc.d/options"

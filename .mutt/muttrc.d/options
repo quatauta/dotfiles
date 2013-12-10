@@ -1,0 +1,82 @@
+# Daniel Schömer's muttrc
+# vim:syntax=muttrc:
+
+# options
+
+alternative_order text/plain text/* image/*
+mime_lookup application/octet-stream application/vnd.ms-excel application/vnd.ms-word
+
+spam "X-(DSPAM-Result|GMX-Antispam|Spam-Status): (Spam|1|Yes)" "Spam"
+spam "X-(GMX-Antivirus|Virus-Status): (1|Yes)"                 "Virus"
+
+  set auto_tag
+  set attribution       = "%n schrieb:\n>"
+#unset bounce_delivered
+  set catchup_newsgroup = no
+  set certificate_file  = "~/.mutt/certificates"
+ #set certificate_file  = "/etc/ssl/certs/ca-certificates.crt"
+  set check_mbox_size
+unset crypt_autoencrypt
+  set crypt_autosign
+  set crypt_replyencrypt
+  set crypt_replysign
+  set crypt_replysignencrypted
+  set crypt_use_gpgme
+  set crypt_use_pka
+  set crypt_verify_sig
+  set date_format       = "!%a, %d. %b %Y %T%z"
+ #set display_filter    = ~/.mutt/display-filter
+  set edit_headers
+  set editor            = "vi -c 'set fo+=w'"
+  set fast_reply
+ #set header_cache      = ~/.mutt/cache/header
+  set history_file      = ~/.mutt/_history
+  set hostname          = `hostname -f`
+  set imap_check_subscribed
+  set imap_idle
+  set include
+  set index_format      = "%4C %Z %?H?%[%F][%H]&%[%F %R]? %-18.18L  %s %* |%?Y?%.14Y; %?%c"
+  set ispell            = "/usr/bin/aspell -e -c"
+unset mail_check_recent
+  set mark_old          = no
+unset markers
+  set mbox_type         = maildir
+ #set message_cache_clean
+ #set message_cachedir  = ~/.mutt/cache/body
+  set mime_forward      = ask-no
+  set move              = yes
+  set narrow_tree
+  set net_inc           = 500
+  set news_cache_dir    = ~/.mutt/_cache/news
+  set newsrc            = ~/.mutt/_newsrc
+  set nntp_context      = 5000
+  set pager_context     = 2
+  set pager_index_lines = 7
+  set pgp_use_gpg_agent
+  set pipe_split
+  set postpone          = ask-yes
+unset prompt_after
+  set query_command     = "lbdbq %s"
+  set quit              = yes
+  set read_inc          = 500
+unset reverse_name
+  set save_history      = 100
+  set send_charset      = us-ascii:utf-8
+  set sendmail_wait     = 7
+  set sleep_time        = 0
+  set smart_wrap
+  set sort              = threads
+  set sort_aux          = last-date-sent
+  set status_format     = "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]--(%s/%S)--%?V?(Limit: %V)?-%>-(%P)-"
+unset suspend
+  set text_flowed
+  set thorough_search
+  set tilde
+  set time_inc          = 500
+  set use_domain
+  set use_envelope_from
+  set use_from
+unset wait_key
+# set wrap              = 76
+  set write_bcc
+  set write_inc         = 500

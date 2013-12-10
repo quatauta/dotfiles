@@ -1,0 +1,10 @@
+# Daniel Schömer's muttrc
+# vim:syntax=muttrc:
+
+# macros
+
+macro index,pager \cb "|urlview\n" 'Display URLs with urlview'
+macro index,pager S \
+      "<enter-command>unset wait_key<enter><shell-escape>notmuch-mutt --prompt search<enter><change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>" \
+      "notmuch: search mail"
+macro index,pager <esc>S "<save-message>=.spam\n" 'Save message as spam'
