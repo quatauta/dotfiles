@@ -2,48 +2,6 @@
 
 # Copied and adapted from Nicolas Gallagher (necolas)
 # https://github.com/necolas/dotfiles/blob/master/shell/bash_prompt
-prompt_git() {
-    local prefix="$1"
-    local suffix="$2"
-
-    local branch=""
-    local status=""
-
-    local separator=":"
-    local uncommitted="+"
-    local unstaged="!"
-    local untracked="?"
-    local stashed="$"
-
-    # check if the current directory is in a git repository
-    if git rev-parse --is-inside-work-tree &>/dev/null ; then
-        # check if the current directory is in .git before running git checks
-        if [ "$(git rev-parse --is-inside-git-dir 2>/dev/null)" == "false" ]; then
-            git update-index --really-refresh  -q &>/dev/null # ensure index is up to date
-
-            $(git diff --quiet --ignore-submodules --cached)     || status="${status}${uncommitted}"
-            $(git diff-files --quiet --ignore-submodules --)     || status="${status}${unstaged}"
-            [ -n "$(git ls-files --others --exclude-standard)" ] && status="${status}${untracked}"
-            $(git rev-parse --verify refs/stash &>/dev/null)     && status="${status}${stashed}"
-
-            [ -n "${status}" ] && status="${separator}${status}"
-        fi
-
-        # get the short symbolic ref
-        # if HEAD isn't a symbolic ref, get the short SHA
-        # otherwise, just give up
-        branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || \
-                  git rev-parse --short HEAD 2>/dev/null || \
-                  printf "(unknown)")"
-
-        printf "%s" "${prefix}${branch}${status}${suffix}"
-    else
-        return
-    fi
-}
-
-# Copied and adapted from Nicolas Gallagher (necolas)
-# https://github.com/necolas/dotfiles/blob/master/shell/bash_prompt
 prompt_gentoo_daniel() {
     local black="\033[0;30m"
     local blue="\033[0;34m"
@@ -68,24 +26,28 @@ prompt_gentoo_daniel() {
     local user_style="$green"
     local host_style="$reset"
 
-    [[ "$EUID" == "0" ]] && user_style="$red"    # logged in as root
-    [[ "$SSH_TTY" ]]     && host_style="$yellow" # connected via ssh
+    [ "$EUID" = "0" ] && user_style="$red"    # logged in as root
+    [ "$SSH_TTY" ]    && host_style="$yellow" # connected via ssh
 
+    # reset prompt
     PS1=""
-    PS1+="\[\033]0;\u@\h \w\007\]" # set the terminal title to the current working directory
-    PS1+="\[$user_style\]\u" # username
-    PS1+="\[$reset\]@"
-    PS1+="\[$host_style\]\h" # host
-    PS1+="\[$reset\] "
-    PS1+="\[$brown\]\w" # working directory
-    PS1+="\[$reset\]\$(prompt_git \" [\" \"]\")" # git repository details
 
-    [[ "$EUID" != "0" ]] && PS1+="\[$green\] > \[$reset\]"
-    [[ "$EUID" == "0" ]] && PS1+="\[$red\] $ \[$reset\]"
+    # set the terminal title to the current working directory
+    PS1+="\[\033]0;\u@\h \w\007\]"
 
+    # user@host ~/current/directory
+    PS1+="\[$user_style\]\u\[$reset\]@\[$host_style\]\h\[$reset\] \[$brown\]\w\[$reset\]"
+
+    # git repository details
+    type prompt_git_status 1>/dev/null 2>&1 && PS1+="\$(prompt_git_status \" [\" \"]\")"
+
+    # > for user, # for root
+    [ "$EUID" != "0" ] && PS1+=" \[$user_style\]>\[$reset\] "
+    [ "$EUID"  = "0" ] && PS1+=" \[$user_style\]#\[$reset\] "
+
+    export PROMPT_DIRTRIM=3
     export PS1
     export PS2="\[$green\]>\[$reset\] "
-    export PROMPT_DIRTRIM=3
 }
 
 prompt_gentoo_daniel
