@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # vim: noexpandtab:ts=8:sts=4:sw=4
 
@@ -57,7 +57,7 @@ def header(wm = "fluxbox"):
     return (indent(0) + "[begin] (Fluxbox)\n" +
             indent(1) +   "[exec] (Terminal) {xterm}\n" +
             indent(1) +   "[exec] (Nemo)     {nemo --no-desktop}\n" +
-            indent(1) +   "[exec] (Opera)    {$HOME/bin/opera-best}\n" +
+            indent(1) +   "[exec] (Opera)    {opera}\n" +
             indent(1) +   "[exec] (Firefox)  {firefox}\n" +
             indent(1) +   "[exec] (Liferea)  {liferea}\n" +
             indent(1) +   "[exec] (Sonos)    {sonos}\n" +
