@@ -44,7 +44,5 @@ fi
 #if [ $? -eq 0 ]; then
 DEFAULT_ROUTE="$(awk '$2 ~ /00000000/ && $8 ~ /00000000/ { print "1" }' /proc/net/route)"
 if [ "" != "${DEFAULT_ROUTE}" ] ; then
-	msmtp-runqueue.sh > /dev/null &
+	msmtp-runqueue.sh
 fi
-
-exit 0
