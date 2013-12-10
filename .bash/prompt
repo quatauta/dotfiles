@@ -81,9 +81,8 @@ prompt_gentoo_daniel() {
     [[ "$EUID" == "0" ]] && user_style="$red"    # logged in as root
     [[ "$SSH_TTY" ]]     && host_style="$yellow" # connected via ssh
 
-    # set the terminal title to the current working directory
-    PS1="\[\033]0;\${USER}@\${HOSTNAME%%.*} \w\007\]"
-
+    PS1=""
+    PS1+="\[\033]0;\u@\h \w\007\]" # set the terminal title to the current working directory
     PS1+="\[$user_style\]\u" # username
     PS1+="\[$reset\]@"
     PS1+="\[$host_style\]\h" # host
