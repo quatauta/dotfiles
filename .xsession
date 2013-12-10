@@ -87,11 +87,6 @@ _start_with_delay xset m 1 10000
 _start_with_delay xset r rate 250 30
 _start_with_delay numlockx on
 
-#if pgrep redshift 2>&1 | grep -q '[0-9]' ; then
-#    pkill redshift
-#    _start_with_delay redshift -c /etc/redshift.conf
-#fi
-
 # Start window manager
 if [ -n "${realstartup}" ] ; then
     exec ${realstartup}
