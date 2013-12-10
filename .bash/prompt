@@ -75,18 +75,18 @@ prompt_gentoo_daniel() {
     local bold=""
     local reset="\e[0m"
 
-    local hostStyle="$reset"
-    local userStyle="$green"
+    local host_style="$reset"
+    local user_style="$green"
 
-    [[ "$EUID" == "0" ]] && userStyle="$red"    # logged in as root
-    [[ "$SSH_TTY" ]]     && hostStyle="$yellow" # connected via ssh
+    [[ "$EUID" == "0" ]] && user_style="$red"    # logged in as root
+    [[ "$SSH_TTY" ]]     && host_style="$yellow" # connected via ssh
 
     # set the terminal title to the current working directory
     PS1="\[\033]0;\${USER}@\${HOSTNAME%%.*} \w\007\]"
 
-    PS1+="\[$userStyle\]\u" # username
+    PS1+="\[$user_style\]\u" # username
     PS1+="\[$reset\]@"
-    PS1+="\[$hostStyle\]\h" # host
+    PS1+="\[$host_style\]\h" # host
     PS1+="\[$reset\] "
     PS1+="\[$brown\]\w" # working directory
     PS1+="\[$reset\]\$(prompt_git \" git:\")" # git repository details
