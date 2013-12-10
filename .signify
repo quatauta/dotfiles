@@ -1,0 +1,190 @@
+#
+# Mail signature definition file for use with signify
+#
+# vim:set tw=66:
+
+% $SIGWIDTH=66
+
+% {
+# Pong
+http://xkcd.com/117/
+% |
+# Angular Momentum
+http://xkcd.com/162/
+% |
+# Christmas GPS
+http://xkcd.com/201/
+% |
+# Random Number
+http://xkcd.com/221/
+% |
+# Cheap GPS
+http://xkcd.com/407/
+% |
+# Frustration
+http://xkcd.com/457/
+% |
+# Security
+http://xkcd.com/538/
+% |
+# Parking
+http://xkcd.com/562/
+% |
+# Can't Sleep
+http://xkcd.com/571/
+% |
+# Tech Support Cheat Sheet
+http://xkcd.com/627/
+% |
+# The Search
+http://xkcd.com/638/
+% |
+# Tornado Hunter
+http://xkcd.com/640/
+% |
+# Abstraction
+http://xkcd.com/676/
+% |
+# Seat Selection
+http://xkcd.com/726/
+% |
+# Tech Support
+http://xkcd.com/806/
+% |
+# Incident
+http://xkcd.com/838/
+% |
+# Password Strength
+http://xkcd.com/936/
+% |
+# Everything
+http://xkcd.com/968/
+% |
+# The Important Field
+http://xkcd.com/970/
+% |
+# Devotion to Duty - Sysadmin
+http://xkcd.com/705/
+% |
+# Sandwich - Sudo
+http://xkcd.com/705/
+% |
+# Error Code
+http://xkcd.com/1024/
+% |
+# Fountain
+http://xkcd.com/1038/
+% |
+# Lucky 10000
+http://xkcd.com/1053/
+% |
+# Home Organization
+http://xkcd.com/1077/
+% |
+# tar
+http://xkcd.com/1168/
+% |
+# Cells
+http://xkcd.com/1217/
+% |
+# No determinism
+http://geek-and-poke.com/2012/07/the-geekpoke-philosophy-special.html
+% |
+http://www.boltcity.com/copper/copper_026_signals.htm
+% |
+http://skizzenblog.claus-ast.de/2011/02/zum-valentinstag-doch-noch-blumen.html
+% |
+http://skizzenblog.claus-ast.de/2011/02/flotte-huhner.html
+% |
+http://skizzenblog.claus-ast.de/2011/02/chickenwisdom-n6.html
+% |
+http://skizzenblog.claus-ast.de/2011/03/vegetarischer-fleischfresser.html
+% |
+http://skizzenblog.claus-ast.de/2011/03/suseste-versuchung.html
+% |
+http://skizzenblog.claus-ast.de/2011/03/party-animal.html
+% |
+http://skizzenblog.claus-ast.de/2011/03/one-more-dil.html
+% |
+http://skizzenblog.claus-ast.de/2011/04/frohe-ostern.html
+% |
+http://skizzenblog.claus-ast.de/2011/05/lusternes-tierchen.html
+% |
+http://skizzenblog.claus-ast.de/2010/02/...und-schon-wieder.html
+% |
+http://skizzenblog.claus-ast.de/2011/07/fiegende-fische.html
+% |
+http://skizzenblog.clausast.de/2012/06/messtierchen.html
+% |
+http://skizzenblog.clausast.de/2012/07/inneres-viehzeug.html
+% |
+http://skizzenblog.clausast.de/2013/10/amphibischer-monatsname-mit-8-armen.html
+% |
+http://skizzenblog.clausast.de/2013/08/die-kleine-schwester-vom-uhrheberrecht.html
+% |
+http://skizzenblog.clausast.de/2013/05/n-guuuter.html
+% |
+http://skizzenblog.clausast.de/2013/03/modische-greifvoegel.html
+% |
+http://skizzenblog.clausast.de/2013/02/herzlichen-glueckwunsch-augsburger-puppenkiste.html
+% |
+http://skizzenblog.clausast.de/2012/12/astsventskalender-das-9-gebaeck.html
+% |
+http://skizzenblog.clausast.de/2012/12/early-bird-2.html
+% |
+http://skizzenblog.clausast.de/2012/08/verlaessliche-geraete.html
+% |
+http://skizzenblog.clausast.de/2012/07/die-hirschkuh.html
+% |
+Perfection is reached, not when there is no longer anything
+to add, but when there is no longer anything to take away.
+                                 (Antoine de Saint-Exupery)
+% |
+Nicht das, was wir nicht wissen, bringt uns zu Fall ...
+sondern das, was wir fälschlicherweise zu wissen glauben.
+                                (Tom DeMarco, Der Termin)
+% |
+Niemand gibt dir Geld für nichts. Es sei denn du gibst ihm viel
+mehr als du denkst.          (Elmore Leonard, Nr. 89 Unbekannt)
+% |
+Furcht tut nichts Gutes. Darum muss man frei und mutig
+in allen Dingen sein und feststehen.   (Martin Luther)
+% |
+Freiheit: Das einzige Ding, das man nicht haben kann, wenn man
+nicht gewillt ist, es anderen zu geben.
+     (William Allen White, amerik. Schriftsteller 1868 - 1944)
+% |
+It is easier to optimize correct code
+than to correct optimized code.  (Bill Harlan, 1997)
+% |
+Why do programmers always mix up Halloween and Christmas?
+Because Oct 31 equals Dec 25.
+% |
+Das Glück beruht oft nur auf dem Entschluss, glücklich zu sein.
+                                             (Lawrence Durrell)
+% |
+Fordere viel von dir selbst und erwarte wenig von den anderen.
+So wird dir Ärger erspart bleiben.                 (Konfuzius)
+% |
+Drei Dinge helfen, die Mühseligkeiten des Lebens zu tragen: Die
+Hoffnung, der Schlaf und das Lachen.            (Immanuel Kant)
+% |
+Complexity has nothing to do with intelligence, simplicity
+does.                                       (Larry Bossid)
+% |
+Das Schwierigste am Leben ist es, Herz und Kopf dazu zu bringen,
+zusammenzuarbeiten.                                (Woody Allen)
+% |
+... Ich begann so langsam zu verstehen, dass Menschen, die
+beruflich programmieren wohl vor allem dafür entschädigt werden,
+dass sie sich ab und zu sehr lange und sehr stark ärgern müssen.
+% |
+Fahr nicht nur die glatten Straßen. Fahr Wege, die noch niemand fuhr,
+damit du Spuren hinterlässt und nicht nur Staub.
+                                           (Antoine de Saint-Exupéry)
+% |
+Wenn man zwei Stunden lang mit einem Mädchen zusammensitzt, meint
+man, es wäre eine Minute. Sitzt man jedoch eine Minute auf einem
+heißen Ofen, meint man, es wären zwei Stunden.
+Das ist Relativität. (Albert Einstein)
+% }

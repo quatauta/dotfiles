@@ -1,0 +1,46 @@
+# [Created by task 1.9.3 11/21/2010 09:43:08]
+# Taskwarrior program configuration file.
+# For more documentation, see http://taskwarrior.org or try 'man task', 'man task-faq',
+# 'man task-tutorial', 'man task-color' or 'man taskrc'
+
+# Use the command 'task show' to see all defaults and overrides
+
+# Files
+data.location=/home/daniel/.task
+
+include /usr/share/task/rc/dark-yellow-green.theme
+include /home/daniel/.task/holidays.rc
+
+calendar.details.report=root-calendar
+calendar.details=full
+calendar.holidays=full
+dateformat.holiday=YMD
+dateformat.report=Y-M-D
+dateformat=Y-M-D
+default.command=next
+journal.time=yes
+search.case.sensitive=no
+weekstart=Monday
+
+report.next.columns=id,project,priority,due,start.active,due.countdown,description
+report.next.filter=status:pending limit:page depends.none: project.not:Geburtstag
+report.next.labels=ID,Project,Pri,Due,Active,Countdown,Description
+report.next.sort=due+,priority-,project+,description+
+
+report.johanna.columns=id,project,due,due.countdown,priority,description
+report.johanna.description=Johanna
+report.johanna.filter=status:pending proj:Johanna
+report.johanna.labels=ID,Project,Due,Countdown,P,Description
+report.johanna.sort=due+,priority-,project+,description+
+
+report.root-calendar.columns=priority,id,project,due,due.countdown,description
+report.root-calendar.description=Calendar list
+report.root-calendar.filter=status:pending depends.none:
+report.root-calendar.labels=P,ID,Project,Due,Left,Description
+report.root-calendar.sort=due+,priority-,project+,description+
+
+report.geburtstag.columns=id,project,due,due.countdown,priority,description
+report.geburtstag.description=Geburtstage
+report.geburtstag.filter=status:pending depends.none: project:Geburtstag
+report.geburtstag.labels=ID,Project,Due,Countdown,P,Description
+report.geburtstag.sort=due+,priority-,project+,description+

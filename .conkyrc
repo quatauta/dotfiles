@@ -1,0 +1,43 @@
+alignment bottom_left
+background no
+border_width 0
+default_color 85806c
+default_outline_color black
+default_shade_color black
+double_buffer no
+draw_borders no
+draw_graph_borders no
+draw_outline no
+draw_shades no
+gap_x 30
+gap_y 5
+no_buffers yes
+out_to_console no
+own_window_transparent true
+pad_percents 3
+short_units yes
+update_interval 5
+use_spacer left
+use_xft yes
+xftfont Fixed:size=8
+
+color0 9e9e92
+color1 e4e2d4
+
+TEXT
+${color0}root:${fs_used_perc /}% | \
+sys:${hwmon 2 temp 1}°C ${hwmon 2 fan 2}/m | \
+linux ${kernel} | \
+${time %A, %-d. %B %Y} | \
+Woche ${time %_V} | \
+${time %F %T} | \
+up: ${uptime_short} | \
+mail: ${color1}${new_mails /home/daniel/Mail 10} ${new_mails /var/spool/mail/daniel 60}${color0}
+${color0}home:${fs_used_perc /home/}% | \
+cpu:${hwmon 0 temp 1}°C ${hwmon 2 fan 1}/m ${freq_g 1}/${freq_g 2}/${freq_g 3}/${freq_g 4}G${color1}${cpu}%${color0} | \
+mem:${color1}${memperc}%${color0} | \
+swap:${swapperc}% | \
+load: ${color1}${loadavg 1}${color0} | \
+entropy:${entropy_perc}% | \
+sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C | \
+net: ${color1}${downspeed eth0}${color0}d ${color1}${upspeed eth0}${color0}u ${totaldown eth0}d ${totalup eth0}u ${addrs eth0}
