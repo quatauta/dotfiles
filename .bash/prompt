@@ -64,7 +64,7 @@ prompt_git() {
                       git rev-parse --short HEAD 2> /dev/null || \
                       printf "(unknown)")"
 
-        [ -n "$s" ] && s=" [$s]"
+        [ -n "$s" ] && s=":$s"
 
         printf "%s" "$1$branchName$s"
     else
