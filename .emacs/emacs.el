@@ -1,5 +1,5 @@
 ;; Load user local packages
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp"))
+(add-to-list 'load-path (expand-file-name "~/.emacs/site-lisp"))
 
 (require 'filladapt)
 (require 'shell-command)
@@ -29,8 +29,8 @@
 
 
 ;; Custom Settings
-(setq custom-file "~/.emacs.d/custom.el")
-(load "~/.emacs.d/custom.el" t t)
+(setq custom-file "~/.emacs/custom.el")
+(load "~/.emacs/custom.el" t t)
 
 
 ;; Names for calendar command
