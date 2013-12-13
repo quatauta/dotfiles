@@ -3,8 +3,8 @@
 # Invoke git. Without arguments, some verbose status about the repository is displayed.
 
 if [ 0 -eq "$#" ] ; then
+    git st &&
     git stash list
-    git st
 else
     git "$@"
 fi
