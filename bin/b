@@ -1,9 +1,0 @@
-#!/bin/sh
-#
-# Invoke bzr. Without arguments, some verbose status about the repository is displayed.
-
-if [ 0 -eq "$#" ] ; then
-    bzr st
-else
-    bzr "$@"
-fi
