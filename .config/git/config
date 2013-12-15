@@ -22,6 +22,3 @@ helper = cache
 
 [push]
 default = simple
-
-[core]
-pager =
