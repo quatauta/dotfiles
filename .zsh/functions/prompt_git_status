@@ -16,15 +16,15 @@ prompt_git_status() {
     local stashed="$"
 
     # check if the current directory is in a git repository
-    if git rev-parse --is-inside-work-tree &>/dev/null ; then
+    if git rev-parse --is-inside-work-tree 1>/dev/null 2>&1 ; then
         # check if the current directory is in .git before running git checks
         if [ "$(git rev-parse --is-inside-git-dir 2>/dev/null)" = "false" ]; then
-            git update-index --really-refresh  -q &>/dev/null # ensure index is up to date
+            git update-index --really-refresh  -q 1>/dev/null 2>&1 # ensure index is up to date
 
-            $(git diff --quiet --ignore-submodules --cached)     || branch_status+="${uncommitted}"
-            $(git diff-files --quiet --ignore-submodules --)     || branch_status+="${unstaged}"
-            [ -n "$(git ls-files --others --exclude-standard)" ] && branch_status+="${untracked}"
-            $(git rev-parse --verify refs/stash &>/dev/null)     && branch_status+="${stashed}"
+            $(git diff --quiet --ignore-submodules --cached  1>/dev/null 2>&1) || branch_status+="${uncommitted}"
+            $(git diff-files --quiet --ignore-submodules --  1>/dev/null 2>&1) || branch_status+="${unstaged}"
+            [ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]   && branch_status+="${untracked}"
+            $(git rev-parse --verify refs/stash              1>/dev/null 2>&1) && branch_status+="${stashed}"
 
             [ -n "${branch_status}" ] && branch_status="${separator}${branch_status}"
         fi
