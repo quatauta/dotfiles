@@ -6,12 +6,14 @@ path = ~/.git.local
 ui = true
 
 [alias]
+b = branch
 br = branch
 c = commit -S
 ci = commit -S
 co = checkout
 d = diff
 di = diff
+i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
 l = log --oneline
 s = status -b -s
