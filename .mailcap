@@ -20,10 +20,10 @@ application/x-xz;           als %s; copiousoutput; nametemplate=%s.tar.xz
 application/x-zip;          als %s; copiousoutput; nametemplate=%s.zip
 application/zip;            als %s; copiousoutput; nametemplate=%s.zip
 
-text/html; mutt_bgrun opera-best %s; description=HTML Text (Opera); nametemplate=%s.html; test=test -n "$DISPLAY" && which opera-best 1>/dev/null 2>&1
-# text/html; mutt_bgrun chromium %s  ; description=HTML Text (Chromium);   nametemplate=%s.html; test=test -n "$DISPLAY" && which chromium   1>/dev/null 2>&1
-# text/html; mutt_bgrun chrome %s    ; description=HTML Text (Chrome);     nametemplate=%s.html; test=test -n "$DISPLAY" && which chrom      1>/dev/null 2>&1
-# text/html; mutt_bgrun firefox %s   ; description=HTML Text (Firefox);    nametemplate=%s.html; test=test -n "$DISPLAY" && which firefox    1>/dev/null 2>&1
+text/html; MAILCAP_CONTENT_TYPE="%t" MAILCAP_CHARSET="%{charset}" mutt_bgrun opera %s;    description=HTML Text (Opera);    nametemplate=%s.html; test=test -n "$DISPLAY" && which opera         1>/dev/null 2>&1
+text/html; MAILCAP_CONTENT_TYPE="%t" MAILCAP_CHARSET="%{charset}" mutt_bgrun chromium %s; description=HTML Text (Chromium); nametemplate=%s.html; test=test -n "$DISPLAY" && which chromium      1>/dev/null 2>&1
+text/html; MAILCAP_CONTENT_TYPE="%t" MAILCAP_CHARSET="%{charset}" mutt_bgrun chrome %s;   description=HTML Text (Chrome);   nametemplate=%s.html; test=test -n "$DISPLAY" && which google-chrome 1>/dev/null 2>&1
+text/html; MAILCAP_CONTENT_TYPE="%t" MAILCAP_CHARSET="%{charset}" mutt_bgrun firefox %s;  description=HTML Text (Firefox);  nametemplate=%s.html; test=test -n "$DISPLAY" && which firefox       1>/dev/null 2>&1
 
 #text/html; w3m -dump -cols 70 -I%{charset} -Outf8 %s; copiousoutput; description=HTML Text; nametemplate=%s.html; test=which w3m 1>/dev/null 2>&1
 text/html; lynx -assume_local_charset=%{charset} -display_charset=UTF-8 -dump %s; copiousoutput; description=HTML Text; nametemplate=%s.html; test=which w3m 1>/dev/null 2>&1

@@ -99,12 +99,20 @@ file=$1
 
 tmpdir=$TMP
 umask 077
-tmpfile="$tmpdir/mutt_bgrun_${file##*/}"
+tmpfile="$tmpdir/mutt_bgrun_${$}_$(date +%s)_${RANDOM}_${file##*/}"
 
 # Copy mutt's temporary file to our temporary directory so that we can
 # let mutt overwrite and delete it when we exit.
 
 cp -v "$file" "$tmpfile"
+
+case "${MAILCAP_CONTENT_TYPE}" in
+    *text/*html* )
+        if [ -n "${MAILCAP_CHARSET}" ] ; then
+            sed -i -e "s|<head>|<head><meta charset=\"${MAILCAP_CHARSET//[\'\"]}\">|i" "${tmpfile}"
+        fi
+        ;;
+esac
 
 # Run the viewer in the background and delete the temporary files when done. 
 
