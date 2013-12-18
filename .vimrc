@@ -6,9 +6,6 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 if &t_Co >= 256 || has("gui_running")
-  " colorscheme baycomb
-  " colorscheme mustang
-  " colorscheme mokolai
   colorscheme inkpot
   let &guicursor = &guicursor . ",a:blinkon0"
 endif
@@ -72,9 +69,6 @@ set wildmenu
 set wildmode=list:full
 
 filetype plugin indent on
-
-nnoremap / /\v
-vnoremap / /\v
 
 function! HashCompletePrev()
     if getline('.') =~ '\%' . (col('.') - 1) . 'c.\>'
