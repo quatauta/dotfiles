@@ -58,4 +58,4 @@ in the test."
        (load "~/.xemacs/xemacs.el" t t))
       ((not running-xemacs)
        ;; Code specific to GNU Emacs
-       (load "~/.emacs/emacs.el" t t)))
+       (load "~/.emacs.d/emacs.el" t t)))
