@@ -23,9 +23,11 @@ set autoindent
 set autoread
 set autowrite
 set backspace=indent,eol,start
+set backupdir=~/.vim/_tmp
 set cmdheight=2
 set copyindent
 set cursorline
+set directory=~/.vim/_tmp
 set endofline
 set expandtab
 set formatoptions=2clmnoqrt
@@ -62,7 +64,7 @@ set softtabstop=4
 set switchbuf+=useopen,usetab
 set tabstop=8
 set textwidth=90
-set undodir=~/.vim/.undo,$TMP,~/tmp,/tmp
+set undodir=~/.vim/_tmp
 set undofile
 set undolevels=1000
 set wildmenu
