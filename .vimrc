@@ -52,7 +52,7 @@ set number
 set printoptions=number:y
 set printoptions=paper:A4,left:15mm,right:8mm,top:8mm,bottom:8mm,syntax:y,number:y,wrap:y
 set ruler
-set scrolloff=3
+set scrolloff=8
 set shiftround
 set shiftwidth=4
 set smartcase
