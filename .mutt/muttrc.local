@@ -7,6 +7,7 @@ alternates "EMAIL1" "EMAIL2" "EMAIL3"
 #reply-hook 'OLD_FRIEND_EMAIL' "push <edit-to><kill-line>'NEW_FRIEND_EMAIL'<return>"
 #send-hook  'OLD_FRIEND_EMAIL' "push <edit-to><kill-line>'NEW_FRIEND_EMAIL'<return>"
 #send2-hook 'OLD_FRIEND_EMAIL' "push <edit-to><kill-line>'NEW_FRIEND_EMAIL'<return>"
+
 #reply-hook '.' "unset smime_is_default"
 #send-hook  '.' "unset smime_is_default"
 #send2-hook '.' "unset smime_is_default"
