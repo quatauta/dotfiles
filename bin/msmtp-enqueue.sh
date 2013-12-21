@@ -34,10 +34,6 @@ echo "$@" > "$MSMTPFILE" || exit 1
 # Write the mail to $MAILFILE
 cat > "$MAILFILE" || exit 1
 
-if [ -x "$(which lbdb-fetchaddr 2>/dev/null)" ] ; then
-    lbdb-fetchaddr -a <"$MAILFILE"
-fi
-
 # If we are online, run the queue immediately.
 # Replace the test with something suitable for your site.
 #ping -c 1 -w 2 SOME-IP-ADDRESS > /dev/null 
