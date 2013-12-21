@@ -138,3 +138,6 @@
 
 ;; css-mode indenter
 (setq cssm-indent-function #'cssm-c-style-indenter)
+
+;; Load inkpot theme
+(load-theme 'inkpot)

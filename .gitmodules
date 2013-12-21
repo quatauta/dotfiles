@@ -1,0 +1,3 @@
+[submodule ".emacs.d/site-lisp/emacs24-inkpot"]
+	path = .emacs.d/site-lisp/inkpot
+	url = https://github.com/mswift42/emacs24-inkpot.git
