@@ -148,7 +148,7 @@
  '(custom-buffer-done-function (quote kill-buffer))
  '(custom-safe-themes
    (quote
-    ("c806e55531f941fa7efb0a677aeea7a763cdfc154fa8b9e0ddc6582d858c01a8" default)))
+    ("b08e8369593be9a65f5e124f8934effed9ae2ac8bae90068cb924bedc3eadfce" default)))
  '(custom-theme-load-path
    (quote
     ("/home/daniel/.emacs.d/site-lisp/inkpot/" custom-theme-directory t)))
