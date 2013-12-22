@@ -148,7 +148,7 @@
  '(custom-buffer-done-function (quote kill-buffer))
  '(custom-safe-themes
    (quote
-    ("b08e8369593be9a65f5e124f8934effed9ae2ac8bae90068cb924bedc3eadfce" default)))
+    ("c3f0d83eab395790701ef4ccd5aa93ebbddc90924a63518f5fc3330de422d191" default)))
  '(custom-theme-load-path
    (quote
     ("/home/daniel/.emacs.d/site-lisp/inkpot/" custom-theme-directory t)))
@@ -165,7 +165,6 @@
  '(european-calendar-style t)
  '(fill-column 90)
  '(font-latex-quotes (quote german))
- '(frame-background-mode (quote light))
  '(fringe-indicators (quote left) nil (fringe))
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
@@ -282,9 +281,6 @@
  '(font-latex-verbatim-face ((((type x w32 mac) (class color) (background light)) (:foreground "SaddleBrown"))) t)
  '(highlight-current-line-face ((((type x w32 mac) (class color)) (:background "#dcd6c8"))) t)
  '(html-tag-face ((((type x w32 mac) (class color)) (:foreground "dodger blue"))) t)
- '(mode-line ((t (:background "#dfddcd" :foreground "black" :box (:line-width -1 :style released-button)))))
- '(mode-line-highlight ((((class color) (min-colors 88)) (:background "grey80"))))
- '(modeline ((t (:background "red" :foreground "#b9b9b9" :weight bold))) t)
  '(mouse ((((type x w32 mac) (class color)) (:background "black"))))
  '(tool-bar ((((type x w32 mac) (class color)) (:inherit mode-line :background "#c7bba0" :foreground "black" :box (:line-width 1 :style released-button)))))
  '(underline ((t (:underline t))))
