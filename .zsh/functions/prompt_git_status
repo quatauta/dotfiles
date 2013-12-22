@@ -22,7 +22,7 @@ prompt_git_status() {
         if [ "$(git rev-parse --is-inside-git-dir 2>/dev/null)" = "false" ]; then
             git update-index --really-refresh  -q 1>/dev/null 2>&1 # ensure index is up to date
 
-            [ -n "$(git rev-list HEAD...origin/$(git rev-parse --abbrev-ref HEAD))" ] && branch_status+="${remote_drift}"
+            [ -n "$(git rev-list HEAD...origin/$(git rev-parse --abbrev-ref HEAD 2>/dev/null) 2>/dev/null)" ] && branch_status+="${remote_drift}"
             $(git diff --quiet --ignore-submodules --cached  1>/dev/null 2>&1)        || branch_status+="${uncommitted}"
             $(git diff-files --quiet --ignore-submodules --  1>/dev/null 2>&1)        || branch_status+="${unstaged}"
             [ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]          && branch_status+="${untracked}"
