@@ -1,0 +1,12 @@
+#!/bin/sh
+
+source "${HOME}/.zsh/functions/prompt_git_status"
+
+locate -r '/\.git$' |
+sed -e 's|/\.git$||' |
+while read BRANCH ; do
+    pushd "${BRANCH}" >/dev/null
+    GIT_STATUS="$(prompt_git_status '[' ']')"
+    printf '%-14s %s\n' "${GIT_STATUS}" "${BRANCH}"
+    popd >/dev/null
+done
