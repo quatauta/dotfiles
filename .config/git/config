@@ -1,5 +1,4 @@
-[include]
-path = ~/.config/git.local
+[include] path = ~/.config/git.local
 path = ~/.git.local
 
 [color]
@@ -30,3 +29,6 @@ helper = cache
 
 [push]
 default = simple
+
+[diff]
+renames = copies
