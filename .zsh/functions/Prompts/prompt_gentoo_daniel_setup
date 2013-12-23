@@ -1,5 +1,4 @@
 # daniel prompt theme
-# vim:syntax=zsh:
 
 prompt_gentoo_daniel_help () {
   cat <<'EOF'
@@ -27,17 +26,13 @@ prompt_gentoo_daniel_setup () {
   local post_prompt="%b%f%k"
 
   # git repository details
-  if type vcs_info 1>/dev/null 2>&1 ; then
-    zstyle ':vcs_info:*' enable git
-    zstyle ':vcs_info:*' check-for-changes true
-    zstyle ':vcs_info:*' stagedstr "+"
-    zstyle ':vcs_info:*' unstagedstr "!"
-    zstyle ':vcs_info:*' formats '[%b:%c%u] '
-  fi
+  autoload prompt_git_status
+  local git_status=""
+  type prompt_git_status 1>/dev/null 2>&1 && local git_status="\$(prompt_git_status '[' '] ')"
 
-  typeset -g PS1="${base_prompt} ${path_prompt} \${vcs_info_msg_0_}%F{${prompt_user_style}}%(!.#.>)%b%f%k ${post_prompt}"
-  typeset -g PS2="${base_prompt}${path_prompt} %_> ${post_prompt}"
-  typeset -g PS3="${base_prompt}${path_prompt} ?# ${post_prompt}"
+  typeset -g PS1="$base_prompt $path_prompt $git_status%F{$prompt_user_style}%(!.#.>)%b%f%k $post_prompt"
+  typeset -g PS2="$base_prompt$path_prompt %_> $post_prompt"
+  typeset -g PS3="$base_prompt$path_prompt ?# $post_prompt"
 }
 
 prompt_gentoo_daniel_setup "$@"
