@@ -2,6 +2,31 @@
 #
 # Invoke git. Without arguments, some verbose status about the repository is displayed.
 
+git_has_remote() {
+    if git rev-list --count @{upstream} 1>/dev/null 2>&1 ; then
+        echo "yes"
+    else
+        echo "no"
+    fi
+}
+
+ssh_agent_has_key() {
+    if ssh-add -l | fgrep -q "${HOME}/.ssh/id_rsa" ; then
+        echo "yes"
+    else
+        echo "no"
+    fi
+}
+
+case "$1" in
+    pull | push | fetch | remote | pl | ps )
+        if [ "$(git_has_remote)" = "yes" ] && [ "$(ssh_agent_has_key)" = "no" ] ; then
+            echo "Add private key to ssh-agent ..."
+            ssh-add
+        fi
+        ;;
+esac
+
 if [ 0 -eq "$#" ] ; then
     git st &&
     git stash list
