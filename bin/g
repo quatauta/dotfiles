@@ -28,7 +28,14 @@ case "$1" in
 esac
 
 if [ 0 -eq "$#" ] ; then
-    git st &&
+    (
+        for ALIAS_STATUS in s st ; do
+            git config "alias.${ALIAS_STATUS}" 1>/dev/null 2>&1 &&
+            git "${ALIAS_STATUS}" &&
+            break
+        done ||
+        git status
+    ) &&
     git stash list
 else
     git "$@"
