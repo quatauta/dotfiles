@@ -1,8 +1,8 @@
-[include] path = ~/.config/git.local
-path = ~/.git.local
+# ~/.config/git/config
 
-[color]
-ui = true
+[include]
+path = ~/.config/git.local
+path = ~/.git.local
 
 [alias]
 b = branch
@@ -20,16 +20,19 @@ ps = push
 s = status -b -s
 st = status -b -s
 
-[merge]
-conflictstyle = diff3
-tool = meld
-
 [credential]
 helper = cache
 
-[push]
-default = simple
+[color]
+ui = true
 
 [diff]
 mnemonicprefix = true
 renames = copies
+
+[merge]
+conflictstyle = diff3
+tool = meld
+
+[push]
+default = simple
