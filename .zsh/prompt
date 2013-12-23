@@ -1,12 +1,20 @@
 # ~/.zsh/propmt
 # vim:syntax=zsh:
 
-autoload -Uz promptinit
+autoload -Uz promptinit vcs_info
 promptinit
 prompt gentoo_daniel
 
 case $TERM in
     xterm*)
-        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+        precmd() {
+            type vcs_info 1>/dev/null 2>&1 && vcs_info
+            print -Pn "\e]0;%n@%m: %~\a"
+        }
+        ;;
+    * )
+        precmd() {
+            type vcs_info 1>/dev/null 2>&1 && vcs_info
+        }
         ;;
 esac
