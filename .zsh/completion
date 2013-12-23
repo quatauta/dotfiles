@@ -8,3 +8,6 @@ zstyle ':completion:*:(cp|mv|rm):*' ignore-line yes
 
 autoload -Uz compinit
 compinit -d "${ZSH_CONF_DIR}/_compdump"
+
+# completion for 'g' as wrapper script for git
+compdef _git g=git

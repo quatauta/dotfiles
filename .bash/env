@@ -3,10 +3,11 @@
 
 export HISTFILE="${BASH_CONF_DIR}/_history"
 
+# Autocomplete for 'g' as well 
 BASH_GIT_COMPLETION="/usr/share/bash-completion/completions/git"
 if [ -r "${BASH_GIT_COMPLETION}" ] ; then
     source "${BASH_GIT_COMPLETION}"
-    __git_complete g __git_main
+    complete -o default -o nospace -F _git g
 fi
 
 for ENV in "${HOME}"/.{,config/}env{,.local} ; do
