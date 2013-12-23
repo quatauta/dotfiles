@@ -31,4 +31,5 @@ helper = cache
 default = simple
 
 [diff]
+mnemonicprefix = true
 renames = copies
