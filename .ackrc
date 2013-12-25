@@ -1,0 +1,7 @@
+#
+# ~/.ackrc
+#
+
+--column
+--smart-case
+--sort-files
