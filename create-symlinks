@@ -87,7 +87,7 @@ do_symlink_or_copy() {
     case "${symlink_or_copy}" in
         "symlink" )
             if [[ "${DEBUG}" == "1" ]] ; then
-                echo "${GREEN}Info${CRESET}: creating '${dest}' -> '${target}'"
+                echo "${GREEN}Info${CRESET}: would create '${dest}' -> '${target}'"
             else
                 [ -d "${dest_parent_dir}" ] || echo mkdir -pv "${dest_parent_dir}"
                 ln -sv "${target}" "${dest}"
@@ -95,7 +95,7 @@ do_symlink_or_copy() {
             ;;
         "copy" )
             if [[ "${DEBUG}" == "1" ]] ; then
-                echo "${GREEN}Info${CRESET}: copying  '${dest}' from '${target}'"
+                echo "${GREEN}Info${CRESET}: would copy   '${dest}' from '${target}'"
             else
                 [ -d "${dest_parent_dir}" ] || echo mkdir -pv "${dest_parent_dir}"
                 cp -iv "${target}" "${dest}"
