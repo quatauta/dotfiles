@@ -22,7 +22,7 @@ source "${base_dir}/CONFIG"
 DEBUG=0
 
 echo_usage() {
-    echo "usage: $(basename "$0") [-h|--help | --noop|--dry-run]"
+    echo "usage: $(basename "$0") [-h|--help | -n|--noop|--dry-run]"
     echo
     echo "    Create the symlinks to these dotfiles according to the configuration"
     echo "    (present in 'CONFIG')."
@@ -33,7 +33,7 @@ if [[ $# -ge 1 ]]; then
     if [[ "${1}" =~ ^-h|--help$ ]]; then
         echo_usage
         exit 0
-    elif [[ "${1}" =~ ^--dry-run|--noop$ ]]; then
+    elif [[ "${1}" =~ ^-n|--dry-run|--noop$ ]]; then
         DEBUG=1
     fi
 fi
