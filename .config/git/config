@@ -14,7 +14,7 @@ d = diff
 di = diff
 i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
-l = log --date=short --graph --pretty='tformat:%C(auto,yellow)%h%C(reset) %C(auto)%G?%C(reset) %C(auto,green)%ad%C(reset) %C(auto,bold blue)%aN%C(reset) %C(auto)%s%C(reset)'
+l = log --oneline --decorate --graph --all
 pl = pull
 ps = push
 s = status -b -s
