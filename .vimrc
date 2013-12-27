@@ -30,7 +30,7 @@ set cursorline
 set directory=~/.vim/_tmp
 set endofline
 set expandtab
-set formatoptions=2clmnoqrt
+set formatoptions=12cjlmnoqrt
 set guifont=Source\ Code\ Pro\ 9
 set guioptions=acgLmrt
 set hidden
@@ -63,10 +63,12 @@ set smarttab
 set softtabstop=4
 set switchbuf+=useopen,usetab
 set tabstop=8
+set title
 set textwidth=90
 set undodir=~/.vim/_tmp
 set undofile
 set undolevels=1000
+set virtualedit=block
 set wildmenu
 set wildmode=list:full
 
