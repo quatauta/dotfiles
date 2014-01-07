@@ -1,6 +1,10 @@
 " We use a vim
 set nocompatible
 
+if has("gui_win32")
+  set runtimepath+=~/.vim
+endif
+
 if &t_Co > 2 || has("gui_running")
   syntax on
 endif
@@ -71,6 +75,10 @@ set undolevels=1000
 set virtualedit=block
 set wildmenu
 set wildmode=list:full
+
+if has("gui_win32")
+  set guifont=Source_Code_Pro:h9:cANSI
+endif
 
 filetype plugin indent on
 
