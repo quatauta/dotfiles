@@ -8,4 +8,4 @@ macro index,pager S \
       "<enter-command>unset wait_key<enter><shell-escape>notmuch-mutt --prompt search<enter><change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>" \
       "notmuch: search mail"
 macro index,pager <esc>S "<save-message>=.spam\n" 'Save message as spam'
-macro index + "<change-folder>+<enter>"
+macro index,pager + "<change-folder>+<enter>"
