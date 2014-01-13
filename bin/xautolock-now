@@ -1,0 +1,4 @@
+#!/bin/sh
+
+xautolock-start
+xautolock -locknow
