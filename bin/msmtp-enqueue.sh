@@ -12,11 +12,11 @@ fi
 cd "$QUEUEDIR" || exit 1
 
 # Create new unique filenames of the form
-# MAILFILE:  ccyy-mm-dd_hh.mm.ss[-x].mail
-# MSMTPFILE: ccyy-mm-dd_hh.mm.ss[-x].msmtp
+# MAILFILE:  ccyy-mm-dd-hh.mm.ss[-x].mail
+# MSMTPFILE: ccyy-mm-dd-hh.mm.ss[-x].msmtp
 # where x is a consecutive number only appended if you send more than one 
 # mail per second.
-BASE="`date +%Y-%m-%d_%H.%M.%S`"
+BASE="`date +%Y-%m-%d-%H.%M.%S`"
 if [ -f "$BASE.mail" -o -f "$BASE.msmtp" ]; then
 	TMP="$BASE"
 	i=1
