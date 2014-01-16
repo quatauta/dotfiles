@@ -86,6 +86,8 @@ _start_with_delay xset dpms 600 600 600
 _start_with_delay xset m 1 10000
 _start_with_delay xset r rate 250 30
 _start_with_delay numlockx on
+
+pkill -u "${USER}" 'xautolock|i3lock'
 _start_with_delay xautolock-start
 
 # Start window manager
