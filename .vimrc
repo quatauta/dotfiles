@@ -77,7 +77,7 @@ set wildmenu
 set wildmode=list:full
 
 if has("gui_win32")
-  set guifont=Source_Code_Pro:h9:cANSI
+  set guifont=Consolas:h9:cANSI
 endif
 
 filetype plugin indent on
