@@ -34,5 +34,7 @@ question() {
         --text="${text}"
 }
 
-
-question "Fluxbox beenden?" && pkill -QUIT fluxbox
+if question "Fluxbox beenden?" ; then
+    gnome-session-quit --logout --no-prompt ||
+    pkill -QUIT 'gnome-session|fluxbox'
+fi

@@ -6,7 +6,7 @@
 
 Generates a menu for Fluxbox using the freedesktop.org standards
 
-Usage: fluxbox-fdo-menugen.py [options]
+Usage: fluxbox-xdg-menugen.py [options]
 
 Options:
   -l ..., --lang=...   create the menu using a language. Default = $LANG
@@ -329,7 +329,7 @@ def main(argv):
         saveout = sys.stdout
         sys.stdout = fsock
 
-    for filename in ["applications.menu", "gnome-applications.menu", "gnomecc.menu", "settings.menu"]:
+    for filename in ["applications.menu", "gnome-applications.menu", "settings.menu"]:
 	try:
 	    menu = xdg.Menu.parse(filename)
 	    break
@@ -358,4 +358,5 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    os.environ['XDG_MENU_PREFIX'] = ":"
     main(sys.argv[1:])
