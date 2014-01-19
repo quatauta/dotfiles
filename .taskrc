@@ -14,7 +14,7 @@ include /home/daniel/.task/holidays.rc
 calendar.details.report=root-calendar
 calendar.details=full
 calendar.holidays=full
-dateformat.holiday=Y-M-D
+dateformat.holiday=YMD
 dateformat.report=Y-M-D
 dateformat=Y-M-D
 default.command=next
