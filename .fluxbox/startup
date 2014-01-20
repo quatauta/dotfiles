@@ -5,6 +5,7 @@ export WINDOW_MANAGER=fluxbox
 
 if [ -n "${DESKTOP_AUTOSTART_ID}" ] ; then
     dbus-send --session --print-reply=string --dest=org.gnome.SessionManager /org/gnome/SessionManager org.gnome.SessionManager.RegisterClient string:fluxbox "string:${DESKTOP_AUTOSTART_ID}"
+    exec "${WINDOW_MANAGER}"
 fi
 
 exec bash "${HOME}/.xsession"
