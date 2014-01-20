@@ -112,7 +112,7 @@ MoveFocusedWindow: Control Shift Left  :ResizeHorizontal -1
 MoveFocusedWindow: Control Shift Right :ResizeHorizontal  1
 
 # ExecCommands
-Mod4 A         :ExecCommand xterm -e m
+Mod4 A         :ExecCommand xterm -e ~/bin/m
 Mod4 C         :ExecCommand exec nice -n1 google-chrome 1>/dev/null 2>&1
 Mod4 Shift C   :ExecCommand qalculate-gtk
 Mod4 E         :ExecCommand emacs
