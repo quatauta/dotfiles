@@ -10,6 +10,14 @@ git_has_remote() {
     fi
 }
 
+ssh_agent_running() {
+    if [ -n "${SSH_AGENT_PID}" ] && [ -d "/proc/${SSH_AGENT_PID}" ] ; then
+        echo "yes"
+    else
+        echo "no"
+    fi
+}
+
 ssh_agent_has_key() {
     if ssh-add -l | fgrep -q "${HOME}/.ssh/id_rsa" ; then
         echo "yes"
@@ -20,7 +28,7 @@ ssh_agent_has_key() {
 
 case "$1" in
     pull | push | fetch | remote | pl | ps )
-        if [ "$(git_has_remote)" = "yes" ] && [ "$(ssh_agent_has_key)" = "no" ] ; then
+        if [ "$(git_has_remote)" = "yes" ] && [ "$(ssh_agent_running)" = "yes" ] && [ "$(ssh_agent_has_key)" = "no" ] ; then
             echo "Add private key to ssh-agent ..."
             ssh-add
         fi
