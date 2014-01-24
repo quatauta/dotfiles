@@ -35,6 +35,9 @@ question() {
 }
 
 if question "Fluxbox beenden?" ; then
-    gnome-session-quit --logout --no-prompt ||
-    pkill -QUIT 'gnome-session|fluxbox'
+    if pgrep -U"${USER}" gnome-session ; then
+        gnome-session-quit --logout --no-prompt
+    else
+        pkill -TERM 'fluxbox'
+    fi
 fi
