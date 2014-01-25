@@ -1,4 +1,8 @@
 #!/bin/sh
 
-xautolock-start
+if ! pgrep -U"${USER}" -x xautolock >/dev/null ; then
+    xautolock-start
+    LANG=C sleep 0.5
+fi
+
 xautolock -locknow

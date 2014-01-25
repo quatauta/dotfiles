@@ -1,3 +1,10 @@
 #!/bin/sh
 
-xautolock -time 10 -locker 'i3lock -c 000000' &
+BACKGROUND_COLOR="000000"
+BACKGROUND_IMAGE="/etc/X11/background.png"
+LOCKER="i3lock"
+LOCKER_OPTS="-c ${BACKGROUND_COLOR} -i ${BACKGROUND_IMAGE}"
+
+"${LOCKER}" --help 2>&1 | grep -q -e '-s' && LOCKER_OPTS="${LOCKER_OPTS} -s"
+
+xautolock -time 10 -locker "${LOCKER} ${LOCKER_OPTS}" &
