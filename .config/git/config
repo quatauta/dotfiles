@@ -33,8 +33,4 @@ mnemonicprefix = true
 renames = copies
 
 [merge]
-conflictstyle = diff3
 tool = meld
-
-[push]
-default = simple
