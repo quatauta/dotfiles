@@ -34,3 +34,6 @@ renames = copies
 
 [merge]
 tool = meld
+
+[push]
+default = simple
