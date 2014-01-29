@@ -90,7 +90,11 @@ def footer(wm = "fluxbox"):
             indent(2) +     "[end]\n" +
             indent(2) +     "[submenu] (Window Manager)\n" +
             indent(3) +       "[restart] (Fluxbox) {fluxbox}\n" +
-            indent(3) +       "[restart] (Cinnamon) {cinnamon}\n" +
+            indent(3) +       "[restart] (herbsluftwm) {herbsluftwm}\n" +
+            indent(3) +       "[restart] (i3) {i3}\n" +
+            indent(3) +       "[restart] (notion) {notion}\n" +
+            indent(3) +       "[restart] (qtile) {qtile}\n" +
+            indent(3) +       "[restart] (xmonad) {xmonad}\n" +
             indent(2) +     "[end]\n" +
             indent(2) +     "[exec] (Lock screen) {xdg-screensaver lock}\n" +
             indent(2) +     "[commanddialog] (Fluxbox Command)\n" +
