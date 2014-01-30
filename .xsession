@@ -29,8 +29,6 @@ function _start_with_delay() {
 
 cd "${HOME}"
 
-test -r "${HOME}"/.bash_profile && source "${HOME}"/.bash_profile
-
 # Determine the window manger to use
 if [ -n "${WINDOW_MANAGER}" ]; then
     realstartup="${WINDOW_MANAGER}"
