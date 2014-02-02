@@ -28,6 +28,7 @@ function _start_with_delay() {
 }
 
 cd "${HOME}"
+source "${HOME}/.bashrc"
 
 # Determine the window manger to use
 if [ -n "${WINDOW_MANAGER}" ]; then
@@ -50,14 +51,14 @@ fi
 case "${realstartup}" in
     *box )
         [ -z "${DESKTOP_SESSION}" ] && export DESKTOP_SESSION="gnome"
-        _start gnome-settings-daemon &
-        _start_with_delay fluxbox-xdg-menu
-        _start_with_delay conky -d
-        _start_with_delay polkit-gnome-authentication-agent-1
+        _start_with_delay gnome-settings-daemon &
+        _start_with_delay fluxbox-xdg-menu &
+        _start_with_delay conky -d &
+        _start_with_delay polkit-gnome-authentication-agent-1 &
 
-        _start_with_delay nice ionice -c3 liferea -w hidden
-        _start_with_delay nice ionice -c3 opera
-        _start_with_delay unclutter
+        _start_with_delay nice ionice -c3 liferea -w hidden &
+        _start_with_delay nice ionice -c3 opera &
+        _start_with_delay unclutter &
 
         ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""
 
@@ -86,7 +87,7 @@ _start_with_delay xset r rate 250 30
 _start_with_delay numlockx on
 
 pkill -u "${USER}" 'xautolock|i3lock'
-_start_with_delay xautolock-start
+_start_with_delay xautolock-start &
 
 # Start window manager
 if [ -n "${realstartup}" ] ; then
