@@ -4,4 +4,4 @@ for MPLAYER in mplayer mplayer2 ; do
     which "${MPLAYER}" 1>/dev/null && break
 done
 
-echo "${MPLAYER}" -idx -osdlevel 3 -really-quiet "$@"
+"${MPLAYER}" -idx -osdlevel 3 -really-quiet "$@"
