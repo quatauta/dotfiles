@@ -32,7 +32,8 @@ ${time %A, %-d. %B %Y} | \
 Woche ${time %_V} | \
 ${time %F %T} | \
 up: ${uptime_short} | \
-mail: ${color1}${new_mails /home/daniel/Mail 10} ${new_mails /var/spool/mail/daniel 60}${color0}
+mail: ${color1}${new_mails /home/daniel/Mail 10} ${new_mails /var/spool/mail/daniel 60}${color0} | \
+wifi: ${color0}${wireless_link_qual_perc} ${wireless_essid} ${wireless_ap} ${wireless_bitrate}
 ${color0}home:${fs_used_perc /home/}% | \
 cpu:${hwmon 0 temp 1}°C ${hwmon 2 fan 1}/m ${freq_g 1}/${freq_g 2}/${freq_g 3}/${freq_g 4}G${color1}${cpu}%${color0} | \
 mem:${color1}${memperc}%${color0} | \
