@@ -11,6 +11,7 @@ draw_outline no
 draw_shades no
 gap_x 30
 gap_y 5
+if_up_strictness link
 no_buffers yes
 out_to_console no
 own_window_transparent true
@@ -40,5 +41,29 @@ mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
 load: ${color1}${loadavg 1}${color0} | \
 entropy:${entropy_perc}% | \
-sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C | \
-net: ${color1}${downspeed eth0}${color0}d ${color1}${upspeed eth0}${color0}u ${totaldown eth0}d ${totalup eth0}u ${addrs eth0}
+sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C \
+${if_up eth0} | eth0: ${color1}${downspeed eth0}${color0}d ${color1}${upspeed eth0}${color0}u ${totaldown eth0}d ${totalup eth0}u ${addrs eth0}${endif}\
+${if_up eth1} | eth1: ${color1}${downspeed eth1}${color0}d ${color1}${upspeed eth1}${color0}u ${totaldown eth1}d ${totalup eth1}u ${addrs eth1}${endif}\
+${if_up eth2} | eth2: ${color1}${downspeed eth2}${color0}d ${color1}${upspeed eth2}${color0}u ${totaldown eth2}d ${totalup eth2}u ${addrs eth2}${endif}\
+${if_up eth3} | eth3: ${color1}${downspeed eth3}${color0}d ${color1}${upspeed eth3}${color0}u ${totaldown eth3}d ${totalup eth3}u ${addrs eth3}${endif}\
+${if_up wlan0} | wlan0: ${color1}${downspeed wlan0}${color0}d ${color1}${upspeed wlan0}${color0}u ${totaldown wlan0}d ${totalup wlan0}u ${addrs wlan0}${endif}\
+${if_up wlan1} | wlan1: ${color1}${downspeed wlan1}${color0}d ${color1}${upspeed wlan1}${color0}u ${totaldown wlan1}d ${totalup wlan1}u ${addrs wlan1}${endif}\
+${if_up wlan2} | wlan2: ${color1}${downspeed wlan2}${color0}d ${color1}${upspeed wlan2}${color0}u ${totaldown wlan2}d ${totalup wlan2}u ${addrs wlan2}${endif}\
+${if_up wlan3} | wlan3: ${color1}${downspeed wlan3}${color0}d ${color1}${upspeed wlan3}${color0}u ${totaldown wlan3}d ${totalup wlan3}u ${addrs wlan3}${endif}\
+${if_up wwan0} | wwan0: ${color1}${downspeed wwan0}${color0}d ${color1}${upspeed wwan0}${color0}u ${totaldown wwan0}d ${totalup wwan0}u ${addrs wwan0}${endif}\
+${if_up wwan1} | wwan1: ${color1}${downspeed wwan1}${color0}d ${color1}${upspeed wwan1}${color0}u ${totaldown wwan1}d ${totalup wwan1}u ${addrs wwan1}${endif}\
+${if_up wwan2} | wwan2: ${color1}${downspeed wwan2}${color0}d ${color1}${upspeed wwan2}${color0}u ${totaldown wwan2}d ${totalup wwan2}u ${addrs wwan2}${endif}\
+${if_up wwan3} | wwan3: ${color1}${downspeed wwan3}${color0}d ${color1}${upspeed wwan3}${color0}u ${totaldown wwan3}d ${totalup wwan3}u ${addrs wwan3}${endif}\
+${if_up eno1} | eno1: ${color1}${downspeed eno1}${color0}d ${color1}${upspeed eno1}${color0}u ${totaldown eno1}d ${totalup eno1}u ${addrs eno1}${endif}\
+${if_up eno2} | eno2: ${color1}${downspeed eno2}${color0}d ${color1}${upspeed eno2}${color0}u ${totaldown eno2}d ${totalup eno2}u ${addrs eno2}${endif}\
+${if_up eno3} | eno3: ${color1}${downspeed eno3}${color0}d ${color1}${upspeed eno3}${color0}u ${totaldown eno3}d ${totalup eno3}u ${addrs eno3}${endif}\
+${if_up eno4} | eno4: ${color1}${downspeed eno4}${color0}d ${color1}${upspeed eno4}${color0}u ${totaldown eno4}d ${totalup eno4}u ${addrs eno4}${endif}\
+${if_up enp1s0} | enp1s0: ${color1}${downspeed enp1s0}${color0}d ${color1}${upspeed enp1s0}${color0}u ${totaldown enp1s0}d ${totalup enp1s0}u ${addrs enp1s0} ${endif}\
+${if_up enp2s0} | enp2s0: ${color1}${downspeed enp2s0}${color0}d ${color1}${upspeed enp2s0}${color0}u ${totaldown enp2s0}d ${totalup enp2s0}u ${addrs enp2s0} ${endif}\
+${if_up enp3s0} | enp3s0: ${color1}${downspeed enp3s0}${color0}d ${color1}${upspeed enp3s0}${color0}u ${totaldown enp3s0}d ${totalup enp3s0}u ${addrs enp3s0} ${endif}\
+${if_up enp4s0} | enp4s0: ${color1}${downspeed enp4s0}${color0}d ${color1}${upspeed enp4s0}${color0}u ${totaldown enp4s0}d ${totalup enp4s0}u ${addrs enp4s0} ${endif}\
+${if_up enp5s0} | enp5s0: ${color1}${downspeed enp5s0}${color0}d ${color1}${upspeed enp5s0}${color0}u ${totaldown enp5s0}d ${totalup enp5s0}u ${addrs enp5s0} ${endif}\
+${if_up enp6s0} | enp6s0: ${color1}${downspeed enp6s0}${color0}d ${color1}${upspeed enp6s0}${color0}u ${totaldown enp6s0}d ${totalup enp6s0}u ${addrs enp6s0} ${endif}\
+${if_up enp7s0} | enp7s0: ${color1}${downspeed enp7s0}${color0}d ${color1}${upspeed enp7s0}${color0}u ${totaldown enp7s0}d ${totalup enp7s0}u ${addrs enp7s0} ${endif}\
+${if_up enp8s0} | enp8s0: ${color1}${downspeed enp8s0}${color0}d ${color1}${upspeed enp8s0}${color0}u ${totaldown enp8s0}d ${totalup enp8s0}u ${addrs enp8s0} ${endif}\
+${if_up enp9s0} | enp9s0: ${color1}${downspeed enp9s0}${color0}d ${color1}${upspeed enp9s0}${color0}u ${totaldown enp9s0}d ${totalup enp9s0}u ${addrs enp9s0} ${endif}\
