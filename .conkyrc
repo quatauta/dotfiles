@@ -41,7 +41,7 @@ mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
 load: ${color1}${loadavg 1}${color0} | \
 entropy:${entropy_perc}% | \
-sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C \
+sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C\
 ${if_up eth0} | eth0: ${color1}${downspeed eth0}${color0}d ${color1}${upspeed eth0}${color0}u ${totaldown eth0}d ${totalup eth0}u ${addrs eth0}${endif}\
 ${if_up eth1} | eth1: ${color1}${downspeed eth1}${color0}d ${color1}${upspeed eth1}${color0}u ${totaldown eth1}d ${totalup eth1}u ${addrs eth1}${endif}\
 ${if_up eth2} | eth2: ${color1}${downspeed eth2}${color0}d ${color1}${upspeed eth2}${color0}u ${totaldown eth2}d ${totalup eth2}u ${addrs eth2}${endif}\
