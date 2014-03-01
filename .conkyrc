@@ -45,14 +45,6 @@ ${if_up eth0} | eth0: ${color1}${downspeed eth0}${color0}d ${color1}${upspeed et
 ${if_up eth1} | eth1: ${color1}${downspeed eth1}${color0}d ${color1}${upspeed eth1}${color0}u ${totaldown eth1}d ${totalup eth1}u ${addrs eth1}${endif}\
 ${if_up eth2} | eth2: ${color1}${downspeed eth2}${color0}d ${color1}${upspeed eth2}${color0}u ${totaldown eth2}d ${totalup eth2}u ${addrs eth2}${endif}\
 ${if_up eth3} | eth3: ${color1}${downspeed eth3}${color0}d ${color1}${upspeed eth3}${color0}u ${totaldown eth3}d ${totalup eth3}u ${addrs eth3}${endif}\
-${if_up wlan0} | wlan0: ${color1}${downspeed wlan0}${color0}d ${color1}${upspeed wlan0}${color0}u ${totaldown wlan0}d ${totalup wlan0}u ${addrs wlan0}${endif}\
-${if_up wlan1} | wlan1: ${color1}${downspeed wlan1}${color0}d ${color1}${upspeed wlan1}${color0}u ${totaldown wlan1}d ${totalup wlan1}u ${addrs wlan1}${endif}\
-${if_up wlan2} | wlan2: ${color1}${downspeed wlan2}${color0}d ${color1}${upspeed wlan2}${color0}u ${totaldown wlan2}d ${totalup wlan2}u ${addrs wlan2}${endif}\
-${if_up wlan3} | wlan3: ${color1}${downspeed wlan3}${color0}d ${color1}${upspeed wlan3}${color0}u ${totaldown wlan3}d ${totalup wlan3}u ${addrs wlan3}${endif}\
-${if_up wwan0} | wwan0: ${color1}${downspeed wwan0}${color0}d ${color1}${upspeed wwan0}${color0}u ${totaldown wwan0}d ${totalup wwan0}u ${addrs wwan0}${endif}\
-${if_up wwan1} | wwan1: ${color1}${downspeed wwan1}${color0}d ${color1}${upspeed wwan1}${color0}u ${totaldown wwan1}d ${totalup wwan1}u ${addrs wwan1}${endif}\
-${if_up wwan2} | wwan2: ${color1}${downspeed wwan2}${color0}d ${color1}${upspeed wwan2}${color0}u ${totaldown wwan2}d ${totalup wwan2}u ${addrs wwan2}${endif}\
-${if_up wwan3} | wwan3: ${color1}${downspeed wwan3}${color0}d ${color1}${upspeed wwan3}${color0}u ${totaldown wwan3}d ${totalup wwan3}u ${addrs wwan3}${endif}\
 ${if_up eno1} | eno1: ${color1}${downspeed eno1}${color0}d ${color1}${upspeed eno1}${color0}u ${totaldown eno1}d ${totalup eno1}u ${addrs eno1}${endif}\
 ${if_up eno2} | eno2: ${color1}${downspeed eno2}${color0}d ${color1}${upspeed eno2}${color0}u ${totaldown eno2}d ${totalup eno2}u ${addrs eno2}${endif}\
 ${if_up eno3} | eno3: ${color1}${downspeed eno3}${color0}d ${color1}${upspeed eno3}${color0}u ${totaldown eno3}d ${totalup eno3}u ${addrs eno3}${endif}\
@@ -66,3 +58,19 @@ ${if_up enp6s0} | enp6s0: ${color1}${downspeed enp6s0}${color0}d ${color1}${upsp
 ${if_up enp7s0} | enp7s0: ${color1}${downspeed enp7s0}${color0}d ${color1}${upspeed enp7s0}${color0}u ${totaldown enp7s0}d ${totalup enp7s0}u ${addrs enp7s0} ${endif}\
 ${if_up enp8s0} | enp8s0: ${color1}${downspeed enp8s0}${color0}d ${color1}${upspeed enp8s0}${color0}u ${totaldown enp8s0}d ${totalup enp8s0}u ${addrs enp8s0} ${endif}\
 ${if_up enp9s0} | enp9s0: ${color1}${downspeed enp9s0}${color0}d ${color1}${upspeed enp9s0}${color0}u ${totaldown enp9s0}d ${totalup enp9s0}u ${addrs enp9s0} ${endif}\
+${if_up wlan0} | wlan0: ${color1}${downspeed wlan0}${color0}d ${color1}${upspeed wlan0}${color0}u ${totaldown wlan0}d ${totalup wlan0}u ${addrs wlan0}${endif}\
+${if_up wlan1} | wlan1: ${color1}${downspeed wlan1}${color0}d ${color1}${upspeed wlan1}${color0}u ${totaldown wlan1}d ${totalup wlan1}u ${addrs wlan1}${endif}\
+${if_up wlan2} | wlan2: ${color1}${downspeed wlan2}${color0}d ${color1}${upspeed wlan2}${color0}u ${totaldown wlan2}d ${totalup wlan2}u ${addrs wlan2}${endif}\
+${if_up wlan3} | wlan3: ${color1}${downspeed wlan3}${color0}d ${color1}${upspeed wlan3}${color0}u ${totaldown wlan3}d ${totalup wlan3}u ${addrs wlan3}${endif}\
+${if_up wwan0} | wwan0: ${color1}${downspeed wwan0}${color0}d ${color1}${upspeed wwan0}${color0}u ${totaldown wwan0}d ${totalup wwan0}u ${addrs wwan0}${endif}\
+${if_up wwan1} | wwan1: ${color1}${downspeed wwan1}${color0}d ${color1}${upspeed wwan1}${color0}u ${totaldown wwan1}d ${totalup wwan1}u ${addrs wwan1}${endif}\
+${if_up wwan2} | wwan2: ${color1}${downspeed wwan2}${color0}d ${color1}${upspeed wwan2}${color0}u ${totaldown wwan2}d ${totalup wwan2}u ${addrs wwan2}${endif}\
+${if_up wwan3} | wwan3: ${color1}${downspeed wwan3}${color0}d ${color1}${upspeed wwan3}${color0}u ${totaldown wwan3}d ${totalup wwan3}u ${addrs wwan3}${endif}\
+${if_up vpn0} | vpn0: ${color1}${downspeed vpn0}${color0}d ${color1}${upspeed vpn0}${color0}u ${totaldown vpn0}d ${totalup vpn0}u ${addrs vpn0}${endif}\
+${if_up vpn1} | vpn1: ${color1}${downspeed vpn1}${color0}d ${color1}${upspeed vpn1}${color0}u ${totaldown vpn1}d ${totalup vpn1}u ${addrs vpn1}${endif}\
+${if_up vpn2} | vpn2: ${color1}${downspeed vpn2}${color0}d ${color1}${upspeed vpn2}${color0}u ${totaldown vpn2}d ${totalup vpn2}u ${addrs vpn2}${endif}\
+${if_up vpn3} | vpn3: ${color1}${downspeed vpn3}${color0}d ${color1}${upspeed vpn3}${color0}u ${totaldown vpn3}d ${totalup vpn3}u ${addrs vpn3}${endif}\
+${if_up vlan0} | vlan0: ${color1}${downspeed vlan0}${color0}d ${color1}${upspeed vlan0}${color0}u ${totaldown vlan0}d ${totalup vlan0}u ${addrs vlan0}${endif}\
+${if_up vlan1} | vlan1: ${color1}${downspeed vlan1}${color0}d ${color1}${upspeed vlan1}${color0}u ${totaldown vlan1}d ${totalup vlan1}u ${addrs vlan1}${endif}\
+${if_up vlan2} | vlan2: ${color1}${downspeed vlan2}${color0}d ${color1}${upspeed vlan2}${color0}u ${totaldown vlan2}d ${totalup vlan2}u ${addrs vlan2}${endif}\
+${if_up vlan3} | vlan3: ${color1}${downspeed vlan3}${color0}d ${color1}${upspeed vlan3}${color0}u ${totaldown vlan3}d ${totalup vlan3}u ${addrs vlan3}${endif}\
