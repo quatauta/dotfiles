@@ -6,3 +6,5 @@ if ! pgrep -U"${USER}" -x xautolock >/dev/null ; then
 fi
 
 xautolock -locknow
+xset s blank
+xset dpms force standby
