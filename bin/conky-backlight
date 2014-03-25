@@ -1,0 +1,9 @@
+#!/bin/sh
+
+BACKLIGHT="/sys/class/backlight/intel_backlight"
+BRIGHTNESS="$(cat ${BACKLIGHT}/brightness)"
+MAX_BRIGHTNESS="$(cat ${BACKLIGHT}/max_brightness)"
+
+PERCENT=$(( 100 * $BRIGHTNESS / $MAX_BRIGHTNESS ))
+
+echo "${PERCENT}%"

@@ -26,6 +26,7 @@ color0 9e9e92
 color1 e4e2d4
 
 TEXT
+
 ${color0}root:${fs_used_perc /}% | \
 sys:${hwmon 2 temp 1}°C ${hwmon 2 fan 2}/m | \
 linux ${kernel} | \
@@ -34,7 +35,9 @@ Woche ${time %_V} | \
 ${time %F %T} | \
 up: ${uptime_short} | \
 sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C | \
-mail: ${color1}${new_mails /home/daniel/Mail 10} ${new_mails /var/spool/mail/daniel 60}${color0}
+mail: ${color1}${new_mails /home/daniel/Mail 10} ${new_mails /var/spool/mail/daniel 60}${color0}\
+${if_existing /sys/class/power_supply/BAT0} | bat: ${battery_short} ${battery_time}${endif}\
+${if_existing /sys/class/backlight/intel_backlight} | backlight: ${exec /home/daniel/bin/conky-backlight}${endif}
 ${color0}home:${fs_used_perc /home/}% | \
 cpu:${hwmon 0 temp 1}°C ${hwmon 2 fan 1}/m ${freq_g 1}/${freq_g 2}/${freq_g 3}/${freq_g 4}G${color1}${cpu}%${color0} | \
 mem:${color1}${memperc}%${color0} | \
