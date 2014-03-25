@@ -136,3 +136,6 @@ Mod4 Return    :ExecCommand gmrun
 
 Print          :ExecCommand import -frame  "$HOME/Dokumente/_temp/screen_`date +%Y-%m-%d_%H-%M-%S%z`.png"
 Shift Print    :ExecCommand import -screen "$HOME/Dokumente/_temp/screen_`date +%Y-%m-%d_%H-%M-%S%z`.png"
+
+XF86MonBrightnessUp   :ExecCommand xbacklight +5
+XF86MonBrightnessDown :ExecCommand xbacklight -5
