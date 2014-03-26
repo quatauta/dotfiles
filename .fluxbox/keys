@@ -34,8 +34,8 @@ Mod1 Control Tab       :NextWindow {static groups} (workspace=[current])
 Mod1 Control Shift Tab :PrevWindow {static groups} (workspace=[current])
 Mod4 Tab               :NextTab
 Mod4 Shift Tab         :PrevTab
-Mod4 Left              :MoveTabLeft
-Mod4 Right             :MoveTabRight
+Mod4 Shift Left        :MoveTabLeft
+Mod4 Shift Right       :MoveTabRight
 Mod4 Shift Up          :SendToNextWorkspace
 Mod4 Shift Down        :SendToPrevWorkspace
 Mod4 Control Up        :TakeToNextWorkspace
@@ -67,9 +67,10 @@ Mod4 W Mod4 I     :ExecCommand xprop-popup
 Mod4 W Mod4 M     :KeyMode MoveFocusedWindow
 Mod4 Control plus :MaximizeHorizontal
 Mod4 Shift plus   :MaximizeVertical
-#Mod4 plus         :MaximizeWindow
-Mod4 plus         :Fullscreen
-Mod4 Up           :Fullscreen
+Mod4 plus         :MaximizeWindow
+Mod4 Up           :MaximizeWindow
+Mod4 Left         :MacroCmd {ResizeTo 49% 95%} {MoveTo 0% 0% TopLeft}
+Mod4 Right        :MacroCmd {ResizeTo 49% 95%} {MoveTo 0% 0% TopRight}
 Mod4 minus        :Minimize
 Mod4 Down         :Minimize
 Mod4 numbersign   :ShadeWindow
