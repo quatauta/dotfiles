@@ -12,7 +12,16 @@ if [ -n "${DESKTOP_AUTOSTART_ID}" ] ; then
     DBUS_DEST="org.gnome.SessionManager"
     DBUS_PATH="/org/gnome/SessionManager"
     DBUS_MESG="org.gnome.SessionManager.RegisterClient"
-    dbus-send --session --print-reply --dest="${DBUS_DEST}" "${DBUS_PATH}" "${DBUS_MESG}" string:fluxbox "string:${DESKTOP_AUTOSTART_ID}" &
+
+    (
+        sleep 5
+        dbus-send --session --print-reply \
+            --dest="${DBUS_DEST}" \
+            "${DBUS_PATH}" \
+            "${DBUS_MESG}" \
+            string:fluxbox \
+            "string:${DESKTOP_AUTOSTART_ID}"
+    ) &
 
     exec "${WINDOW_MANAGER}"
 else
