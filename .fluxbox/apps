@@ -1,65 +1,52 @@
-[group] (workspace=[current])
-  [app] (name=.*[tT]erm(inal)?)
-  [app] (name=[kK]onsole)
-  [Position] (CENTER) {0 0}
+[group]  (workspace=[current])
+ [app] (name=.*[tT]erm(inal)?)
+ [app] (name=[kK]onsole)
+  [Position]	(CENTER)	{0 0}
 [end]
-
-[group] (workspace=[current])
-  [app] (name=vim)
+[group]  (workspace=[current])
+ [app] (name=vim)
 [end]
-
-[group] (workspace=[current])
-  [app] (name=gv)
-  [app] (name=xdvi)
-  [app] (name=evince)
-  [app] (title=.*Adobe Reader.*)
+[group]  (workspace=[current])
+ [app] (name=gv)
+ [app] (name=xdvi)
+ [app] (name=evince)
+ [app] (title=.*Adobe Reader.*)
 [end]
-
-[group] (workspace=[current])
-  [app] (role=gimp-image-window)
+[group]  (workspace=[current])
+ [app] (role=gimp-image-window)
 [end]
-
 [app] (class=Firefox) (role=Manager)
-  [Position] (UPPERRIGHT) {0 0}
+  [Position]	(UPPERRIGHT)	{0 0}
 [end]
-
 [app] (class=Sonos)
-  [Dimensions] {772 505}
-  [Position] (UPPERRIGHT) {0 0}
+  [Dimensions]	{772 505}
+  [Position]	(UPPERRIGHT)	{0 0}
 [end]
-
-[group] (workspace=[current])
-  [app] (class=Opera.*) (title=.*Opera.*)
-  [app] (class=Firefox) (role=browser)
-  [app] (class=Chrome) (title=.*Chromium)
-  [app] (class=Chromium.*) (title=.*Chromium)
-  [app] (class=Google-chrome.*)
-  [app] (class=Midori.*)
-  [Dimensions] {1200 1050}
-  [Position] (CENTER) {0 0}
+[group]  (workspace=[current])
+ [app] (class=Opera.*) (title=.*Opera.*)
+ [app] (class=Firefox) (role=browser)
+ [app] (class=Chrome) (title=.*Chromium)
+ [app] (class=Chromium.*) (title=.*Chromium)
+ [app] (class=Google-chrome.*)
+ [app] (class=Midori.*)
+  [Dimensions]	{1200 1050}
+  [Position]	(CENTER)	{0 0}
 [end]
-
 [app] (name=liferea)
-  [Dimensions] {1000 1050}
-  [Position] (CENTER) {-66 0}
+  [Dimensions]	{1000 1050}
+  [Position]	(CENTER)	{-66 0}
 [end]
-
 [app] (name=gmrun)
-  [Position] (CENTER) {0 0}
+  [Position]	(CENTER)	{0 0}
 [end]
-
 [app] (name=gnometris)
-  [Position] (CENTER) {0 0}
+  [Position]	(CENTER)	{0 0}
 [end]
-
 [app] (name=gnomine)
-  [Position] (CENTER) {0 0}
+  [Position]	(CENTER)	{0 0}
 [end]
-
 [app] (name=.*mahjongg.*)
-  [Position] (CENTER) {0 0}
+  [Position]	(CENTER)	{0 0}
 [end]
-
 [app] (name=.*nautilus.*)
-  [Deco] {NORMAL}
 [end]
