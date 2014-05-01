@@ -2,3 +2,12 @@
 # vim:syntax=zsh:
 
 bindkey -e
+
+source "${HOME}/.zsh/zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}"
+
+[[ -n ${key[Insert]} ]]   && bindkey "${key[Insert]}"   yank-pop
+[[ -n ${key[Home]} ]]     && bindkey "${key[Home]}"     beginning-of-line
+[[ -n ${key[PageUp]} ]]   && bindkey "${key[PageUp]}"   history-beginning-search-backward
+[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" history-beginning-search-forward
+[[ -n ${key[Delete]} ]]   && bindkey "${key[Delete]}"   delete-char
+[[ -n ${key[End]} ]]      && bindkey "${key[End]}"      end-of-line
