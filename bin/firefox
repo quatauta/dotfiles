@@ -1,0 +1,9 @@
+#!/bin/sh
+
+for FIREFOX in /usr/bin/firefox{,-bin} ; do
+    if [ -x "${FIREFOX}" ] ; then
+        break
+    fi
+done
+
+exec "${FIREFOX}" "${@}"
