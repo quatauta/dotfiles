@@ -1,11 +1,3 @@
-! multimedia keys of Cherry Evolution Stream (G85-2300)
-keycode 174 = XF86AudioLowerVolume
-keycode 160 = XF86AudioMute
-keycode 176 = XF86AudioRaiseVolume
-keycode 144 = XF86AudioPrev
-keycode 162 = XF86AudioPlay
-keycode 153 = XF86AudioNext
-
 ! disable XF86Ungrab and XF86ClearGrab
 keycode  63 = KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply KP_Multiply
 keycode 106 = KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide
