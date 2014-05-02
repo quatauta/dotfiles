@@ -140,3 +140,10 @@ Shift Print    :ExecCommand import -screen "$HOME/Dokumente/_temp/screen_`date +
 
 XF86MonBrightnessUp   :ExecCommand xbacklight +5
 XF86MonBrightnessDown :ExecCommand xbacklight -5
+
+None XF86AudioMute        :ExecCommand sonos cli mute
+None XF86AudioLowerVolume :ExecCommand sonos cli volume -
+None XF86AudioRaiseVolume :ExecCommand sonos cli volume +
+None XF86AudioPrev        :ExecCommand sonos cli previous
+None XF86AudioPlay        :ExecCommand sonos cli pause
+None XF86AudioNext        :ExecCommand sonos cli next
