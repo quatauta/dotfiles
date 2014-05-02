@@ -11,3 +11,8 @@ source "${HOME}/.zsh/zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}"
 [[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" history-beginning-search-forward
 [[ -n ${key[Delete]} ]]   && bindkey "${key[Delete]}"   delete-char
 [[ -n ${key[End]} ]]      && bindkey "${key[End]}"      end-of-line
+
+[[ -n ${key[C-Left]} ]] && bindkey "${key[C-Left]}" backward-word
+[[ -n ${key[A-Left]} ]] && bindkey "${key[A-Left]}" backward-word
+[[ -n ${key[C-Right]} ]] && bindkey "${key[C-Right]}" forward-word
+[[ -n ${key[A-Right]} ]] && bindkey "${key[A-Right]}" forward-word
