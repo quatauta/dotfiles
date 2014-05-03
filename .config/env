@@ -4,6 +4,10 @@
 test -d "$HOME/bin" && PATH="${HOME}/bin:${PATH}"
 test -d "$HOME/man" && MANPATH="${HOME}/man:${MANPATH}"
 
+export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
+export HISTSIZE="1000"
+export SAVEHIST="${HISTSIZE}"
+
 if [ -n "${DISPLAY}" ] ; then
     export EDITOR="gvim -f"
     export ALTERNATE_EDITOR="emacs"

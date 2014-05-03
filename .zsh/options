@@ -1,8 +1,6 @@
 # ~/.zsh/options
 # vim:syntax=zsh:
 
-set -o shwordsplit
-
 setopt always_to_end
 setopt append_history
 setopt auto_cd
@@ -27,14 +25,13 @@ setopt inc_append_history
 setopt list_ambiguous
 setopt list_packed
 setopt list_rows_first
-setopt numericglobsort
+setopt numeric_glob_sort
 setopt print_exit_value
 setopt prompt_subst
 setopt pushd_ignore_dups
 setopt pushd_to_home
 setopt rm_star_wait
+setopt sh_word_split
 
-export HISTFILE="${ZSH_CONF_DIR}/_history"
-export HISTSIZE=1000
 export REPORTTIME=10
-export WORDCHARS='*?[]~&;!#$%^(){}'
+export WORDCHARS='!%^(){}'
