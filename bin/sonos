@@ -1,16 +1,16 @@
 #!/bin/sh
 
-echo $1 $@ >> ~/log
-
 case $1 in
     cli )
         shift
         "$HOME/bin/sonos.py" "${@}"
         ;;
     wine )
-        nice wine "$HOME/.wine/drive_c/Program Files (x86)/Sonos/sonos.exe"
+        shift
+        nice wine "$HOME/.wine/drive_c/Program Files (x86)/Sonos/sonos.exe" "${@}"
         ;;
     java | * )
-        "$HOME/bin/janos/janos.sh" 1>/dev/null 2>&1
+        shift
+        "$HOME/bin/janos/janos.sh" "${@}" 1>/dev/null 2>&1
         ;;
 esac
