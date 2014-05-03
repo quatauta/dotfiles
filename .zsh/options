@@ -5,10 +5,10 @@ set -o shwordsplit
 
 setopt always_to_end
 setopt append_history
+setopt auto_cd
 setopt auto_continue
 setopt auto_pushd
 setopt auto_resume
-setopt auto_cd
 setopt bg_nice
 setopt cdable_vars
 setopt check_jobs
