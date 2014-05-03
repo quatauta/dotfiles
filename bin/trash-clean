@@ -6,4 +6,5 @@ egrep -iv '^(debug|löschen|datei|datenbank|info|der verwendungs|warning|no such
 
 shred_files ~/.java/
 shred_files ~/.macromedia/
+shred_files ~/.mozilla/firefox/*/places.sqlite
 shred_files ~/.opera/{icons,vps}/
