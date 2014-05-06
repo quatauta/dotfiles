@@ -2,7 +2,7 @@
 
 MUSIC_DIR="$HOME/Dokumente/musik"
 REMOTE_HOST="narsbo"
-REMOTE_DIR="qmultimedia"
+REMOTE_DIR="musik"
 REMOTE_USER="admin"
 SMB_URL="smb://WORKGROUP;${REMOTE_USER}@${REMOTE_HOST}/${REMOTE_DIR}"
 CIFS_OPTS="user=${REMOTE_USER},noperm,nosetuids"
