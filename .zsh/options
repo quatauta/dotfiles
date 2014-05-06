@@ -33,5 +33,5 @@ setopt pushd_to_home
 setopt rm_star_wait
 setopt sh_word_split
 
-export REPORTTIME=10
+export REPORTTIME=60
 export WORDCHARS='!%^(){}'
