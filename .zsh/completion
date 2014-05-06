@@ -1,13 +1,17 @@
 # ~/.zsh/completion
 # vim:syntax=zsh:
 
+zstyle ':compinstall' filename "~/.zshrc"
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-${HOME}/.cache}/zsh-compcache"
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "${ZSH_CONF_DIR}/_cache"
-zstyle :compinstall filename "~/.zshrc"
 zstyle ':completion:*:(cp|mv|rm):*' ignore-line yes
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 
 autoload -Uz compinit
-compinit -d "${ZSH_CONF_DIR}/_compdump"
+compinit -d "${XDG_CACHE_HOME:-${HOME}/.cache}/zsh-compdump"
+
+zmodload zsh/complist
 
 # completion for 'g' as wrapper script for git
 compdef _git g=git
