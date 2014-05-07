@@ -1,11 +1,11 @@
 typeset -g -A key
 
 key[Insert]='^[[2~'
-key[Home]='^[[1'
+key[Home]='^[[1~'
 key[PageUp]='^[[5~'
 key[PageDown]='^[[6~'
 key[Delete]='^[[3~'
-key[End]='^[[4'
+key[End]='^[[4~'
 
 key[C-Left]='^[OD'
 key[A-Left]='^[^[[D'
