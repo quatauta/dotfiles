@@ -8,7 +8,6 @@ setopt auto_continue
 setopt auto_pushd
 setopt auto_resume
 setopt bg_nice
-setopt cdable_vars
 setopt check_jobs
 setopt complete_aliases
 setopt complete_in_word
