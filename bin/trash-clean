@@ -4,7 +4,7 @@ shred_files "${HOME}/.local/tmp" "${HOME}/.local/share/Trash"
 bleachbit --preset --clean 2>/dev/null |
 egrep -iv '^(debug|löschen|datei|datenbank|info|der verwendungs|warning|no such|/home|delete the usage|vacuum|clipboard|clean file|zwischenablage)'
 
-shred_files ~/.java/
-shred_files ~/.macromedia/
+shred_files ~/.java/*
+shred_files ~/.macromedia/*
 shred_files ~/.mozilla/firefox/*/places.sqlite
-shred_files ~/.opera/{icons,vps}/
+shred_files ~/.opera/{icons,vps}/*
