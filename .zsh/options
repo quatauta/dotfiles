@@ -34,3 +34,4 @@ setopt sh_word_split
 
 export REPORTTIME=60
 export WORDCHARS='!%^(){}'
+export TMPPREFIX="${TMP}/zsh"
