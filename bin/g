@@ -35,7 +35,7 @@ case "$1" in
         ;;
 esac
 
-if [ 0 -eq "$#" ] ; then
+if [ 0 -eq "$#" ] && git rev-parse --show-toplevel 1>/dev/null 2>&1 ; then
     (
         for ALIAS_STATUS in s st ; do
             git config "alias.${ALIAS_STATUS}" 1>/dev/null 2>&1 &&
