@@ -1,0 +1,32 @@
+# ~/.rcrc
+#
+# Configuration for rcm (https://github.com/thoughtbot/rcm)
+
+COPY_ALWAYS="
+  *.local
+  **/*.local
+"
+
+EXCLUDES="
+  LICENSE*
+  README*
+  *.orig
+  *.rej
+  *.swp
+  _*
+  bin
+"
+
+SYMLINK_DIRS="
+  aria2
+  bash
+  bin
+  emacs.d
+  fluxbox
+  lbdb
+  muttrc.d
+  pry
+  themes
+  vim
+  zsh
+"
