@@ -1,9 +1,13 @@
 Quatauta's dotfiles
 ===================
 
-Based on Romain Chossart ([sitaktif](https://github.com/sitaktif)) [dotfiles repository](https://github.com/sitaktif/dotfiles).
+My collection of .rc files for Linux, mostly used on Gentoo/Linux systems.
 
-Notes
------
+The .rc files are managed with [thoughtbot's rcm](https://github.com/thoughtbot/rcm).
 
-* Run `create-symlinks` to see what symlings would be created (I highly recommend appending `--noop` to this the first time)
+To use all these .rc files:
+
+1. `git clone https://github.com/quatauta/dotfiles.git $HOME/.dotfiles`
+1. `ln -s ~/.dotfiles/rcrc ~/.rcrc`
+1. `lsrc -F`
+1. `rcup`
