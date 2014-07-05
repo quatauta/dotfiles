@@ -5,13 +5,17 @@ if has("gui_win32")
   set runtimepath+=~/.vim
 endif
 
-if &t_Co > 2 || has("gui_running")
-  syntax on
-endif
-
 if &t_Co >= 256 || has("gui_running")
   colorscheme inkpot
   let &guicursor = &guicursor . ",a:blinkon0"
+endif
+
+if has("gui_running")
+  gui
+endif
+
+if &t_Co > 2 || has("gui_running")
+  syntax on
 endif
 
 " When editing a file, always jump to the last known cursor position.
