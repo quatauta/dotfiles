@@ -179,7 +179,6 @@
  '(inhibit-startup-screen t)
  '(ispell-highlight-face (quote underline))
  '(ispell-prefer-aspell t)
- '(iswitchb-mode t)
  '(make-backup-files nil)
  '(minibuffer-prompt-properties
    (quote
