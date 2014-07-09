@@ -1,1 +1,5 @@
-../.zsh/functions
+#!/bin/bash
+
+for f in "${HOME}/.zsh/functions"/* ; do
+    [ -f "${f}" ] && source "${f}"
+done
