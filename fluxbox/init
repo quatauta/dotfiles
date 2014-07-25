@@ -100,7 +100,7 @@ session.screen0.windowMenu:
 session.screen0.windowPlacement:	RowSmartPlacement
 session.screen0.windowScrollAction:	Shade
 session.screen0.windowScrollReverse:	true
-session.screen0.workspaceNames:	[1],[2],
+session.screen0.workspaceNames:	[ 1 ],[ 2 ],
 session.screen0.workspaces:	2
 session.screen0.workspacewarping:	false
 session.slitlistFile:	/home/daniel/.fluxbox/slitlist
