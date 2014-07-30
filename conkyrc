@@ -81,4 +81,5 @@ ${if_up wwan0} | wwan0: ${color1}${downspeed wwan0}${color0}d ${color1}${upspeed
 ${if_up wwan1} | wwan1: ${color1}${downspeed wwan1}${color0}d ${color1}${upspeed wwan1}${color0}u ${totaldown wwan1}d ${totalup wwan1}u ${addrs wwan1}${endif}\
 ${if_up wwan2} | wwan2: ${color1}${downspeed wwan2}${color0}d ${color1}${upspeed wwan2}${color0}u ${totaldown wwan2}d ${totalup wwan2}u ${addrs wwan2}${endif}\
 ${if_up wwan3} | wwan3: ${color1}${downspeed wwan3}${color0}d ${color1}${upspeed wwan3}${color0}u ${totaldown wwan3}d ${totalup wwan3}u ${addrs wwan3}${endif}\
+ | gw: ${gw_ip} \
 
