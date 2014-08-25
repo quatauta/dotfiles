@@ -32,6 +32,9 @@ ui = true
 mnemonicprefix = true
 renames = copies
 
+[help]
+autocorrect = -1
+
 [merge]
 tool = meld
 
