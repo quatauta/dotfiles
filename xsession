@@ -64,7 +64,7 @@ case "${realstartup}" in
 
         _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1055x435+30+50  "${HOME}/.xsession-errors" ">/dev/null"
         _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 525x435+1215+50 --whole "${HOME}/.task/calendar" ">/dev/null"
-        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1600x470+30-40 --cont "\"               `hostname | sed -e 's/./ /g'`» \"" /var/log/messages ">/dev/null"
+        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1600x470+30-40 --cont "\"                `hostname | sed -e 's/./ /g'`» \"" /var/log/messages ">/dev/null"
 
         type systemctl 1>/dev/null && systemctl --failed --no-pager --no-legend >>"${HOME}/.xsession-errors"
     ;;
