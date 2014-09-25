@@ -40,3 +40,6 @@ tool = meld
 
 [push]
 default = simple
+
+[core]
+pager = less -FRX
