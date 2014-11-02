@@ -56,8 +56,8 @@ case "${realstartup}" in
         _start_with_delay conky -d &
         _start_with_delay polkit-gnome-authentication-agent-1 &
 
-        _start_with_delay nice ionice -c3 liferea -w hidden &
-        _start_with_delay nice ionice -c3 opera &
+        _start_with_delay nice ionice -c3 liferea -w hidden 1>/dev/null 2>&1 &
+        _start_with_delay nice ionice -c3 opera-developer 1>/dev/null 2>&1 &
         _start_with_delay unclutter &
 
         ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""

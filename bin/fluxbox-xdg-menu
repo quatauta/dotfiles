@@ -57,7 +57,7 @@ def header(wm = "fluxbox"):
     return (indent(0) + "[begin] (Fluxbox)\n" +
             indent(1) +   "[exec] (Terminal) {xterm}\n" +
             indent(1) +   "[exec] (Nemo)     {nemo --no-desktop $HOME/Dokumente}\n" +
-            indent(1) +   "[exec] (Opera)    {opera}\n" +
+            indent(1) +   "[exec] (Opera)    {opera-developer}\n" +
             indent(1) +   "[exec] (Firefox)  {firefox}\n" +
             indent(1) +   "[exec] (Liferea)  {liferea}\n" +
             indent(1) +   "[exec] (Sonos)    {sonos}\n" +
