@@ -28,11 +28,12 @@ prompt_gentoo_daniel_setup () {
   # git repository details
   autoload prompt_git_status
   local git_status=""
-  type prompt_git_status 1>/dev/null 2>&1 && local git_status="\$(prompt_git_status '[' '] ')"
+  type prompt_git_status 1>/dev/null 2>&1 && local git_status="\$(prompt_git_status '[' ']')"
 
-  typeset -g PS1="$base_prompt $path_prompt $git_status%F{$prompt_user_style}%(!.#.>)%b%f%k $post_prompt"
+  typeset -g PS1="$base_prompt $path_prompt %F{$prompt_user_style}%(!.#.>)%b%f%k $post_prompt"
   typeset -g PS2="$base_prompt$path_prompt %_> $post_prompt"
   typeset -g PS3="$base_prompt$path_prompt ?# $post_prompt"
+  typeset -g RPS1="$git_status"
 }
 
 prompt_gentoo_daniel_setup "$@"

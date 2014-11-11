@@ -39,7 +39,7 @@ prompt_gentoo_daniel() {
     PS1+="\[$user_style\]\u\[$reset\]@\[$host_style\]\h\[$reset\] \[$brown\]\w\[$reset\]"
 
     # git repository details
-    type prompt_git_status 1>/dev/null 2>&1 && PS1+="\$(prompt_git_status \" [\" \"]\")"
+    type prompt_git_status 1>/dev/null 2>&1 && PS1="\$(printf \"%\$((COLUMNS - 1))s\r\" \$(prompt_git_status \"[\" \"]\"))$PS1"
 
     # > for user, # for root
     [ "$EUID" != "0" ] && PS1+=" \[$user_style\]>\[$reset\] "
