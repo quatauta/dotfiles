@@ -28,7 +28,7 @@ prompt_git_status() {
             [ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]   && branch_status+="${untracked}"
             $(git rev-parse --verify refs/stash              1>/dev/null 2>&1) && branch_status+="${stashed}"
 
-            [ -n "${branch_status}" ] && branch_status="${separator}${branch_status}"
+            [ "" != "${branch_status}" ] && branch_status="${separator}${branch_status}"
         fi
 
         # get the short symbolic ref
