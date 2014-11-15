@@ -1,0 +1,11 @@
+#!/bin/sh
+
+LANG="de_DE.utf8"
+LC_MESSAGES="de_DE.utf8"
+PATH="$PATH:/home/daniel/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/sbin:/sbin:/usr/games/bin"
+XDG_CONFIG_DIRS="/etc/xdg"
+XDG_DATA_DIRS="/usr/local/share:/usr/share:/usr/share/gdm"
+
+# fluxbox-xdg-menu
+rm -f "$HOME/.fluxbox/_xdgmenu"
+xdgmenumaker -f fluxbox -n >"$HOME/.fluxbox/_xdgmenu" 2>/dev/null
