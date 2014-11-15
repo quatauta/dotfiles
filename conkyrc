@@ -35,10 +35,10 @@ Woche ${time %_V} | \
 ${time %F %T} | \
 up: ${uptime_short} | \
 sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C | \
-mail: ${color1}${new_mails /home/daniel/Mail 10} ${new_mails /var/spool/mail/daniel 60}${color0}\
+mail: ${color1}${new_mails /home/daniel/Mail 10}${color0} ${new_mails /var/spool/mail/daniel 60} ${new_mails /home/daniel/Mail/.spam 60}\
 ${if_existing /sys/class/power_supply/BAT0} | bat: ${battery_short} ${battery_time}${endif}\
 ${if_existing /sys/class/backlight/intel_backlight} | backlight: ${exec /home/daniel/bin/conky-backlight}${endif}
-${color0}home:${fs_used_perc /home/}% | \
+home:${fs_used_perc /home/}% | \
 cpu:${hwmon 0 temp 1}°C ${hwmon 0 fan 1}/m ${freq_g 1}/${freq_g 2}/${freq_g 3}/${freq_g 4}G${color1}${cpu}%${color0} | \
 mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
@@ -81,5 +81,5 @@ ${if_up wwan0} | wwan0: ${color1}${downspeed wwan0}${color0}d ${color1}${upspeed
 ${if_up wwan1} | wwan1: ${color1}${downspeed wwan1}${color0}d ${color1}${upspeed wwan1}${color0}u ${totaldown wwan1}d ${totalup wwan1}u ${addrs wwan1}${endif}\
 ${if_up wwan2} | wwan2: ${color1}${downspeed wwan2}${color0}d ${color1}${upspeed wwan2}${color0}u ${totaldown wwan2}d ${totalup wwan2}u ${addrs wwan2}${endif}\
 ${if_up wwan3} | wwan3: ${color1}${downspeed wwan3}${color0}d ${color1}${upspeed wwan3}${color0}u ${totaldown wwan3}d ${totalup wwan3}u ${addrs wwan3}${endif}\
- | gw: ${gw_ip} \
-
+ | \
+gw: ${gw_ip}
