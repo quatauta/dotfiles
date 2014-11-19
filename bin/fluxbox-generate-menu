@@ -8,4 +8,7 @@ XDG_DATA_DIRS="/usr/local/share:/usr/share:/usr/share/gdm"
 
 # fluxbox-xdg-menu
 rm -f "$HOME/.fluxbox/_xdgmenu"
-xdgmenumaker -f fluxbox -n >"$HOME/.fluxbox/_xdgmenu" 2>/dev/null
+xdgmenumaker -f fluxbox -n >"$HOME/.fluxbox/_xdgmenu" 2>&1 |
+grep -v -e '__init__\.py.*could not open display' \
+        -e 'warnings.*_gtk'
+true
