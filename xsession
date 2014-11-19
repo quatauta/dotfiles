@@ -52,7 +52,7 @@ case "${realstartup}" in
     *box )
         [ -z "${DESKTOP_SESSION}" ] && export DESKTOP_SESSION="gnome"
         _start_with_delay gnome-settings-daemon &
-        _start_with_delay fluxbox-xdg-menu &
+        _start_with_delay fluxbox-generate-menu &
         _start_with_delay conky -d &
         _start_with_delay polkit-gnome-authentication-agent-1 &
 
