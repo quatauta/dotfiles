@@ -24,6 +24,7 @@ setopt inc_append_history
 setopt list_ambiguous
 setopt list_packed
 setopt list_rows_first
+setopt no_auto_remove_slash
 setopt numeric_glob_sort
 setopt print_exit_value
 setopt prompt_subst
