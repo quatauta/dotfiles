@@ -29,7 +29,7 @@
       [restart] (Qtile) {qtile}
       [restart] (Xmonad) {xmonad}
     [end]
-    [exec] (Regen Menu) {fluxbox-xdg-menu}
+    [exec] (Regen Menu) {fluxbox-generate-menu}
     [reconfig] (Reload Config)
     [restart] (Restart Fluxbox)
     [exec] (Info) {zenity --info --title='Fluxbox Info' --text="<tt>$(fluxbox -v; fluxbox -info | sed 1d 2>/dev/null)</tt>"}
