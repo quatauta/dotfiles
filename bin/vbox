@@ -16,7 +16,6 @@ _vbox_modules() {
         rm )
             for mod in ${MODULES} ; do
                 if (lsmod || ${SUDO} lsmod) | grep -q "${mod}" ; then
-                    echo "${mod}"
                     ${SUDO} rmmod "${mod}"
                 fi
             done
@@ -24,7 +23,6 @@ _vbox_modules() {
         *  )
             for mod in ${MODULES} ; do
                 if ! ( (lsmod || ${SUDO} lsmod) | grep -q "${mod}" ) ; then
-                    echo "${mod}"
                     ${SUDO} modprobe "${mod}"
                 fi
             done
