@@ -20,7 +20,7 @@ if [ -z "$SECRET" ] ; then
     exit 3
 fi
 
-ID="`echo "$PUBLIC" | awk -F: '/^pub/ { printf("%s\n", substr($5, 9, 8)) }'`"
+ID="`echo "$PUBLIC" | awk -F: '/^pub/ { print $5 }'`"
 
 if [ -z "ID" ] ; then
     echo "Error:  Could not determine key id."
@@ -39,7 +39,7 @@ TMP_DIR=`mktemp -d -t export-gnupg-key.XXXXXX` || ( echo "Could not create temp 
 echo "Operating in $TMP_DIR ..."
 
 (
-    LIST_OPTS="--fingerprint --keyid-format=long"
+    LIST_OPTS="--fingerprint --keyid-format=0xlong"
     EXPORT_OPTS="--armor"
     export ID
     ORIG_PWD=`pwd`
