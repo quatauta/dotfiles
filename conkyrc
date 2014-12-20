@@ -30,7 +30,7 @@ TEXT
 ${color0}root:${fs_used_perc /}% | \
 sys:${hwmon 0 temp 1}°C ${hwmon 0 fan 2}/m | \
 linux ${kernel} | \
-${time %A, %-d. %B %Y} | \
+${time %a, %-d. %b %Y} | \
 Woche ${time %_V} | \
 ${time %F %T} | \
 up: ${uptime_short} | \
@@ -38,8 +38,8 @@ sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}
 mail: ${color1}${new_mails /home/daniel/Mail 10}${color0} ${new_mails /var/spool/mail/daniel 60} ${new_mails /home/daniel/Mail/.spam 60}\
 ${if_existing /sys/class/power_supply/BAT0} | bat: ${battery_short} ${battery_time}${endif}\
 ${if_existing /sys/class/backlight/intel_backlight} | backlight: ${exec /home/daniel/bin/conky-backlight}${endif}
-home:${fs_used_perc /home/}% | \
-cpu:${hwmon 0 temp 1}°C ${hwmon 0 fan 1}/m ${freq_g 1}/${freq_g 2}/${freq_g 3}/${freq_g 4}G${color1}${cpu}%${color0} | \
+tmp: ${fs_used_perc /tmp}% | \
+cpu:${hwmon 0 temp 1}°C ${hwmon 0 fan 1}/m ${cpu}%${color0} | \
 mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
 load: ${color1}${loadavg 1}${color0} | \
