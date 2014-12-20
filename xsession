@@ -59,6 +59,7 @@ case "${realstartup}" in
         _start_with_delay nice ionice -c3 liferea -w hidden 1>/dev/null 2>&1 &
         _start_with_delay nice ionice -c3 opera-developer 1>/dev/null 2>&1 &
         _start_with_delay unclutter &
+        _start_with_delay redshift-gtk -c /etc/redshift.conf &
 
         ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""
 
