@@ -12,7 +12,7 @@ setopt check_jobs
 setopt complete_aliases
 setopt complete_in_word
 setopt correct
-setopt extended_glob
+# setopt extended_glob
 setopt hist_find_no_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
