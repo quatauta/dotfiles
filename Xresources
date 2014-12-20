@@ -31,8 +31,8 @@ UXTerm*font6: -*-fixed-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
 
 xmessage*Command*Font: -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
 
-emacs*font:     Inconsolata-10
-Emacs*font:     Inconsolata-10
+emacs*font:     Source Code Pro-9
+Emacs*font:     Source Code Pro-9
 Xmessage*font:  -misc-fixed-medium-r-normal--13-*-*-*-*-*-*-*
 xmessage*font:  -misc-fixed-medium-r-normal--13-*-*-*-*-*-*-*
 emacs*geometry: 105x50
