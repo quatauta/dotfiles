@@ -117,11 +117,11 @@ Mod4 A         :ExecCommand xterm -e m
 Mod4 C         :ExecCommand exec nice -n1 google-chrome 1>/dev/null 2>&1
 Mod4 Shift C   :ExecCommand qalculate-gtk
 Mod4 E         :ExecCommand emacs
-Mod4 F         :ExecCommand exec nice -n1 firefox
+Mod4 F         :ExecCommand exec nice -n1 firefox 1>/dev/null 2>&1
 Mod4 G         :ExecCommand geeqie $HOME/Dokumente/bilder
-Mod4 Shift G   :ExecCommand exec nice -n1 ionice -c3 gimp    1>/dev/null 2>&1
-Mod4 I         :ExecCommand exec nice -n1 pidgin             1>/dev/null 2>&1
-Mod4 Control I :ExecCommand exec nice -n1 skype              1>/dev/null 2>&1
+Mod4 Shift G   :ExecCommand exec nice -n1 ionice -c3 gimp 1>/dev/null 2>&1
+Mod4 I         :ExecCommand exec nice -n1 pidgin 1>/dev/null 2>&1
+Mod4 Control I :ExecCommand exec nice -n1 skype 1>/dev/null 2>&1
 Mod4 Shift I   :ExecCommand exec nice -n1 hexchat --minimize=2 1>/dev/null 2>&1
 Mod4 L         :ExecCommand screensaver-activate
 Mod4 N         :ExecCommand exec nice -n1 ionice -c3 nemo --no-desktop $HOME/Dokumente
