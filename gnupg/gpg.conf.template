@@ -25,9 +25,6 @@ personal-digest-preferences SHA512 SHA384 SHA256 SHA1
 use-agent
 verify-options show-policy-urls show-keyserver-urls show-uid-validity pka-lookups
 
-keyserver x-hkp://pgpkeys.eu
-keyserver x-hkp://eu.pool.sks-keyservers.net
-keyserver x-hkp://keyserver.pki.scientia.net/
-keyserver x-hkp://pgp.mit.edu
+keyserver http://pgpkeys.eu
 
 keyserver-options honor-http-proxy timeout=5
