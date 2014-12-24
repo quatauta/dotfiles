@@ -27,14 +27,14 @@ if [ -z "ID" ] ; then
     exit 4
 fi
 
-ID_COUNT=`echo "$ID" | wc -l`
+ID_COUNT="`echo "$ID" | wc -l`"
 
 if [ "$ID_COUNT" -ne 1 ] ; then
     echo "Please specify exactly one key, not $ID_COUNT: $KEY matches "$ID"."
     exit 5
 fi
 
-TMP_DIR=`mktemp -d -t export-gnupg-key.XXXXXX` || ( echo "Could not create temp dir." ; exit 6 )
+TMP_DIR="`mktemp -d -t export-gnupg-key.XXXXXX`" || ( echo "Could not create temp dir." ; exit 6 )
 
 echo "Operating in $TMP_DIR ..."
 
@@ -42,7 +42,7 @@ echo "Operating in $TMP_DIR ..."
     LIST_OPTS="--fingerprint --keyid-format=0xlong"
     EXPORT_OPTS="--armor"
     export ID
-    ORIG_PWD=`pwd`
+    ORIG_PWD="`pwd`"
     DIR="gnupg-key_${ID}"
     PUB="gnupg_${ID}_public.asc"
     SEC="gnupg_${ID}_secret.asc"
@@ -50,7 +50,7 @@ echo "Operating in $TMP_DIR ..."
     REV="gnupg_${ID}_revoke.asc"
     REV_TMP="gnupg_${ID}_revoke-tmp.asc"
 
-    cd $TMP_DIR ;
+    cd "$TMP_DIR" ;
     mkdir "$DIR/"
 
     cd "$DIR"
@@ -69,11 +69,11 @@ echo "Operating in $TMP_DIR ..."
         (   gpg $LIST_OPTS --list-sigs "$ID" &&
             cat "$REV_TMP"
         ) >"$REV"
-        rm -f "$REV_TMP"
+        shred -zu "$REV_TMP"
     fi
 
     for algo in sha1 sha512 ripemd320  ; do
-        shash -a $algo *.asc *.txt > "gnupg_${ID}.${algo}"
+        shash -a "$algo" *.asc *.txt > "gnupg_${ID}.${algo}"
     done
 
     cd ..
@@ -84,5 +84,5 @@ echo "Operating in $TMP_DIR ..."
 )
 
 echo "Deleting $TMP_DIR ..."
-find $TMP_DIR -type f -print0 | xargs -0r shred -zu
-rm -rf $TMP_DIR
+find "$TMP_DIR" -type f -print0 | xargs -0r shred -zu
+rm -rf "$TMP_DIR"
