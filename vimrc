@@ -10,12 +10,13 @@ if &t_Co >= 256 || has("gui_running")
   let &guicursor = &guicursor . ",a:blinkon0"
 endif
 
-if has("gui_running")
-  gui
-endif
-
 if &t_Co > 2 || has("gui_running")
   syntax on
+endif
+
+if has("gui_running")
+  gui
+  set cursorline
 endif
 
 " When editing a file, always jump to the last known cursor position.
@@ -34,7 +35,6 @@ set backspace=indent,eol,start
 set backupdir=~/.vim/_tmp
 set cmdheight=2
 set copyindent
-set cursorline
 set directory=~/.vim/_tmp
 set endofline
 set expandtab
