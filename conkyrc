@@ -39,7 +39,7 @@ mail: ${color1}${new_mails /home/daniel/Mail 10}${color0} ${new_mails /var/spool
 ${if_existing /sys/class/power_supply/BAT0} | bat: ${battery_short} ${battery_time}${endif}\
 ${if_existing /sys/class/backlight/intel_backlight} | backlight: ${exec /home/daniel/bin/conky-backlight}${endif}
 tmp: ${fs_used_perc /tmp}% | \
-cpu:${hwmon 0 temp 1}°C ${hwmon 0 fan 1}/m ${cpu}%${color0} | \
+cpu:${hwmon 0 temp 1}°C ${hwmon 0 fan 1}/m ${color1}${cpu}%${color0} | \
 mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
 load: ${color1}${loadavg 1}${color0} | \
