@@ -1,6 +1,6 @@
 [begin] (Fluxbox)
   [exec] (Terminal) {xterm}
-  [exec] (Opera)    {opera-developer}
+  [exec] (Opera)    {opera}
   [exec] (Sonos)    {sonos}
   [exec] (Gmrun)    {gmrun}
   [separator]

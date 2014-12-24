@@ -1,0 +1,25 @@
+#!/bin/sh
+
+_operas() {
+    ls -1 /usr/bin/opera{,-{stable,beta,developer,next}} 2>/dev/null
+}
+
+_opera_versions() {
+    _operas |
+    while read OPERA ; do
+        if [ -x "${OPERA}" ] ; then
+            printf "%s\t%s\n" "$("${OPERA}" --version)" "${OPERA}"
+        fi
+    done
+}
+
+_best_opera() {
+    _opera_versions |
+    sort -g |
+    tail -n1 |
+    cut -f2
+}
+
+OPERA="$(_best_opera)"
+
+exec "${OPERA}" "${@}"
