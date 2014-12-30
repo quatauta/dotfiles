@@ -4,7 +4,9 @@ GPG=`which gpg`
 
 if [ -x "$GPG" ] ; then
     $GPG \
-        --primary-keyring auto-pubring.gpg \
+        --no-default-keyring \
+        --primary-keyring auto-pubring.kbx \
+        --keyring pubring.kbx \
         --auto-key-locate "cert pka ldap keyserver" \
         --keyserver-options auto-key-retrieve \
         "$@"
