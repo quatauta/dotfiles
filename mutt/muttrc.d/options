@@ -21,7 +21,7 @@ unset crypt_autoencrypt
   set crypt_replyencrypt
   set crypt_replysign
   set crypt_replysignencrypted
-  set crypt_use_gpgme
+unset crypt_use_gpgme
   set crypt_use_pka
   set crypt_verify_sig
   set date_format       = "!%a, %d. %b %Y %T%z"
