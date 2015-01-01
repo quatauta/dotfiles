@@ -72,7 +72,7 @@ echo "Operating in $TMP_DIR ..."
         shred -zu "$REV_TMP"
     fi
 
-    for algo in sha1 sha512 ripemd320  ; do
+    for algo in sha1 sha512 ripemd320 ; do
         shash -a "$algo" *.asc *.txt > "gnupg_${ID}.${algo}"
     done
 
