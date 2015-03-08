@@ -7,7 +7,7 @@ if [ -x "$GPG" ] ; then
         --no-default-keyring \
         --primary-keyring auto-pubring.kbx \
         --keyring pubring.kbx \
-        --auto-key-locate "cert pka ldap keyserver" \
+        --auto-key-locate "cert pka ldap keyserver local" \
         --keyserver-options auto-key-retrieve \
         "$@"
 else
