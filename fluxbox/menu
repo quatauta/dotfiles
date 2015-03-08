@@ -13,7 +13,7 @@
       [stylesdir] (/usr/share/fluxbox/styles)
       [stylesdir] (/usr/share/commonbox/styles/)
     [end]
-    [workspaces]   (Workspace List)
+    [workspaces]   (Workspaces)
     [submenu] (Tools)
       [commanddialog] (Commanddialog)
       [exec] (Gmrun) {gmrun}
@@ -29,12 +29,12 @@
       [restart] (Qtile) {qtile}
       [restart] (Xmonad) {xmonad}
     [end]
-    [exec] (Regen Menu) {fluxbox-generate-menu}
     [reconfig] (Reload Config)
-    [restart] (Restart Fluxbox)
+    [exec] (Generate Menu) {fluxbox-generate-menu}
     [exec] (Info) {zenity --info --title='Fluxbox Info' --text="<tt>$(fluxbox -v; fluxbox -info | sed 1d 2>/dev/null)</tt>"}
+    [restart] (Restart)
   [end]
   [exec] (Lock screen) {xdg-screensaver lock}
-  [exec] (Hibernate) {systemctl hybrid-sleep}
+  [exec] (Sleep) {systemctl hybrid-sleep}
   [exec] (Exit Fluxbox) {fluxbox-exit}
 [end]
