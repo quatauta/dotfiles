@@ -68,11 +68,11 @@ Mod4 W Mod4 M     :KeyMode MoveFocusedWindow
 Mod4 Control plus :MaximizeHorizontal
 Mod4 Shift plus   :MaximizeVertical
 Mod4 plus         :MaximizeWindow
-Mod4 Up           :MaximizeWindow
-Mod4 Left         :MacroCmd {ResizeTo 49% 95%} {MoveTo 0% 0% TopLeft}
-Mod4 Right        :MacroCmd {ResizeTo 49% 95%} {MoveTo 0% 0% TopRight}
+#Mod4 Up           :MaximizeWindow
+#Mod4 Left         :MacroCmd {ResizeTo 49% 95%} {MoveTo 0% 0% TopLeft}
+#Mod4 Right        :MacroCmd {ResizeTo 49% 95%} {MoveTo 0% 0% TopRight}
 Mod4 minus        :Minimize
-Mod4 Down         :Minimize
+#Mod4 Down         :Minimize
 Mod4 numbersign   :ShadeWindow
 Mod4 D            :ShowDesktop
 Mod4 Control Menu :WindowMenu
