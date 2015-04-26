@@ -26,6 +26,5 @@ use-agent
 verify-options pka-lookups show-keyserver-urls show-policy-urls show-uid-validity
 
 keyserver hkps://pgp.mit.edu
-keyserver hkps://hkps.pool.sks-keyservers.net
 
 keyserver-options honor-http-proxy no-honor-keyserver-url timeout=5
