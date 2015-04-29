@@ -79,7 +79,7 @@ echo "Operating in $TMP_DIR ..."
 
     cd ..
     tar zcf "$DIR".tar.gz "$DIR/"
-    gpg -sc "$DIR".tar.gz
+    gpg --force-mdc -sc "$DIR".tar.gz
     mv "$DIR".tar.gz.gpg "$ORIG_PWD"
 
     unset ID
