@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# http://forum.yubico.com/viewtopic.php?f=26&t=1649#p6464
+
+# I have tested this script with a single YubiKey Neo (bought April 2014 in Germany).
+#
+# Use at your own risk and with caution. This should erase all settings of the OpenPGP
+# applet on the YubiKey. It may do some harm to your YubiKey!
+
+echo "ATTENTION: THIS WILL RESET YOUR Yubikey PIV SETTINGS!"
+echo
+echo "Continue?"
+
+read CONTINUE
+
+if [ "${CONTINUE}" = "YES" ] ; then
+    echo "Waiting 10 seconds to regret your answer ..."
+    sleep 10 &&
+    (
+        yubico-piv-tool -a verify-pin -P 4711
+        yubico-piv-tool -a verify-pin -P 4711
+        yubico-piv-tool -a verify-pin -P 4711
+        yubico-piv-tool -a verify-pin -P 4711
+        yubico-piv-tool -a change-puk -P 4711 -N 67567
+        yubico-piv-tool -a change-puk -P 4711 -N 67567
+        yubico-piv-tool -a change-puk -P 4711 -N 67567
+        yubico-piv-tool -a change-puk -P 4711 -N 67567
+        yubico-piv-tool -a reset
+    )
+fi
