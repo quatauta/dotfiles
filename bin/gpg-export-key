@@ -73,7 +73,8 @@ echo "Operating in $TMP_DIR ..."
     fi
 
     for algo in sha1 sha512 ripemd320 ; do
-        shash -a "$algo" *.asc *.txt > "gnupg_${ID}.${algo}"
+        echo "# shash -V -a '$algo' -c 'gnupg_${ID}.${algo}'" > "gnupg_${ID}.${algo}"
+        shash -a "$algo" *.asc *.txt >> "gnupg_${ID}.${algo}"
     done
 
     cd ..
