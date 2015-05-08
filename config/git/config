@@ -7,8 +7,8 @@ path = ~/.git.local
 [alias]
 b = branch
 br = branch
-c = commit -S
-ci = commit -S
+c = commit
+ci = commit
 co = checkout
 d = diff
 di = diff
@@ -19,8 +19,14 @@ l = log --oneline --decorate --graph --all
 p = pull
 pl = pull
 ps = push
-s = status -b -s
-st = status -b -s
+s = status
+st = status
+
+[commit]
+gpgSign = true
+
+[core]
+pager = less -FRX
 
 [credential]
 helper = cache
@@ -40,6 +46,8 @@ tool = meld
 
 [push]
 default = simple
+followTags = true
 
-[core]
-pager = less -FRX
+[status]
+branch = true
+short = true
