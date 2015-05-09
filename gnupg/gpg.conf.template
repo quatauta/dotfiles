@@ -27,3 +27,4 @@ personal-digest-preferences SHA512 SHA384 SHA256 SHA1
 use-agent
 verify-options pka-lookups show-keyserver-urls show-policy-urls show-uid-validity
 with-fingerprint
+require-cross-certification
