@@ -17,7 +17,7 @@ enable-progress-filter
 fixed-list-mode
 keyid-format 0xlong
 keyserver hkps://hkps.pool.sks-keyservers.net
-keyserver-options honor-http-proxy no-honor-keyserver-url timeout=5
+keyserver-options no-honor-keyserver-url timeout=5
 list-options show-keyring show-keyserver-urls show-notations show-policy-urls show-sig-expire show-uid-validity show-usage
 no-comments
 no-emit-version
