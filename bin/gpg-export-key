@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export LANG=C
+
 KEY="$1"
 
 if [ -z "$KEY" ] ; then
