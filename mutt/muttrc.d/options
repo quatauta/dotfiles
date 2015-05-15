@@ -52,8 +52,11 @@ unset markers
   set nntp_context      = 5000
   set pager_context     = 2
   set pager_index_lines = 7
-  set pgp_use_gpg_agent
+  set pgp_entry_format  = "%4n %t%f %7a%4l/0x%k %[%Y-%m-%d] [%2c] %u"
+  set pgp_long_ids
 unset pgp_show_unusable
+  set pgp_sort_keys     = reverse-date
+  set pgp_use_gpg_agent
   set pipe_split
   set postpone          = ask-yes
 unset prompt_after
