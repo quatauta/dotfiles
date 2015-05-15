@@ -53,6 +53,7 @@ unset markers
   set pager_context     = 2
   set pager_index_lines = 7
   set pgp_use_gpg_agent
+unset pgp_show_unusable
   set pipe_split
   set postpone          = ask-yes
 unset prompt_after
