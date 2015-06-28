@@ -3,7 +3,11 @@
 PATTERN="${HOME}/.*\.\(db\|sqlite[23]\?\)$"
 PATTERN="${1:-${PATTERN}}"
 
-locate -r "${PATTERN}" |
+(
+    locate -r "${PATTERN}"
+    find "${HOME}/.config"/*{chrome,opera}* "${HOME}/.mozilla" -type f
+) |
+sort -u |
 tr '\n' '\0' |
 xargs -0r file |
 awk -vFS=': ' 'tolower($0) ~ /sqlite/ { printf("%s\0", $1) }' |
