@@ -15,16 +15,12 @@ _vbox_modules() {
     case $1 in
         rm )
             for mod in ${MODULES} ; do
-                if (lsmod || ${SUDO} lsmod) | grep -q "${mod}" ; then
-                    ${SUDO} rmmod "${mod}"
-                fi
+                ${SUDO} rmmod "${mod}"
             done
             ;;
         *  )
             for mod in ${MODULES} ; do
-                if ! ( (lsmod || ${SUDO} lsmod) | grep -q "${mod}" ) ; then
-                    ${SUDO} modprobe "${mod}"
-                fi
+                ${SUDO} modprobe "${mod}"
             done
             ;;
     esac
