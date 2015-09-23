@@ -19,7 +19,7 @@ import argparse
 import soco
 
 # Hostname or IP address of your speaker.
-DEVICE_ADDRESS = 'sonoszp'
+DEVICE_ADDRESS = '10.0.0.11'
 
 # Speaker volume cutoff for safety :)
 MAX_VOLUME = 70
