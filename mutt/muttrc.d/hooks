@@ -3,7 +3,7 @@
 
 # hooks
 
-folder-hook "^news:"       "push <toggle-read><collapse-all>"
+folder-hook "news:"        "push <toggle-read><collapse-all>"
 folder-hook "."            "unset trash"
 folder-hook "=$"           "set trash==.trash"
 folder-hook "=\.local"     "set trash==.trash"
