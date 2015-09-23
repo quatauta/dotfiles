@@ -1,0 +1,13 @@
+#!/bin/sh
+
+on-zero-load -v true -l 0.2
+
+while LANG=C netstat -npt 2>&1 | egrep 'ESTABLISHED' ; do
+    sleep 60
+done
+
+on-zero-load -v true -l 0.2 &&
+sleep 10 &&
+sync &&
+sleep 10 &&
+systemctl -i poweroff
