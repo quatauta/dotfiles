@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# sudo paxctl-ng -m /usr/lib64/opera-developer/opera-developer
 
 _operas() {
-    ls -1 /usr/bin/opera{,-{stable,beta,developer,next}} 2>/dev/null
+    ls -1 /usr/bin/opera{,-{stable,beta,developer,next}} 2>/dev/null |
+    xargs -r -n1 realpath
 }
 
 _opera_versions() {
@@ -22,6 +22,25 @@ _best_opera() {
     cut -f2
 }
 
+_paxctl() {
+    PAXCTL="$(PATH="${PATH}:/bin:/sbin:/usr/bin:/usr/sbin" which paxctl-ng)"
+
+    echo "${PAXCTL}"
+}
+
+_pax_flags() {
+    if [ -x "$(_paxctl)" ] ; then
+        "$(_paxctl)" -v "$1" |
+        awk -v 'FS= *: *' '/_PAX *:/ { print $2 }' |
+        grep -iv 'not found'
+    fi
+}
+
 OPERA="$(_best_opera)"
+
+if ! _pax_flags "${OPERA}" | grep -q 'm' ; then
+    echo "Please disable PaX MPROTECT for ${OPERA}" 1>&2
+    echo "sudo $(_paxctl) -m ${OPERA}" 1>&2
+fi
 
 exec "${OPERA}" "${@}"
