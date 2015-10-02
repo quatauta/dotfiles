@@ -6,6 +6,7 @@ test -d "$HOME/man" && MANPATH="${HOME}/man:${MANPATH}"
 
 export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
 export HISTSIZE="1000"
+export QT_STYLE_OVERRIDE=gtk
 export SAVEHIST="${HISTSIZE}"
 
 if [ -n "${DISPLAY}" ] ; then
