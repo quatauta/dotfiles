@@ -1,4 +1,5 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
 # Remote control for the Sonos sound system.
 #
@@ -24,7 +25,6 @@ DEVICE_ADDRESS = '10.0.0.11'
 # Speaker volume cutoff for safety :)
 MAX_VOLUME = 70
 
-
 QUEUE_FMT = '{pos:3}. {artist} - {title}'
 STATUS_FMT = '''\
 {artist} - {title}
@@ -32,16 +32,13 @@ STATUS_FMT = '''\
 {position} - {duration}, pos {playlist_position}, vol {vol}, {state}\
 '''
 
-def mk_parser(subparsers, name, fun):
+def mk_parser(subparsers, name, funct):
     parser = subparsers.add_parser(name)
-    parser.set_defaults(fun=fun)
+    parser.set_defaults(func=funct)
     return parser
 
 def mute(args):
-    if args.dev.mute():
-        args.dev.mute(0)
-    else:
-        args.dev.mute(1)
+    args.dev.mute = not args.dev.mute
 
 def play(args):
     if args.track_no is None:
@@ -57,16 +54,14 @@ def pause(args):
 
 def volume(args):
     if args.volume is not None:
-        vol = args.dev.volume() + (3 if args.volume == '+' else -3)
-        args.dev.volume(min(vol, MAX_VOLUME))
-    print(args.dev.volume())
+        vol = args.dev.volume + (3 if args.volume == '+' else -3)
+        args.dev.volume = min(vol, MAX_VOLUME)
+    print(args.dev.volume)
 
 def status(args):
-    print(STATUS_FMT.format(
-        vol = args.dev.volume(),
-        state = args.dev.get_current_transport_info()['current_transport_state'],
-        **args.dev.get_current_track_info()
-    ))
+    print(STATUS_FMT.format(vol = args.dev.volume,
+                            state = args.dev.get_current_transport_info()['current_transport_state'],
+                            **args.dev.get_current_track_info()))
 
 def queue(args):
     for pos, track in enumerate(args.dev.get_queue()):
@@ -81,23 +76,23 @@ mk_parser(subparsers, 'next', lambda a: a.dev.next())
 mk_parser(subparsers, 'previous', lambda a: a.dev.previous())
 mk_parser(subparsers, 'pause', pause)
 mk_parser(subparsers, 'mute', mute)
+mk_parser(subparsers, 'repeat', repeat)
+mk_parser(subparsers, 'shuffle', shuffle)
 
 parser_play = subparsers.add_parser('play')
 parser_play.add_argument('track_no', metavar='N', type=int, nargs='?',
                         help='Queue track number to play (0-based)')
-parser_play.set_defaults(fun=play)
+parser_play.set_defaults(func=play)
 
 parser_volume = subparsers.add_parser('volume')
 parser_volume.add_argument('volume', metavar='X', choices=('+', '-'), nargs='?',
                         help='Increase ("+") or decrese ("-") volume level')
-parser_volume.set_defaults(fun=volume)
-
+parser_volume.set_defaults(func=volume)
 
 if __name__ == '__main__':
     device = soco.SoCo(DEVICE_ADDRESS)
-
     parser.set_defaults(dev=device)
     args = parser.parse_args()
-    args.fun(args)
+    args.func(args)
 
 # EOF
