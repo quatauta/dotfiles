@@ -64,7 +64,6 @@ def repeat(args):
                     'SHUFFLE_NOREPEAT': 'SHUFFLE',
                     'SHUFFLE':          'SHUFFLE_NOREPEAT', }
     args.dev.play_mode = transitions[args.dev.play_mode]
-    print(args.dev.play_mode)
 
 def shuffle(args):
     transitions = { 'NORMAL':           'SHUFFLE_NOREPEAT',
@@ -72,7 +71,6 @@ def shuffle(args):
                     'SHUFFLE':          'REPEAT_ALL',
                     'REPEAT_ALL':       'SHUFFLE', }
     args.dev.play_mode = transitions[args.dev.play_mode]
-    print(args.dev.play_mode)
 
 def crossfade(args):
     args.dev.cross_fade = not args.dev.cross_fade
