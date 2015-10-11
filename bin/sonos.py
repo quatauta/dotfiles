@@ -58,6 +58,22 @@ def volume(args):
         args.dev.volume = min(vol, MAX_VOLUME)
     print(args.dev.volume)
 
+def repeat(args):
+    transitions = { 'NORMAL':           'REPEAT_ALL',
+                    'REPEAT_ALL':       'NORMAL',
+                    'SHUFFLE_NOREPEAT': 'SHUFFLE',
+                    'SHUFFLE':          'SHUFFLE_NOREPEAT', }
+    args.dev.play_mode = transitions[args.dev.play_mode]
+    print(args.dev.play_mode)
+
+def shuffle(args):
+    transitions = { 'NORMAL':           'SHUFFLE_NOREPEAT',
+                    'SHUFFLE_NOREPEAT': 'NORMAL',
+                    'SHUFFLE':          'REPEAT_ALL',
+                    'REPEAT_ALL':       'SHUFFLE', }
+    args.dev.play_mode = transitions[args.dev.play_mode]
+    print(args.dev.play_mode)
+
 def status(args):
     print(STATUS_FMT.format(vol = args.dev.volume,
                             state = args.dev.get_current_transport_info()['current_transport_state'],
