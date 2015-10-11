@@ -74,6 +74,9 @@ def shuffle(args):
     args.dev.play_mode = transitions[args.dev.play_mode]
     print(args.dev.play_mode)
 
+def crossfade(args):
+    args.dev.cross_fade = not args.dev.cross_fade
+
 def status(args):
     print(STATUS_FMT.format(vol = args.dev.volume,
                             state = args.dev.get_current_transport_info()['current_transport_state'],
@@ -94,6 +97,7 @@ mk_parser(subparsers, 'pause', pause)
 mk_parser(subparsers, 'mute', mute)
 mk_parser(subparsers, 'repeat', repeat)
 mk_parser(subparsers, 'shuffle', shuffle)
+mk_parser(subparsers, 'crossfade', crossfade)
 
 parser_play = subparsers.add_parser('play')
 parser_play.add_argument('track_no', metavar='N', type=int, nargs='?',
