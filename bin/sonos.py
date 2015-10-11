@@ -22,9 +22,9 @@ import soco
 # IP address of your speaker.
 DEVICE_ADDRESS = '10.0.0.11'
 
-def mk_parser(subparsers, name, funct):
+def mk_parser(subparsers, name, func):
     parser = subparsers.add_parser(name)
-    parser.set_defaults(func=funct)
+    parser.set_defaults(func=func)
     return parser
 
 def parser(device):
@@ -41,7 +41,7 @@ def parser(device):
     mk_parser(subparsers, 'repeat', repeat)
     mk_parser(subparsers, 'shuffle', shuffle)
     mk_parser(subparsers, 'status', status)
-    mk_parser(subparsers, 'volume', volume).add_argument('volume', metavar='X', choices=('+', '-'), nargs='?', help='Increase ("+") or decrese ("-") volume level')
+    mk_parser(subparsers, 'volume', volume).add_argument('volume', metavar='+/-', choices=('+', '-'), nargs='?', help='Increase ("+") or decrese ("-") volume level')
     return parser
 
 def crossfade(args):
@@ -102,6 +102,10 @@ if __name__ == '__main__':
     device = soco.SoCo(DEVICE_ADDRESS)
     parser = parser(device)
     args   = parser.parse_args()
-    args.func(args)
+
+    if hasattr(args, 'func'):
+        args.func(args)
+    else:
+        parser.print_help()
 
 # EOF
