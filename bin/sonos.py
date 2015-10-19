@@ -46,9 +46,11 @@ def parser(device):
 
 def crossfade(args):
     args.dev.cross_fade = not args.dev.cross_fade
+    print(args.dev.cross_fade)
 
 def mute(args):
     args.dev.mute = not args.dev.mute
+    print(args.dev.mute)
 
 def play(args):
     if args.track_no is None:
@@ -57,11 +59,16 @@ def play(args):
         args.dev.play_from_queue(args.track_no)
 
 def repeat(args):
+    states = { 'NORMAL':           False,
+               'SHUFFLE_NOREPEAT': False,
+               'REPEAT_ALL':       True,
+               'SHUFFLE':          True, }
     transitions = { 'NORMAL':           'REPEAT_ALL',
                     'REPEAT_ALL':       'NORMAL',
                     'SHUFFLE_NOREPEAT': 'SHUFFLE',
                     'SHUFFLE':          'SHUFFLE_NOREPEAT', }
     args.dev.play_mode = transitions[args.dev.play_mode]
+    print(states[args.dev.play_mode])
 
 def pause(args):
     if args.dev.get_current_transport_info()['current_transport_state'] == 'PAUSED_PLAYBACK':
@@ -75,20 +82,27 @@ def queue(args):
         print(QUEUE_FMT.format(pos=pos, **track))
 
 def shuffle(args):
+    states = { 'NORMAL':           False,
+               'REPEAT_ALL':       False,
+               'SHUFFLE_NOREPEAT': True,
+               'SHUFFLE':          True, }
     transitions = { 'NORMAL':           'SHUFFLE_NOREPEAT',
                     'SHUFFLE_NOREPEAT': 'NORMAL',
                     'SHUFFLE':          'REPEAT_ALL',
                     'REPEAT_ALL':       'SHUFFLE', }
     args.dev.play_mode = transitions[args.dev.play_mode]
+    print(states[args.dev.play_mode])
 
 def status(args):
     STATUS_FMT = '''\
-    {artist} - {title}
-    {album}
-    {position} - {duration}, pos {playlist_position}, vol {vol}, {state}\
-    '''
+{artist} - {title}
+{album}
+{position} - {duration}, pos {playlist_position}, vol {vol}, {state}\
+'''
     print(STATUS_FMT.format(vol = args.dev.volume,
-                            state = args.dev.get_current_transport_info()['current_transport_state'],
+                            state = (args.dev.get_current_transport_info()['current_transport_state'] +
+                                     ', ' + args.dev.play_mode +
+                                     (', CROSSFADE' if args.dev.cross_fade else '')).lower(),
                             **args.dev.get_current_track_info()))
 
 def volume(args):
@@ -107,5 +121,7 @@ if __name__ == '__main__':
         args.func(args)
     else:
         parser.print_help()
+        print()
+        status(args)
 
 # EOF
