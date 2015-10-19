@@ -10,4 +10,4 @@ on-zero-load -v true -l 0.2 &&
 sleep 10 &&
 sync &&
 sleep 10 &&
-systemctl -i hibernate
+systemctl -i hybrid-sleep
