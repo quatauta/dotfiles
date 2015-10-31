@@ -39,6 +39,7 @@ def parser(device):
     mk_parser(subparsers, 'play', play).add_argument('track_no', metavar='N', type=int, nargs='?', help='Queue track number to play (0-based)')
     mk_parser(subparsers, 'previous', lambda a: a.dev.previous())
     mk_parser(subparsers, 'queue', queue)
+    mk_parser(subparsers, 'random', shuffle)
     mk_parser(subparsers, 'repeat', repeat)
     mk_parser(subparsers, 'shuffle', shuffle)
     mk_parser(subparsers, 'status', status)
