@@ -32,6 +32,7 @@ def parser(device):
     subparsers = parser.add_subparsers()
     parser.set_defaults(dev=device)
     mk_parser(subparsers, 'crossfade', crossfade)
+    mk_parser(subparsers, 'help', lambda a: parser.print_help())
     mk_parser(subparsers, 'mute', mute)
     mk_parser(subparsers, 'next', lambda a: a.dev.next())
     mk_parser(subparsers, 'pause', pause)
@@ -120,8 +121,6 @@ if __name__ == '__main__':
     if hasattr(args, 'func'):
         args.func(args)
     else:
-        parser.print_help()
-        print()
         status(args)
 
 # EOF
