@@ -13,6 +13,7 @@ session.ignoreBorder:	false
 session.imageDither:	True
 session.keyFile:	~/.fluxbox/keys
 session.menuFile:	~/.fluxbox/menu
+session.menuSearch:	somewhere
 session.modKey:	Mod1
 session.numLayers:	13
 session.opaqueMove:	false
