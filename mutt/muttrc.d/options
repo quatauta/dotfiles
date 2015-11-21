@@ -18,6 +18,7 @@ spam "X-(GMX-Antivirus|Virus-Status): (1|Yes)"                 "Virus"
   set check_mbox_size
 unset crypt_autoencrypt
   set crypt_autosign
+  set crypt_opportunistic_encrypt
   set crypt_replyencrypt
   set crypt_replysign
   set crypt_replysignencrypted
