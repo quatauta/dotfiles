@@ -48,29 +48,6 @@ if [ -n "$realstartup" ] ; then
     realstartup="$(realpath "${realstartup}")"
 fi
 
-case "${realstartup}" in
-    *box )
-        [ -z "${DESKTOP_SESSION}" ] && export DESKTOP_SESSION="gnome"
-        _start_with_delay gnome-settings-daemon &
-        _start_with_delay fluxbox-generate-menu &
-        _start_with_delay conky -d &
-        _start_with_delay polkit-gnome-authentication-agent-1 &
-
-        _start_with_delay nice ionice -c3 liferea -w hidden 1>/dev/null 2>&1 &
-        _start_with_delay nice ionice -c3 opera-developer 1>/dev/null 2>&1 &
-        _start_with_delay unclutter &
-        _start_with_delay redshift-gtk -c /etc/redshift.conf &
-
-        ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""
-
-        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1055x435+30+50  "${HOME}/.xsession-errors" ">/dev/null"
-        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 525x435+1215+50 --whole "${HOME}/.task/calendar" ">/dev/null"
-        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1600x470+30-40 --cont "\"                `hostname | sed -e 's/./ /g'`» \"" /var/log/messages ">/dev/null"
-
-        type systemctl 1>/dev/null && systemctl --failed --no-pager --no-legend >>"${HOME}/.xsession-errors"
-    ;;
-esac
-
 _start fbsetroot -solid black
 _start xmodmap "${HOME}/.Xmodmap"
 _start xrdb -merge "${HOME}/.Xresources"
@@ -86,6 +63,29 @@ _start_with_delay xset dpms 600 600 600
 _start_with_delay xset m 1 10000
 _start_with_delay xset r rate 250 30
 _start_with_delay numlockx on
+
+case "${realstartup}" in
+    *box )
+        [ -z "${DESKTOP_SESSION}" ] && export DESKTOP_SESSION="gnome"
+        systemctl --user import-environment DESKTOP_SESSION
+        _start_with_delay gnome-settings-daemon &
+        _start_with_delay fluxbox-generate-menu &
+        _start_with_delay conky -d &
+        _start_with_delay polkit-gnome-authentication-agent-1 &
+        _start_with_delay nice ionice -c3 liferea -w hidden 1>/dev/null 2>&1 &
+        _start_with_delay nice ionice -c3 opera-developer 1>/dev/null 2>&1 &
+        _start_with_delay unclutter &
+        ( sleep 3 ; pgrep redshift 1>/dev/null || _start_with_delay redshift-gtk -c /etc/redshift.conf ) &
+
+        ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""
+
+        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1055x435+30+50  "${HOME}/.xsession-errors" ">/dev/null"
+        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 525x435+1215+50 --whole "${HOME}/.task/calendar" ">/dev/null"
+        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1600x470+30-40 --cont "\"                `hostname | sed -e 's/./ /g'`» \"" /var/log/messages ">/dev/null"
+
+        type systemctl 1>/dev/null && systemctl --failed --no-pager --no-legend >>"${HOME}/.xsession-errors"
+    ;;
+esac
 
 # Start window manager
 if [ -n "${realstartup}" ] ; then
