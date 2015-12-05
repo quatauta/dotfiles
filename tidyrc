@@ -1,99 +1,12 @@
 # HTML Tidy Configuration
 # vim:syntax=conf:
 
-# HTML, XHTML, XML
-
 add-xml-decl: yes
 add-xml-space: yes
-# alt-text: 
-# assume-xml-procins: no
-bare: no
-# clean: yes
-css-prefix: tidy
-doctype: auto
-drop-empty-paras: yes
-# drop-font-tags: yes
 drop-proprietary-attributes: yes
-# enclose-block-text: no
 enclose-text: yes
-# escape-cdata: no
-# fix-backslash: yes
-# fix-bad-comments: yes
-# fix-uri: yes
-# hide-comments: no
-# hide-endtags: no
-# indent-cdata: no
-# input-xml: no
-# join-classes: no
-# join-styles: yes
-literal-attributes: yes
-# logical-emphasis: yes
-lower-literals: yes
-# merge-divs: auto
-# merge-spans: auto
-# ncr: yes
-# new-blocklevel-tags: 
-# new-empty-tags: 
-# new-inline-tags: 
-# new-pre-tags: 
-# numeric-entities: no
-# output-html: no
-# output-xhtml: yes
-# output-xml: yes
-quote-ampersand: yes
-quote-marks: yes
-# quote-nbsp: yes
-# repeated-attributes: keep-last
-# replace-color: no
-# show-body-only: no
-# uppercase-attributes: no
-# uppercase-tags: no
-# word-2000: no
-
-# Diagnostics
-
-# accessibility-check: 0 (Tidy Classic)
-show-errors: 6
-# show-warnings: yes
-
-# Pretty Print
-
-# break-before-br: no
-# indent-attributes: yes
-indent-spaces: 2
 indent: yes
-markup: yes
-# punctuation-wrap: yes
-# split: no
-tab-size: 8
-# vertical-space: no
-wrap: 111
-# wrap-asp: yes
-# wrap-attributes: yes
-# wrap-jste: yes
-# wrap-php: yes
-# wrap-script-literals: no
-# wrap-sections: yes
-
-# Character Encoding
-
-# ascii-chars: no
-char-encoding: utf8
-# input-encoding: latin1
-# language: 
-# newline: Platform dependent
-# output-bom: auto
-# output-encoding: ascii
-
-# Miscellaneous
-
-# error-file: 
-# force-output: no
-# gnu-emacs-file: 
-# gnu-emacs: yes
-# keep-time: no
-# output-file: 
-# quiet: no
-# slide-style: 
+literal-attributes: yes
+quote-marks: yes
 tidy-mark: no
-# write-back: no
+wrap: 120
