@@ -52,15 +52,15 @@ ${if_up   eno1} | eno1: ${color1  }${downspeed   eno1}${color0}r ${color1}${upsp
 ${if_up   eno2} | eno2: ${color1  }${downspeed   eno2}${color0}r ${color1}${upspeed   eno2}${color0}u ${totaldown   eno2}r ${totalup   eno2}t ${addrs   eno2}${endif}\
 ${if_up   eno3} | eno3: ${color1  }${downspeed   eno3}${color0}r ${color1}${upspeed   eno3}${color0}u ${totaldown   eno3}r ${totalup   eno3}t ${addrs   eno3}${endif}\
 ${if_up   eno4} | eno4: ${color1  }${downspeed   eno4}${color0}r ${color1}${upspeed   eno4}${color0}u ${totaldown   eno4}r ${totalup   eno4}t ${addrs   eno4}${endif}\
-${if_up enp1s0} | enp1s0: ${color1}${downspeed enp1s0}${color0}r ${color1}${upspeed enp1s0}${color0}u ${totaldown enp1s0}r ${totalup enp1s0}t ${addrs enp1s0} ${endif}\
-${if_up enp2s0} | enp2s0: ${color1}${downspeed enp2s0}${color0}r ${color1}${upspeed enp2s0}${color0}u ${totaldown enp2s0}r ${totalup enp2s0}t ${addrs enp2s0} ${endif}\
-${if_up enp3s0} | enp3s0: ${color1}${downspeed enp3s0}${color0}r ${color1}${upspeed enp3s0}${color0}u ${totaldown enp3s0}r ${totalup enp3s0}t ${addrs enp3s0} ${endif}\
-${if_up enp4s0} | enp4s0: ${color1}${downspeed enp4s0}${color0}r ${color1}${upspeed enp4s0}${color0}u ${totaldown enp4s0}r ${totalup enp4s0}t ${addrs enp4s0} ${endif}\
-${if_up enp5s0} | enp5s0: ${color1}${downspeed enp5s0}${color0}r ${color1}${upspeed enp5s0}${color0}u ${totaldown enp5s0}r ${totalup enp5s0}t ${addrs enp5s0} ${endif}\
-${if_up enp6s0} | enp6s0: ${color1}${downspeed enp6s0}${color0}r ${color1}${upspeed enp6s0}${color0}u ${totaldown enp6s0}r ${totalup enp6s0}t ${addrs enp6s0} ${endif}\
-${if_up enp7s0} | enp7s0: ${color1}${downspeed enp7s0}${color0}r ${color1}${upspeed enp7s0}${color0}u ${totaldown enp7s0}r ${totalup enp7s0}t ${addrs enp7s0} ${endif}\
-${if_up enp8s0} | enp8s0: ${color1}${downspeed enp8s0}${color0}r ${color1}${upspeed enp8s0}${color0}u ${totaldown enp8s0}r ${totalup enp8s0}t ${addrs enp8s0} ${endif}\
-${if_up enp9s0} | enp9s0: ${color1}${downspeed enp9s0}${color0}r ${color1}${upspeed enp9s0}${color0}u ${totaldown enp9s0}r ${totalup enp9s0}t ${addrs enp9s0} ${endif}\
+${if_up enp1s0} | enp1s0: ${color1}${downspeed enp1s0}${color0}r ${color1}${upspeed enp1s0}${color0}u ${totaldown enp1s0}r ${totalup enp1s0}t ${addrs enp1s0}${endif}\
+${if_up enp2s0} | enp2s0: ${color1}${downspeed enp2s0}${color0}r ${color1}${upspeed enp2s0}${color0}u ${totaldown enp2s0}r ${totalup enp2s0}t ${addrs enp2s0}${endif}\
+${if_up enp3s0} | enp3s0: ${color1}${downspeed enp3s0}${color0}r ${color1}${upspeed enp3s0}${color0}u ${totaldown enp3s0}r ${totalup enp3s0}t ${addrs enp3s0}${endif}\
+${if_up enp4s0} | enp4s0: ${color1}${downspeed enp4s0}${color0}r ${color1}${upspeed enp4s0}${color0}u ${totaldown enp4s0}r ${totalup enp4s0}t ${addrs enp4s0}${endif}\
+${if_up enp5s0} | enp5s0: ${color1}${downspeed enp5s0}${color0}r ${color1}${upspeed enp5s0}${color0}u ${totaldown enp5s0}r ${totalup enp5s0}t ${addrs enp5s0}${endif}\
+${if_up enp6s0} | enp6s0: ${color1}${downspeed enp6s0}${color0}r ${color1}${upspeed enp6s0}${color0}u ${totaldown enp6s0}r ${totalup enp6s0}t ${addrs enp6s0}${endif}\
+${if_up enp7s0} | enp7s0: ${color1}${downspeed enp7s0}${color0}r ${color1}${upspeed enp7s0}${color0}u ${totaldown enp7s0}r ${totalup enp7s0}t ${addrs enp7s0}${endif}\
+${if_up enp8s0} | enp8s0: ${color1}${downspeed enp8s0}${color0}r ${color1}${upspeed enp8s0}${color0}u ${totaldown enp8s0}r ${totalup enp8s0}t ${addrs enp8s0}${endif}\
+${if_up enp9s0} | enp9s0: ${color1}${downspeed enp9s0}${color0}r ${color1}${upspeed enp9s0}${color0}u ${totaldown enp9s0}r ${totalup enp9s0}t ${addrs enp9s0}${endif}\
 ${if_up   eth0} | eth0: ${color1  }${downspeed   eth0}${color0}r ${color1}${upspeed   eth0}${color0}t ${totaldown   eth0}r ${totalup   eth0}t ${addrs   eth0}${endif}\
 ${if_up   eth1} | eth1: ${color1  }${downspeed   eth1}${color0}r ${color1}${upspeed   eth1}${color0}t ${totaldown   eth1}r ${totalup   eth1}t ${addrs   eth1}${endif}\
 ${if_up   eth2} | eth2: ${color1  }${downspeed   eth2}${color0}r ${color1}${upspeed   eth2}${color0}t ${totaldown   eth2}r ${totalup   eth2}t ${addrs   eth2}${endif}\
