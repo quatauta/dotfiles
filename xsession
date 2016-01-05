@@ -72,8 +72,6 @@ case "${realstartup}" in
         _start_with_delay fluxbox-generate-menu &
         _start_with_delay conky -d &
         _start_with_delay polkit-gnome-authentication-agent-1 &
-        _start_with_delay nice ionice -c3 liferea -w hidden 1>/dev/null 2>&1 &
-        _start_with_delay nice ionice -c3 opera-developer 1>/dev/null 2>&1 &
         _start_with_delay unclutter &
         ( sleep 3 ; pgrep redshift 1>/dev/null || _start_with_delay redshift-gtk -c /etc/redshift.conf ) &
 
