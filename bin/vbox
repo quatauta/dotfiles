@@ -48,19 +48,13 @@ case "${1}" in
         _vbox_modules
         VirtualBox &
         ;;
-    start )
+    start | startvm )
         _vbox_modules
         shift
         VBoxManage startvm "${@}"
         _vbox_nice
         ;;
-    startvm )
-        _vbox_modules
-        VBoxManage "${@}"
-        _vbox_nice
-        ;;
     * )
-        _vbox_modules
         VBoxManage "${@}"
         ;;
 esac
