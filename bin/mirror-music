@@ -4,12 +4,13 @@ MUSIC_DIR="$HOME/Dokumente/musik"
 REMOTE_HOST="narsbo"
 REMOTE_DIR="musik"
 REMOTE_USER="daniel"
-SMB_URL="smb://${REMOTE_USER}@${REMOTE_HOST}/${REMOTE_DIR}"
+SMB_URL="smb://WORKGROUP;${REMOTE_USER}@${REMOTE_HOST}/${REMOTE_DIR}"
 GVFS_DIR="/run/user/${UID}/gvfs"
 RSYNC_OPTS="-hir --delete --delete-after --modify-window=5 --stats"
 
 renice 20 $$ 1>/dev/null
 ionice -c 3 -p$$
+chmod -R a-w "${MUSIC_DIR}"
 
 if [ -d "${MUSIC_DIR}" ] ; then
     gvfs-mount -i "${SMB_URL}"
