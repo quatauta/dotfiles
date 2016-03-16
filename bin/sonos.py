@@ -43,6 +43,7 @@ def parser(device):
     mk_parser(subparsers, 'repeat', repeat)
     mk_parser(subparsers, 'shuffle', shuffle)
     mk_parser(subparsers, 'status', status)
+    mk_parser(subparsers, 'update', update_library)
     mk_parser(subparsers, 'volume', volume).add_argument('volume', metavar='+/-', choices=('+', '-'), nargs='?', help='Increase ("+") or decrese ("-") volume level')
     return parser
 
@@ -97,8 +98,7 @@ def shuffle(args):
 
 def status(args):
     STATUS_FMT = '''\
-{artist} - {title}
-{album}
+{artist} - {album} - {title}
 {position} - {duration}, pos {playlist_position}, vol {vol}, {state}\
 '''
     print(STATUS_FMT.format(vol = args.dev.volume,
@@ -106,6 +106,10 @@ def status(args):
                                      ', ' + args.dev.play_mode +
                                      (', CROSSFADE' if args.dev.cross_fade else '')).lower(),
                             **args.dev.get_current_track_info()))
+    print(args.dev.get_current_track_info())
+
+def update_library(args):
+    args.dev.start_library_update('WMP')
 
 def volume(args):
     MAX_VOLUME = 70
