@@ -73,7 +73,8 @@ case "${realstartup}" in
         _start_with_delay conky -d &
         _start_with_delay polkit-gnome-authentication-agent-1 &
         _start_with_delay unclutter &
-        ( sleep 3 ; pgrep redshift 1>/dev/null || _start_with_delay redshift-gtk -c /etc/redshift.conf ) &
+        _start_with_delay liferea -w hidden &
+        ( sleep 1 ; pgrep redshift 1>/dev/null || _start_with_delay redshift-gtk -c /etc/redshift.conf ) &
 
         ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""
 
