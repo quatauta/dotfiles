@@ -62,16 +62,14 @@ def play(args):
         args.dev.play_from_queue(args.track_no)
 
 def repeat(args):
-    states = { 'NORMAL':           False,
-               'SHUFFLE_NOREPEAT': False,
-               'REPEAT_ALL':       True,
-               'SHUFFLE':          True, }
-    transitions = { 'NORMAL':           'REPEAT_ALL',
-                    'REPEAT_ALL':       'NORMAL',
-                    'SHUFFLE_NOREPEAT': 'SHUFFLE',
-                    'SHUFFLE':          'SHUFFLE_NOREPEAT', }
+    transitions = { 'NORMAL':             'REPEAT_ALL',
+                    'REPEAT_ALL':         'REPEAT_ONE',
+                    'REPEAT_ONE':         'NORMAL',
+                    'SHUFFLE_NOREPEAT':   'SHUFFLE',
+                    'SHUFFLE':            'SHUFFLE_REPEAT_ONE',
+                    'SHUFFLE_REPEAT_ONE': 'SHUFFLE_NOREPEAT', }
     args.dev.play_mode = transitions[args.dev.play_mode]
-    print(states[args.dev.play_mode])
+    print(args.dev.play_mode)
 
 def pause(args):
     if args.dev.get_current_transport_info()['current_transport_state'] == 'PAUSED_PLAYBACK':
@@ -85,16 +83,14 @@ def queue(args):
         print(QUEUE_FMT.format(pos=pos, **track))
 
 def shuffle(args):
-    states = { 'NORMAL':           False,
-               'REPEAT_ALL':       False,
-               'SHUFFLE_NOREPEAT': True,
-               'SHUFFLE':          True, }
-    transitions = { 'NORMAL':           'SHUFFLE_NOREPEAT',
-                    'SHUFFLE_NOREPEAT': 'NORMAL',
-                    'SHUFFLE':          'REPEAT_ALL',
-                    'REPEAT_ALL':       'SHUFFLE', }
+    transitions = { 'NORMAL':             'SHUFFLE_NOREPEAT',
+                    'SHUFFLE_NOREPEAT':   'NORMAL',
+                    'SHUFFLE_REPEAT_ONE': 'REPEAT_ONE',
+                    'REPEAT_ONE':         'SHUFFLE_REPEAT_ONE',
+                    'SHUFFLE':            'REPEAT_ALL',
+                    'REPEAT_ALL':         'SHUFFLE', }
     args.dev.play_mode = transitions[args.dev.play_mode]
-    print(states[args.dev.play_mode])
+    print(args.dev.play_mode)
 
 def status(args):
     STATUS_FMT = '''\
@@ -106,7 +102,6 @@ def status(args):
                                      ', ' + args.dev.play_mode +
                                      (', CROSSFADE' if args.dev.cross_fade else '')).lower(),
                             **args.dev.get_current_track_info()))
-    print(args.dev.get_current_track_info())
 
 def update_library(args):
     args.dev.start_library_update('WMP')
