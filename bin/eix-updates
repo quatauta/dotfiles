@@ -49,22 +49,30 @@ def parse_eix_versions(lines = [])
 end
 
 def parse_eix_version(line = "")
-  version, slot = line.sub(/\)$/, '').split(/\(/)
-  { version: version, slot: slot || 0, }
+  version, slot = line.sub(/\)$/, '').split(/[(\/]/)
+  { version: version,
+    slot:    (slot || 0).to_s, }
 end
 
-def updates
+def eix_updates
   parse_eix(eix())
 end
 
 if __FILE__ == $0
-  updates.each_pair { |package_name, updates|
-    puts package_name
+  updates       = eix_updates()
+  name_width    = updates.keys.map(&:length).max
+  version_width = updates.values.map(&:values).flatten.map(&:length).max
+  update_format = "%<name>-#{name_width}s " + 
+                  "(%<slot>s) " +
+                  "%<installed>-#{version_width}s -> " +
+                  "%<update>-#{version_width}s"
 
+  updates.each_pair { |package_name, updates|
     updates.each_pair { |slot, versions|
-      puts "  (%s) %s -> %s" % [ slot, *versions ]
+      puts update_format % { name:      package_name,
+                             installed: versions.first,
+                             update:    versions.last,
+                             slot:      slot }
     }
   }
 end
-
-
