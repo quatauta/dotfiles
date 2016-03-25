@@ -25,13 +25,16 @@ def parse_eix(lines = [])
                                                   .split(/ -> /)
                                                   .map { |s| parse_eix_versions(s.split) }
 
-    installed_versions.each_pair { |installed_slot, installed_version|
-      if update_versions[installed_slot] &&
-         update_versions[installed_slot] != installed_version
-        (updates[package_name] ||= {})[installed_slot] = [ installed_version,
-                                                           update_versions[installed_slot] ]
-      end
-    }
+    if installed_versions && !installed_versions.empty?
+      installed_versions.each_pair { |installed_slot, installed_version|
+        if update_versions &&
+           update_versions[installed_slot] &&
+           update_versions[installed_slot] != installed_version
+          (updates[package_name] ||= {})[installed_slot] = [ installed_version,
+                                                             update_versions[installed_slot] ]
+        end
+      }
+    end
   }
 
   updates
