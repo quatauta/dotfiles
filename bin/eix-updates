@@ -3,7 +3,7 @@
 # vim:set fileencoding=utf8:
 
 def eix
-  `LANG=C eix -n -u -c`
+  `LANG=C eix -n -I -c`
     .gsub(/: .*/,       '') # Remove package description
     .gsub(/^\[[^ ]\] /, '') # Remove update indicator "[u]"
     .gsub(/{[^ ]*}/i,   '') # Remove binary package indicator {tbz2}
