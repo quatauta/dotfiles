@@ -27,6 +27,7 @@ session.screen0.decorateTransient:	false
 session.screen0.defaultDeco:	NORMAL
 session.screen0.demandsAttentionTimeout:	500
 session.screen0.desktopwheeling:	false
+session.screen0.edgeResizeSnapThreshold:	4
 session.screen0.edgeSnapThreshold:	4
 session.screen0.focusLastWindow:	true
 session.screen0.focusModel:	ClickFocus
@@ -49,7 +50,7 @@ session.screen0.menu.alpha:	255
 session.screen0.menuDelay:	100
 session.screen0.menuDelayClose:	50
 session.screen0.menuMode:	Delay
-session.screen0.noFocusWhileTypingDelay:	1
+session.screen0.noFocusWhileTypingDelay:	500
 session.screen0.opaqueMove:	true
 session.screen0.overlay.capStyle:	CapNotLast
 session.screen0.overlay.joinStyle:	JoinMiter
