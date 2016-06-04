@@ -44,7 +44,7 @@ def parser(device):
     mk_parser(subparsers, 'shuffle', shuffle)
     mk_parser(subparsers, 'status', status)
     mk_parser(subparsers, 'update', update_library)
-    mk_parser(subparsers, 'volume', volume).add_argument('volume', metavar='+/-', choices=('+', '-'), nargs='?', help='Increase ("+") or decrese ("-") volume level')
+    mk_parser(subparsers, 'volume', volume).add_argument('volume', metavar='[+]N/-N', nargs='?', help='Change volume level by +/-N')
     return parser
 
 def crossfade(args):
@@ -108,9 +108,20 @@ def update_library(args):
 
 def volume(args):
     MAX_VOLUME = 70
-    if args.volume is not None:
-        vol = args.dev.volume + (3 if args.volume == '+' else -3)
-        args.dev.volume = min(vol, MAX_VOLUME)
+    volume_step = args.volume
+
+    if volume_step is None or volume_step == '':
+        volume_step = 0
+
+    if volume_step == '+' or volume_step == '-':
+        volume_step = volume_step + "3"
+
+    volume_step = int(volume_step)
+
+    if volume_step != 0:
+        new_volume = min(args.dev.volume + volume_step, MAX_VOLUME)
+        args.dev.volume = new_volume
+
     print(args.dev.volume)
 
 if __name__ == '__main__':
@@ -122,5 +133,3 @@ if __name__ == '__main__':
         args.func(args)
     else:
         status(args)
-
-# EOF
