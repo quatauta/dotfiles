@@ -1,27 +1,45 @@
 #!/bin/sh
 
-# screen -wipe >/dev/null
-# 
-# SCREEN="$(screen -ls | awk '/(At|De)tached/ { print $1 }' | head -n1)"
-# 
-# if [ -n "${SCREEN}" ] ; then
-#     exec screen -x "${SCREEN}"
-# else
-#     exec screen "${@}"
-# fi
+_mode() {
+    MODES="tmux screen"
 
-TMUX_SESSIONS="$(tmux list-sessions 2>/dev/null | grep -iv 'attached' | awk '/./ { print $1 }' | head -n1)"
-
-if [ -n "${TMUX}" ] ; then
-    echo "This is a tmux session! No need to start an additional one within."
-else
-    if [ -n "${TMUX_SESSIONS}" ] ; then
-        if [ -n "$1" ] ; then
-            tmux new-window "${@}"
+    for M in ${MODES} ; do
+        if [ -x "$(which "${M}" 2>/dev/null)" ] ; then
+            echo "${M}"
+            break
         fi
+    done
+}
 
-        exec tmux attach-session -t "${TMUX}"
-    else
-        exec tmux new-session "${@}"
+_detached_session_screen() {
+    screen -ls 2>/dev/null |
+    grep -i 'detached' |
+    awk '{ print $1 }' |
+    head -n1
+}
+
+_detached_session_tmux() {
+    tmux list-sessions 2>/dev/null |
+    grep -iv 'attached' |
+    awk '{ print $1 }' |
+    head -n1
+}
+
+_attach_session_screen() {
+    exec screen -r "$1"
+}
+
+_attach_session_tmux() {
+    if [ -z "${TMUX}" ] ; then
+        exec tmux attach-session -t "$1"
     fi
+}
+
+export MODE="$(_mode)"
+export DETACHED_SESSION="$(_detached_session_"${MODE}")"
+
+if [ -n "${DETACHED_SESSION}" ] ; then
+    _attach_session_"${MODE}" "${DETACHED_SESSION}"
+else
+    "${MODE}"
 fi
