@@ -1,0 +1,11 @@
+[Unit]
+Description=Conky system monitor for X11
+Documentation=https://github.com/brndnmtthws/conky
+After=display-manager.service
+
+[Service]
+ExecStart=/usr/bin/conky
+Restart=always
+
+[Install]
+WantedBy=default.target
