@@ -1,0 +1,11 @@
+[Unit]
+Description=Conky hides mouse pointer while not in use
+Documentation=http://www.ibiblio.org/pub/X11/contrib/utilities/unclutter-8.README
+After=display-manager.service
+
+[Service]
+ExecStart=/usr/bin/unclutter
+Restart=always
+
+[Install]
+WantedBy=default.target
