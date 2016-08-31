@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+
+require 'xmlrpc/client'
+
+options = {
+  server:    "localhost",
+  port:      "6800",
+  path:      "/rpc",
+  user:      "",
+  passwd:    "",
+  command:   "aria2.tellActive",
+  resources: [],
+  verbose:   false,
+  separator: "\n",
+}
+
+options[:separator] = "\0" if ARGV.any? { |a| a =~ /^-+[z0]/ }
+options[:verbose]   = true if ARGV.any? { |a| a =~ /^-+v/ }
+
+client = XMLRPC::Client.new3(options)
+result = client.call(options[:command], options[:resources])
+files  = result.map    { |d| d["files"] }.flatten
+               .map    { |f|
+                 f["completed"] = f["completedLength"].to_f / f["length"].to_f
+                 f["shortPath"] = f["path"].sub(File.join(Dir.pwd, ""), "")
+                 f
+               }
+               .select { |f| f["completed"] >= (options[:verbose] ? 0 : 1.0) }
+               .sort   { |a, b| a["path"] <=> b["path"] }
+               .sort   { |a, b| a["completed"] <=> b["completed"] }
+
+if options[:verbose]
+  total_completedLength = 0
+  total_length          = 0
+  fmt = "%<completed>6.1f%%" + " " +
+        "%<completedLength>7.1f" + "/" + "%-<length>7.1f" + " " +
+        "%<path>s"
+
+  files.each do |f|
+    total_completedLength += f["completedLength"].to_i
+    total_length          += f["length"].to_i
+
+    puts fmt % {
+      completed:       f["completed"].to_f * 100,
+      completedLength: f["completedLength"].to_f / 1024**2,
+      length:          f["length"].to_f / 1024**2,
+      path:            "'%s'" % [ f["shortPath"] ]
+    }
+  end
+
+  puts fmt % {
+    completed:       (total_completedLength.to_f / total_length.to_f) * 100,
+    completedLength: total_completedLength.to_f / 1024**2,
+    length:          total_length.to_f / 1024**2,
+    path:            "[total]",
+  }
+elsif options[:separator] == "\0"
+  $stdout.print(files.map { |f| f["path"].strip }.join(options[:separator]))
+else
+  puts files.map { |f| f["path"].strip }
+end
