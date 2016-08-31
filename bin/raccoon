@@ -1,0 +1,5 @@
+#!/bin/sh
+
+JAR="$(ls "${0}"*.jar | tail -n1)"
+
+[ -r "${JAR}" ] && java -Draccoon.home="${HOME}/.raccoon" -jar "${JAR}" "${@}"
