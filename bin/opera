@@ -23,7 +23,7 @@ _best_opera() {
 }
 
 _paxctl() {
-    PAXCTL="$(PATH="${PATH}:/bin:/sbin:/usr/bin:/usr/sbin" which paxctl-ng)"
+    PAXCTL="$(PATH="${PATH}:/bin:/sbin:/usr/bin:/usr/sbin" which paxctl)"
 
     echo "${PAXCTL}"
 }
