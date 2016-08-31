@@ -32,11 +32,12 @@ pager = less -FRX
 helper = cache
 
 [color]
-ui = true
+ui = auto
 
 [diff]
 mnemonicprefix = true
 renames = copies
+submodule = log
 
 [help]
 autocorrect = -1
@@ -51,3 +52,9 @@ followTags = true
 [status]
 branch = true
 short = true
+
+[log]
+date = iso
+
+[transfer]
+fsckObjects = true
