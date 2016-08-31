@@ -161,7 +161,6 @@
  '(display-time-day-and-date t)
  '(display-time-format "%a, %e. %b %Y  %H:%M ")
  '(display-time-mode t)
- '(display-time-use-mail-icon t)
  '(european-calendar-style t)
  '(fill-column 90)
  '(font-latex-quotes (quote german))
