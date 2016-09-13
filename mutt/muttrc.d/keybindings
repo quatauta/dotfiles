@@ -8,6 +8,8 @@ bind generic <right>   select-entry
 
 bind index <left>      change-folder
 bind index <right>     display-message
+bind index S           vfolder-from-query
+bind index <esc>X      vfolder-from-query
 
 bind attach <left>     exit
 bind attach <right>    view-attach

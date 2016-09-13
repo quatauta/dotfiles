@@ -1,11 +1,12 @@
 # Daniel Schömer's muttrc
 # vim:syntax=muttrc:
 
-set folder    = "~/Mail"
+set folder    = "$HOME/Mail"
 set mbox      = "=.local"
 set postponed = "=.postponed"
 set record    = "="
 #set trash    = "=.trash" # Set via folder-hooks in ~/.mutt/muttrc_hooks
+set nm_default_uri = "notmuch://$HOME/Mail"
 
 mailboxes "!" `~/.mutt/folders $HOME/Mail`
 
