@@ -3,7 +3,6 @@
 QUEUEDIR="$HOME/.msmtpqueue"
 LOCKFILE="$QUEUEDIR/.lock"
 MAXWAIT=120
-EXIT_CODE=0
 
 OPTIONS=$@
 
@@ -21,12 +20,18 @@ if [ -e "$LOCKFILE" ]; then
 	exit 1
 fi
 
+DEFAULT_ROUTE="$(ip -4 route list match 100.0.0.1 ; ip -6 route list match 1::1)"
+if [ -z "${DEFAULT_ROUTE}" ] ; then
+    echo "No default ip route."
+    exit 0
+fi
+
 # change into $QUEUEDIR 
 cd "$QUEUEDIR" || exit 1
 
 # check for empty queuedir
 if [ "`echo *.mail`" = '*.mail' ]; then
-	#echo "No mails in $QUEUEDIR"
+	echo "No mails in $QUEUEDIR"
 	exit 0
 fi
 
@@ -36,7 +41,7 @@ touch "$LOCKFILE" || exit 1
 # process all mails
 for MAILFILE in *.mail; do
 	MSMTPFILE="`echo $MAILFILE | sed -e 's/mail/msmtp/'`"
-	echo "Sending $MAILFILE to `sed -e 's/^.*-- \(.*$\)/\1/' $MSMTPFILE` ..."
+	echo "*** Sending $MAILFILE to `sed -e 's/^.*-- \(.*$\)/\1/' $MSMTPFILE` ..."
 	if [ ! -f "$MSMTPFILE" ]; then
 		echo "No corresponding file $MSMTPFILE found"
 		echo "FAILURE"
@@ -47,7 +52,6 @@ for MAILFILE in *.mail; do
 		rm "$MAILFILE" "$MSMTPFILE"
 		echo "$MAILFILE sent successfully"
 	else
-		EXIT_CODE=2
 		echo "FAILURE"
 	fi
 done
@@ -55,4 +59,4 @@ done
 # remove the lock
 rm -f "$LOCKFILE"
 
-exit $EXIT_CODE
+exit 0

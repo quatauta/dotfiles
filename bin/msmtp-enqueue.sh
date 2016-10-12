@@ -38,7 +38,9 @@ cat > "$MAILFILE" || exit 1
 # Replace the test with something suitable for your site.
 #ping -c 1 -w 2 SOME-IP-ADDRESS > /dev/null 
 #if [ $? -eq 0 ]; then
-DEFAULT_ROUTE="$(awk '$2 ~ /00000000/ && $8 ~ /00000000/ { print "1" }' /proc/net/route)"
-if [ "" != "${DEFAULT_ROUTE}" ] ; then
-	msmtp-runqueue.sh
+DEFAULT_ROUTE="$(ip -4 route list match 100.0.0.1 ; ip -6 route list match 1::1)"
+if [ -n "${DEFAULT_ROUTE}" ] ; then
+    msmtp-runqueue.sh
 fi
+
+exit 0
