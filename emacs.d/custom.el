@@ -167,6 +167,7 @@
  '(fringe-indicators (quote left) nil (fringe))
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
+ '(global-linum-mode t)
  '(history-length t)
  '(hl-line-face (quote highlight))
  '(home-end-enable t)
