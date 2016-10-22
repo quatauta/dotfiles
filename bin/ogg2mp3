@@ -10,7 +10,7 @@ sed -e 's|"|\\"|g' |
 sort -uz |
 xargs -0r -P${CPUS} -IOGG sh -c 'if [ ! -r "OGG.mp3" ] ; then
                                      echo "$(date +%H:%M:%S) OGG -> mp3 ..." ;
-                                     oggdec -Q -o- "OGG" | lame -V4 --quiet - "OGG.mp3" ;
+                                     oggdec -Q -o- "OGG" | lame -V2 --quiet - "OGG.mp3" ;
                                      echo "$(date +%H:%M:%S) OGG done." ;
                                  fi'
 

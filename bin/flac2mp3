@@ -10,7 +10,7 @@ sed -e 's|"|\\"|g' |
 sort -uz |
 xargs -0r -P${CPUS} -IFLAC sh -c 'if [ ! -r "FLAC.mp3" ] ; then
                                       echo "$(date +%H:%M:%S) FLAC -> mp3 ..." ;
-                                      flac -cds "FLAC" | lame -V4 --quiet - "FLAC.mp3" ;
+                                      flac -cds "FLAC" | lame -V2 --quiet - "FLAC.mp3" ;
                                       echo "$(date +%H:%M:%S) FLAC done." ;
                                   fi'
 
