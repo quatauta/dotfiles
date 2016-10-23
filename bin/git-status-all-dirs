@@ -7,6 +7,6 @@ sed -e 's|/\.git$||' |
 while read BRANCH ; do
     pushd "${BRANCH}" >/dev/null
     GIT_STATUS="$(prompt_git_status '[' ']')"
-    printf '%-14s %s\n' "${GIT_STATUS}" "${BRANCH}"
+    printf '%-20s %s\n' "${GIT_STATUS}" "${BRANCH}"
     popd >/dev/null
 done
