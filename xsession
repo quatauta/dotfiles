@@ -55,6 +55,7 @@ _start xset dpms 600 600 600 &
 _start xset m 1 10000 &
 _start xset r rate 250 30 &
 ( _start numlockx off ; _start numlockx on ) &
+_start xcape -e 'Control_L=Escape' &
 
 _start_with_delay xmodmap "${HOME}/.Xmodmap" &
 _start_with_delay xrdb -merge "${HOME}/.Xresources" &
