@@ -1,0 +1,72 @@
+#!/bin/sh
+
+export IMAGE="gitlab/gitlab-ce:latest"
+export CONTAINER="gitlab"
+export HOSTNAME="$(hostname -f)"
+export HTTP="5080"
+export HTTPS="5443"
+export SSHD="5022"
+export REGISTRY="5005"
+export PORTS="${HTTPS}:${HTTPS} ${HTTP}:${HTTP} ${SSHD}:22 ${REGISTRY}:${REGISTRY}"
+export VOLUMES="/var/lib/gitlab/config:/etc/gitlab
+                /var/lib/gitlab/logs:/var/log/gitlab
+                /var/lib/gitlab/data:/var/opt/gitlab"
+export GITLAB_OMNIBUS_CONFIG="external_url 'https://${HOSTNAME}:${HTTPS}/';
+                              nginx['redirect_http_to_https'] = true;
+                              gitlab_rails['gitlab_shell_ssh_port'] = ${SSHD};
+                              registry_external_url 'https://${HOSTNAME}:${REGISTRY}/';"
+
+_exists() {
+    sudo docker ps -f name="${CONTAINER}" | grep -q "${CONTAINER}"
+}
+
+_create() {
+    echo "Creating docker container ${CONTAINER} ..."
+    sudo docker create \
+        --name "${CONTAINER}" \
+        --hostname "${HOSTNAME}" \
+        $(printf " --publish %s" ${PORTS}) \
+        $(printf " --volume %s" ${VOLUMES}) \
+        --env GITLAB_OMNIBUS_CONFIG="${GITLAB_OMNIBUS_CONFIG}" \
+        "${IMAGE}"
+}
+
+_update() {
+    sudo docker pull "${IMAGE}"
+    _stop
+    _remove
+    echo "Updating docker image ${IMAGE} ..."
+    _create
+}
+
+_remove() {
+    _stop
+    echo "Removing docker container ${CONTAINER} ..."
+    sudo docker rm "${CONTAINER}"
+}
+
+_start() {
+    echo "Starting docker container ${CONTAINER} ..."
+    sudo docker start "${CONTAINER}"
+    sudo systemctl start gitlab-runner
+}
+
+_restart() {
+    _stop
+    _start
+}
+
+_stop() {
+    echo "Stoping docker container ${CONTAINER} ..."
+    sudo systemctl stop gitlab-runner
+    sudo docker stop "${CONTAINER}"
+}
+
+_exec() {
+    sudo docker exec -it "${CONTAINER}" "${@}"
+}
+
+CMD="_${1:-start}"
+shift
+
+"${CMD}" "${@}"
