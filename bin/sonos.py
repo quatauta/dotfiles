@@ -72,7 +72,7 @@ def repeat(args):
     print(args.dev.play_mode)
 
 def pause(args):
-    if args.dev.get_current_transport_info()['current_transport_state'] == 'PAUSED_PLAYBACK':
+    if args.dev.get_current_transport_info()['current_transport_state'] != 'PLAYING':
         args.dev.play()
     else:
         args.dev.pause()
