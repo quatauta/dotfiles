@@ -17,3 +17,9 @@ else
     export EDITOR="vi"
     export ALTERNATE_EDITOR="vi"
 fi
+
+GPGAGENT="`which gpg-agent 2>/dev/null`"
+if [ -n "${GPGAGENT}" ] && [ -x "${GPGAGENT}" ] && ! pgrep -U "${UID}" gpg-agent 1>/dev/null ; then
+    eval "$("${GPGAGENT}" --enable-ssh-support --sh --daemon --default-cache-ttl 300 --max-cache-ttl 3600)"
+    [ -z "${GPG_AGENT_INFO}" ] && export GPG_AGENT_INFO=1
+fi
