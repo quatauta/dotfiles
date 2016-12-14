@@ -32,7 +32,6 @@ unset crypt_autoencrypt
   set fast_reply
  #set header_cache      = ~/.mutt/cache/header
   set history_file      = ~/.cache/mutt-history
-  set hostname          = `hostname -f`
   set imap_check_subscribed
   set imap_idle
   set include
