@@ -16,13 +16,30 @@ export GITLAB_OMNIBUS_CONFIG="external_url 'https://${HOSTNAME}:${HTTPS}/';
                               gitlab_rails['gitlab_shell_ssh_port'] = ${SSHD};
                               registry_external_url 'https://${HOSTNAME}:${REGISTRY}/';"
 
+export DOCKER="sudo docker"
+groups | egrep -q -i '\Wdocker\W' && export DOCKER="docker"
+
 _exists() {
-    sudo docker ps -f name="${CONTAINER}" | grep -q "${CONTAINER}"
+    "${DOCKER}" ps -a -f name="${CONTAINER}" | grep -q "${CONTAINER}"
+}
+
+_started() {
+    "${DOCKER}" ps -f name="${CONTAINER}" | grep -q "${CONTAINER}"
+}
+
+_gc() {
+    if _started ; then
+        echo "Garbage collection for gitlab docker image registry..."
+        "${DOCKER}" exec "${CONTAINER}" su -l registry -c "/opt/gitlab/embedded/bin/registry garbage-collect /var/opt/gitlab/registry/config.yml"
+        "${DOCKER}" exec "${CONTAINER}" gitlab-ctl restart registry >/dev/null
+    fi
 }
 
 _create() {
+    _stop
+    _remove
     echo "Creating docker container ${CONTAINER} ..."
-    sudo docker create \
+    "${DOCKER}" create \
         --name "${CONTAINER}" \
         --hostname "${HOSTNAME}" \
         $(printf " --publish %s" ${PORTS}) \
@@ -32,23 +49,22 @@ _create() {
 }
 
 _update() {
-    sudo docker pull "${IMAGE}"
-    _stop
-    _remove
-    echo "Updating docker image ${IMAGE} ..."
+    echo "Pulling docker image ${IMAGE} ..."
+    "${DOCKER}" pull "${IMAGE}"
     _create
 }
 
 _remove() {
     _stop
     echo "Removing docker container ${CONTAINER} ..."
-    sudo docker rm "${CONTAINER}"
+    "${DOCKER}" rm "${CONTAINER}"
 }
 
 _start() {
+    _exists || _create
     echo "Starting docker container ${CONTAINER} ..."
-    sudo docker start "${CONTAINER}"
-    sudo systemctl start gitlab-runner
+    "${DOCKER}" start "${CONTAINER}"
+    systemctl status --no-pager gitlab-runner >/dev/null 2>&1 || sudo systemctl start gitlab-runner
 }
 
 _restart() {
@@ -57,13 +73,14 @@ _restart() {
 }
 
 _stop() {
-    echo "Stoping docker container ${CONTAINER} ..."
+    _gc
     sudo systemctl stop gitlab-runner
-    sudo docker stop "${CONTAINER}"
+    echo "Stoping docker container ${CONTAINER} ..."
+    "${DOCKER}" stop "${CONTAINER}"
 }
 
 _exec() {
-    sudo docker exec -it "${CONTAINER}" "${@}"
+    "${DOCKER}" exec -it "${CONTAINER}" "${@}"
 }
 
 CMD="_${1:-start}"
