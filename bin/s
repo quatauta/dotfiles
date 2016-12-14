@@ -41,5 +41,5 @@ export DETACHED_SESSION="$(_detached_session_"${MODE}")"
 if [ -n "${DETACHED_SESSION}" ] ; then
     _attach_session_"${MODE}" "${DETACHED_SESSION}"
 else
-    "${MODE}"
+    exec "${MODE}"
 fi
