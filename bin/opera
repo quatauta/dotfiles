@@ -37,10 +37,4 @@ _pax_flags() {
 }
 
 OPERA="$(_best_opera)"
-
-if ! _pax_flags "${OPERA}" | grep -q 'm' ; then
-    echo "Please disable PaX MPROTECT for ${OPERA}" 1>&2
-    echo "sudo $(_paxctl) -m ${OPERA}" 1>&2
-fi
-
 exec "${OPERA}" "${@}"
