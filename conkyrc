@@ -1,53 +1,50 @@
-# Addresses:       exec ip -o a s eth0 scope global | awk '/inet/ { printf("%s ", $4) }'
-# Default gw IPv4: exec ip -4 route show dev eth0 | awk '/default/ { printf("%s", $3) }'
-# Default gw IPv4: exec ip -6 route show dev eth0 | awk '/default/ { printf("%s", $3) }'
+-- ~/.conkyrc
+-- vim:set syntax=lua:
 
-alignment bottom_left
-background no
-border_width 0
-default_color 85806c
-default_outline_color black
-default_shade_color black
-double_buffer no
-draw_borders no
-draw_graph_borders no
-draw_outline no
-draw_shades no
-gap_x 30
-gap_y 5
-if_up_strictness link
-no_buffers yes
-out_to_console no
-own_window_transparent true
-pad_percents 3
-short_units yes
-update_interval 5
-use_spacer left
-use_xft yes
-xftfont Fixed:size=8
+conky.config = {
+    alignment = "bottom_left",
+    background = false,
+    border_width = 0,
+    color0 = "9e9e92",
+    color1 = "e4e2d4",
+    default_color = "85806c",
+    default_outline_color = "black",
+    default_shade_color = "black",
+    double_buffer = false,
+    draw_borders = false,
+    draw_graph_borders = false,
+    draw_outline = false,
+    draw_shades = false,
+    font = "Fixed:size=8",
+    gap_x = 30,
+    gap_y = 5,
+    if_up_strictness = "link",
+    no_buffers = true,
+    out_to_console = false,
+    own_window_transparent = true,
+    pad_percents = 3,
+    short_units = true,
+    update_interval = 5,
+    use_spacer = "left",
+    use_xft = true,
+}
 
-color0 9e9e92
-color1 e4e2d4
-
-TEXT
-
+conky.text = [[
 ${color0}root:${fs_used_perc /}% | \
 sys:${hwmon 0 temp 1}°C ${hwmon 0 fan 2}/m | \
 linux ${kernel} | \
-${time %a, %-d. %b %Y} | \
-Woche ${time %_V} | \
-${time %F %T} | \
 up: ${uptime_short} | \
+${time %a %F %T KW%_V} | \
 sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C | \
 sdb: ${diskio_read sdb}r ${diskio_write sdb} | \
 mail: ${color1}${new_mails /home/daniel/Mail 10}${color0} ${new_mails /var/spool/mail/daniel 60} ${new_mails /home/daniel/Mail/.spam 60}\
 ${if_existing /sys/class/power_supply/BAT0} | bat: ${battery_short} ${battery_time}${endif}\
 ${if_existing /sys/class/backlight/intel_backlight} | backlight: ${exec /home/daniel/bin/conky-backlight}${endif}
 tmp: ${fs_used_perc /tmp}% | \
-cpu:${hwmon 0 temp 1}°C ${hwmon 0 fan 1}/m ${color1}${cpu}%${color0} | \
+load: ${color1}${loadavg 1}${color0} | \
+cpu:${color1}${cpu}%${color0}${hwmon 0 temp 1}°C ${hwmon 0 fan 1}/m | \
 mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
-load: ${color1}${loadavg 1}${color0} | \
 entropy:${entropy_perc}%\
 ${if_up   eno1} | eno1: ${color1  }${downspeed   eno1}${color0}r ${color1}${upspeed   eno1}${color0}u ${totaldown   eno1}r ${totalup   eno1}t ${addrs   eno1}${endif}\
 ${if_up   eno2} | eno2: ${color1  }${downspeed   eno2}${color0}r ${color1}${upspeed   eno2}${color0}u ${totaldown   eno2}r ${totalup   eno2}t ${addrs   eno2}${endif}\
@@ -88,3 +85,4 @@ ${if_up  wwan2} | wwan2: ${color1 }${downspeed  wwan2}${color0}r ${color1}${upsp
 ${if_up  wwan3} | wwan3: ${color1 }${downspeed  wwan3}${color0}r ${color1}${upspeed  wwan3}${color0}t ${totaldown  wwan3}r ${totalup  wwan3}t ${addrs  wwan3}${endif}\
  | \
 gw: ${gw_ip}
+]]
