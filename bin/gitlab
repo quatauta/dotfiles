@@ -30,8 +30,7 @@ _started() {
 _gc() {
     if _started ; then
         echo "Garbage collection for gitlab docker image registry..."
-        "${DOCKER}" exec "${CONTAINER}" su -l registry -c "/opt/gitlab/embedded/bin/registry garbage-collect /var/opt/gitlab/registry/config.yml"
-        "${DOCKER}" exec "${CONTAINER}" gitlab-ctl restart registry >/dev/null
+        "${DOCKER}" exec "${CONTAINER}" gitlab-ctl registry-garbage-collect
     fi
 }
 
@@ -64,7 +63,7 @@ _start() {
     _exists || _create
     echo "Starting docker container ${CONTAINER} ..."
     "${DOCKER}" start "${CONTAINER}"
-    systemctl status --no-pager gitlab-runner >/dev/null 2>&1 || sudo systemctl start gitlab-runner
+    systemctl is-active gitlab-runner 1>/dev/null 2>&1 || ( sleep 60 ; sudo systemctl start gitlab-runner )
 }
 
 _restart() {
@@ -74,7 +73,7 @@ _restart() {
 
 _stop() {
     _gc
-    sudo systemctl stop gitlab-runner
+    systemctl is-active gitlab-runner 1>/dev/null 2>&1 && sudo systemctl stop gitlab-runner
     echo "Stoping docker container ${CONTAINER} ..."
     "${DOCKER}" stop "${CONTAINER}"
 }
