@@ -73,13 +73,12 @@ case "${realstartup}" in
         _start_with_delay conky -d &
         _start_with_delay polkit-gnome-authentication-agent-1 &
         _start_with_delay unclutter &
-        ( pkill redshift 1>/dev/null 2>&1 ; _start_with_delay redshift-gtk -c /etc/redshift.conf ) &
 
         ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""
 
         _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1155x435+30+50  "${HOME}/.xsession-errors" ">/dev/null" &
         _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 525x435+1215+50 --whole "${HOME}/.task/calendar" ">/dev/null" &
-        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1600x470+30-40 --cont "\"                         `hostname | sed -e 's/./ /g'`» \"" /var/log/messages ">/dev/null" &
+        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1600x470+30-40 --cont "\"                         `hostname -s | sed -e 's/./ /g'`» \"" /var/log/messages ">/dev/null" &
 
         ( type systemctl 1>/dev/null && systemctl --failed --no-pager --no-legend >>"${HOME}/.xsession-errors" ) &
     ;;
