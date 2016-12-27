@@ -9,7 +9,7 @@ echo > "${CALENDAR}"
 echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" >> "${CALENDAR}"
 
 task ${TASK_OPTS} 2>/dev/null |
-sed -e 's|^  \(.\{2,21\}\) \('"$(date +%_d)"'\) |> \1╠\2╣|' -e 's|» | »|' |
+sed -e 's|^  \(.\{2,21\}\) \('"$(date +%_d)"'\) |> \1(\2)|' -e 's|» | »|' |
 egrep -v '^(Configuration override|[0-9]+ tasks)' |
 awk -vRS='\n\n' '// { print $0 }' |
 tee -a "${CALENDAR}"
