@@ -63,7 +63,7 @@ _start() {
     _exists || _create
     echo "Starting docker container ${CONTAINER} ..."
     "${DOCKER}" start "${CONTAINER}"
-    systemctl is-active gitlab-runner 1>/dev/null 2>&1 || ( sleep 60 ; sudo systemctl start gitlab-runner )
+    systemctl is-active gitlab-runner 1>/dev/null 2>&1 || sudo bash -c "(sleep 60 ; systemctl start gitlab-runner ) &"
 }
 
 _restart() {
