@@ -10,6 +10,7 @@ data.location=/home/daniel/.task
 
 include /usr/share/task/rc/dark-yellow-green.theme
 include /usr/share/task/rc/holidays.de-DE.rc
+include /home/daniel/.task/holidays.de-DE.rc
 
 calendar.details.report=root-calendar
 calendar.details=full
