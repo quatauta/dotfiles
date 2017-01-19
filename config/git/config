@@ -60,5 +60,4 @@ date = iso
 fsckObjects = true
 
 [branch]
-autosetupmerge = auto
-autosetuprebase = auto
+autosetupmerge = true
