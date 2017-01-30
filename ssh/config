@@ -1,0 +1,5 @@
+Host *
+    ControlMaster auto
+    ControlPath ~/.ssh/controlmaster-%C
+    ControlPersist 60
+    #VisualHostKey yes
