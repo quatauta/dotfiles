@@ -94,12 +94,11 @@ def shuffle(args):
 
 def status(args):
     STATUS_FMT = '''\
-{artist} - {album} - {title}
-{position} - {duration}, pos {playlist_position}, vol {vol}, {state}\
+{artist} ; {album} ; {title} ; {position} / {duration} ; pos {playlist_position} ; {vol}% ; {state}\
 '''
     print(STATUS_FMT.format(vol = args.dev.volume,
                             state = (args.dev.get_current_transport_info()['current_transport_state'] +
-                                     ', ' + args.dev.play_mode +
+                                     ' / ' + args.dev.play_mode +
                                      (', CROSSFADE' if args.dev.cross_fade else '')).lower(),
                             **args.dev.get_current_track_info()))
 
