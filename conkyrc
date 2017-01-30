@@ -15,7 +15,7 @@ conky.config = {
     draw_graph_borders = false,
     draw_outline = false,
     draw_shades = false,
-    font = "Misc Fixed:size=8",
+    font = "Fixed:size=8",
     gap_x = 30,
     gap_y = 5,
     if_up_strictness = "link",
