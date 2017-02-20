@@ -27,3 +27,40 @@ text/html; MAILCAP_CONTENT_TYPE="%t" MAILCAP_CHARSET="%{charset}" mutt_bgrun fir
 
 #text/html; w3m -dump -cols 70 -I%{charset} -Outf8 %s; copiousoutput; description=HTML Text; nametemplate=%s.html; test=which w3m 1>/dev/null 2>&1
 text/html; lynx -assume_local_charset=%{charset} -display_charset=UTF-8 -dump %s; copiousoutput; description=HTML Text; nametemplate=%s.html; test=which w3m 1>/dev/null 2>&1
+
+application/excel;/usr/bin/libreoffice %s
+application/msexcel;/usr/bin/libreoffice %s
+application/mspowerpoint;/usr/bin/libreoffice %s
+application/msword;/usr/bin/libreoffice %s
+application/powerpoint;/usr/bin/libreoffice %s
+application/vnd.ms-excel;/usr/bin/libreoffice %s
+application/vnd.ms-powerpoint;/usr/bin/libreoffice %s
+application/vnd.openxmlformats-officedocument.presentationml.presentation;/usr/bin/libreoffice %s
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;/usr/bin/libreoffice %s
+application/vnd.openxmlformats-officedocument.spreadsheetml.template;/usr/bin/libreoffice %s
+application/vnd.openxmlformats-officedocument.wordprocessingml.document;/usr/bin/libreoffice %s
+application/vnd.openxmlformats-officedocument.wordprocessingml.template;/usr/bin/libreoffice %s
+application/vnd.stardivision.calc;/usr/bin/libreoffice %s
+application/vnd.stardivision.draw;/usr/bin/libreoffice %s
+application/vnd.stardivision.impress-packed;/usr/bin/libreoffice %s
+application/vnd.stardivision.impress;/usr/bin/libreoffice %s
+application/vnd.stardivision.math;/usr/bin/libreoffice %s
+application/vnd.stardivision.writer-global;/usr/bin/libreoffice %s
+application/vnd.stardivision.writer;/usr/bin/libreoffice %s
+application/vnd.sun.xml.calc.template;/usr/bin/libreoffice %s
+application/vnd.sun.xml.calc;/usr/bin/libreoffice %s
+application/vnd.sun.xml.draw.template;/usr/bin/libreoffice %s
+application/vnd.sun.xml.draw;/usr/bin/libreoffice %s
+application/vnd.sun.xml.impress.template;/usr/bin/libreoffice %s
+application/vnd.sun.xml.impress;/usr/bin/libreoffice %s
+application/vnd.sun.xml.math;/usr/bin/libreoffice %s
+application/vnd.sun.xml.writer.global;/usr/bin/libreoffice %s
+application/vnd.sun.xml.writer.template;/usr/bin/libreoffice %s
+application/vnd.sun.xml.writer;/usr/bin/libreoffice %s
+application/x-msexcel;/usr/bin/libreoffice %s
+application/x-mspowerpoint;/usr/bin/libreoffice %s
+application/x-starcalc;/usr/bin/libreoffice %s
+application/x-stardraw;/usr/bin/libreoffice %s
+application/x-starimpress;/usr/bin/libreoffice %s
+application/x-starmath;/usr/bin/libreoffice %s
+application/x-starwriter;/usr/bin/libreoffice %s
