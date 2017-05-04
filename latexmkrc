@@ -10,8 +10,8 @@ $dvi_mode                 = 0;
 $makeindex                = 'makeindex -cL';
 $pdf_mode                 = 1;
 $pdf_previewer            = "xdg-open %O %S";
-# $pdflatex                 = 'pdflatex -output-format=pdf -src-specials -file-line-error'; # -shell-escape
-$pdflatex                 = 'xelatex -file-line-error %O %S';
+$pdflatex                 = 'pdflatex -output-format=pdf -src-specials -file-line-error'; # -shell-escape
+#$pdflatex                 = 'xelatex -file-line-error %O %S';
 $postscript_mode          = 0;
 $recorder                 = 1;
 $silence_logfile_warnings = 1;

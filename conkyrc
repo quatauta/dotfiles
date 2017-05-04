@@ -31,10 +31,10 @@ conky.config = {
 
 conky.text = [[
 ${color0}root:${fs_used_perc /}% | \
-sys:${hwmon 0 temp 1}°C ${hwmon 0 fan 2}/m | \
+sys:${hwmon 0 temp 2}°C ${hwmon 0 fan 2}/m | \
 linux ${kernel} | \
 up: ${uptime_short} | \
-${time %a %F %T KW%_V} | \
+${time %F %a KW%_V %T%z} | \
 sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C | \
 sdb: ${diskio_read sdb}r ${diskio_write sdb} | \
 mail: ${color1}${new_mails /home/daniel/Mail 10}${color0} ${new_mails /var/spool/mail/daniel 60} ${new_mails /home/daniel/Mail/.spam 60}\
@@ -42,7 +42,7 @@ ${if_existing /sys/class/power_supply/BAT0} | bat: ${battery_short} ${battery_ti
 ${if_existing /sys/class/backlight/intel_backlight} | backlight: ${exec /home/daniel/bin/conky-backlight}${endif}
 tmp: ${fs_used_perc /tmp}% | \
 load: ${color1}${loadavg 1}${color0} | \
-cpu:${color1}${cpu}%${color0}${hwmon 0 temp 1}°C ${hwmon 0 fan 1}/m | \
+cpu:${color1}${cpu}%${color0}${hwmon 1 temp 5}°C ${hwmon 0 fan 1}/m | \
 mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
 entropy:${entropy_perc}%\

@@ -11,7 +11,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION='2.7'
+VERSION='2.8.1'
 
 usage ()
 {
@@ -47,7 +47,7 @@ echo "-m     Modify playlist to include CRLF endings, to comply with some player
 echo "-n     No lookup. Don't query CDDB, just create and use template"
 echo "-N     Noninteractive. Never prompt for anything"
 echo "-o <type1[,type2]...>"
-echo "       Output file type(s) (vorbis,mp3,flac,spx,mpc,wav,m4a,opus,wv,ape). Defaults to vorbis"
+echo "       Output file type(s) (vorbis,mp3,flac,spx,mpc,wav,m4a,opus,mka,wv,ape,mp2,tta). Defaults to vorbis"
 echo "-p     Pad track numbers with 0's (if less than 10 tracks)"
 echo "-P     Use UNIX pipes to read+encode without wav files"
 echo "-r <host1[,host2]...>"
@@ -356,12 +356,12 @@ checkexec ()
 		if [ "$(which $X)" = "" ]; then
 			log error "$X is not in your path." >&2
 			log info  "Define the full path to the executable if it exists on your system." >&2
-			if [ -e /etc/debian_release ] ; then
+			if [ -e /etc/debian_* ] ; then
 				case $X in
 					oggenc) 	MISSING_PACKAGE=vorbis-tools ;;
 					lame|flac)	MISSING_PACKAGE=$X ;;
 				esac
-				log info "Hint: apt-get install $MISSING_PACKAGE" >&2
+				log info "Hint: sudo apt-get install $MISSING_PACKAGE" >&2
 			fi
 			exit 1
 		elif [ ! -x "$(which $X)" ]; then
@@ -411,13 +411,13 @@ getcddbinfo()
 {
 	case $1 in
 	TRACKNAME1)
-		TRACKNAME="$(grep ^TTITLE$CDDBTRACKNUM= "$CDDBDATA" | head -n 1 | cut -f2- -d= | tr -d \[:cntrl:\] | sed 's/\ \+$//')"
+		TRACKNAME="$(grep -a ^TTITLE$CDDBTRACKNUM= "$CDDBDATA" | head -n 1 | cut -f2- -d= | tr -d \[:cntrl:\] | sed 's/\ \+$//')"
 		;;
 	TRACKNAME)
-		TRACKNAME="$(grep ^TTITLE$CDDBTRACKNUM= "$CDDBDATA" | cut -f2- -d= | tr -d \[:cntrl:\] | sed 's/\ \+$//')"
+		TRACKNAME="$(grep -a ^TTITLE$CDDBTRACKNUM= "$CDDBDATA" | cut -f2- -d= | tr -d \[:cntrl:\] | sed 's/\ \+$//')"
 		;;
 	TRACK-INFO)
-		grep ^EXTT$CDDBTRACKNUM= "$CDDBDATA" | cut -f2- -d= | tr -d \[:cntrl:\] | sed 's/\\n/\n/g'
+		grep -a ^EXTT$CDDBTRACKNUM= "$CDDBDATA" | cut -f2- -d= | tr -d \[:cntrl:\] | sed 's/\\n/\n/g'
 		;;
 	esac
 }
@@ -526,9 +526,9 @@ do_replaygain()
 				CDDBTRACKNUM=$(expr $UTRACKNUM - 1)
 				getcddbinfo TRACKNAME
 				splitvarious
-				TRACKFILE="$(mungefilename "$TRACKNAME")"
-				ARTISTFILE="$(mungefilename "$TRACKARTIST")"
-				ALBUMFILE="$(mungefilename "$DALBUM")"
+				TRACKFILE="$(mungetrackname "$TRACKNAME")"
+				ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
+				ALBUMFILE="$(mungealbumname "$DALBUM")"
 				GENRE="$(mungegenre "$GENRE")"
 				YEAR=${CDYEAR:-$CDYEAR}
 				gettracknum
@@ -781,7 +781,7 @@ local id=""
 		"jpop")                  id=146 ;;
 		"synthpop")              id=147 ;;
 		"rock/pop"|"rock / pop") id=148 ;;
-		*)                       return 1 ;;
+		*)                       id=255 ;;
 	esac
 echo ${id}
 return 0
@@ -839,6 +839,16 @@ do_tag ()
 						${TPE2:+--TPE2 "$TPE2"} \
 						"$ABCDETEMPDIR/track$1.$OUTPUT"
 					;;
+				id3tag)
+					# FIXME # track numbers in mp3 come with 1/10, so we cannot
+					# happily substitute them with $TRACKNUM
+					run_command tagtrack-$OUTPUT-$1 nice $ENCNICE \
+						$TAGGER $TAGGEROPTS -c "$COMMENTOUTPUT" \
+						-A "$DALBUM" -a "$TRACKARTIST" -s "$TRACKNAME" \
+						-y "$CDYEAR" -g "$GENREID" \
+						-t "${TRACKNUM:-$1}" ${TRACKNUM:+-T "$TRACKS"} \
+						"$ABCDETEMPDIR/track$1.$OUTPUT"
+					;;
 				eyed3*)
 					# FIXME # track numbers in mp3 come with 1/10, so we cannot
 					# happily substitute them with $TRACKNUM
@@ -883,7 +893,7 @@ do_tag ()
 					fi
 					(
 					# These are from
-					# http://www.xiph.org/vorbis/doc/v-comment.html
+					# https://www.xiph.org/vorbis/doc/v-comment.html
 
 					echo ARTIST="$TRACKARTIST"
 					echo ALBUM="$DALBUM"
@@ -896,7 +906,7 @@ do_tag ()
 					fi
 					echo TRACKNUMBER=${TRACKNUM:-$1}
 					# TRACKTOTAL is not in the proposed, minimal list of standard field names from
-					# xiph.org: http://www.xiph.org/vorbis/doc/v-comment.html but is in common usage
+					# xiph.org: https://www.xiph.org/vorbis/doc/v-comment.html but is in common usage
 					# and read by mediainfo, ffprobe, vlc, Aqualung, ogg123, Foobar. And now abcde :)
 					# The tag is quietly ignored by  Audacious, MPlayer, mpv, XMMS....
 					echo TRACKTOTAL="${TRACKS}"
@@ -930,6 +940,9 @@ do_tag ()
 		opus)
 			run_command tagtrack-$OUTPUT-$1 true
 			;;
+		mka)
+			run_command tagtrack-$OUTPUT-$1 true
+			;;
 		flac)
 			(
 			echo ARTIST="$TRACKARTIST"
@@ -943,7 +956,7 @@ do_tag ()
 			fi
 			echo TRACKNUMBER="${TRACKNUM:-$1}"
 			# TRACKTOTAL is not in the proposed, minimal list of standard field names from
-			# xiph.org: http://www.xiph.org/vorbis/doc/v-comment.html but is in common usage
+			# xiph.org: https://www.xiph.org/vorbis/doc/v-comment.html but is in common usage
 			# and read by mediainfo, ffprobe, vlc, Aqualung, ogg123, Foobar. And now abcde :)
 			# The tag is quietly ignored by  Audacious, MPlayer, mpv, XMMS....
 			echo TRACKTOTAL="${TRACKS}"
@@ -980,6 +993,14 @@ do_tag ()
 			-p artist="$TRACKARTIST" -p album="$DALBUM" -p title="$TRACKNAME" -p track=${TRACKNUM:-$1} \
 			-p year="$CDYEAR" -p genre="$CDGENRE" ${COMMENTOUTPUT:+-p comment="$COMMENTOUTPUT"}
  			;;
+ 		mp2)
+			# Using Mutagen's mid3v2 for tagging with id3v2.4.0. Interesting enough vlc, MPlayer and XMMS ignore
+			# these tags but they are read by Audacious, Xine, Aqualung, mediainfo, ffplay, ffprobe. FFmpeg does
+			# not currently tag mp2 audio so twolame and FFmpeg will both use mid3v2...
+			run_command tagtrack-$OUTPUT-$1 nice $ENCNICE "$MID3V2" --verbose -A "$DALBUM" -a "$TRACKARTIST" -t "$TRACKNAME" \
+			-y "$CDYEAR" -g "$CDGENRE" -T "${TRACKNUM:-$1}/$TRACKS" ${TPE2:+--TPE2 "$TPE2"} ${COMMENTOUTPUT:+--comment="$COMMENTOUTPUT"} \
+			"$ABCDETEMPDIR/track$1.mp2"
+			;;
 		aac)
 			run_command tagtrack-$OUTPUT-$1 true
 			;;
@@ -998,7 +1019,26 @@ do_tag ()
 				faac)
 					run_command tagtrack-$OUTPUT-$1 true
 					;;
+				qaac)
+					run_command tagtrack-$OUTPUT-$1 true
+					;;
+				fhgaacenc)
+					# Tag post encode with AtomicParsley. Note that previous problems with seg fault when using
+					# 'overWrite' cannot be reproduced with newer versions: https://bitbucket.org/wez/atomicparsley
+					run_command tagtrack-$OUTPUT-$1 nice $ENCNICE "$ATOMICPARSLEY" "$ABCDETEMPDIR/track$1.m4a" \
+					--artist="$TRACKARTIST" --album="$DALBUM" --title="$TRACKNAME" --tracknum=${TRACKNUM:-$1} \
+					--year="$CDYEAR" --genre="$CDGENRE" --comment="$COMMENT" $ATOMICPARSLEYOPTS --overWrite
+					;;
+				ffmpeg)
+					run_command tagtrack-$OUTPUT-$1 true
+				;;
 			esac
+			;;
+		tta)
+			# We use mid3v2 tagging for True Audio:
+			run_command tagtrack-$OUTPUT-$1 nice $ENCNICE "$MID3V2" --verbose -A "$DALBUM" -a "$TRACKARTIST" -t "$TRACKNAME" \
+			-y "$CDYEAR" -g "$CDGENRE" -T "${TRACKNUM:-$1}/$TRACKS" ${TPE2:+--TPE2 "$TPE2"} ${COMMENTOUTPUT:+--comment="$COMMENTOUTPUT"} \
+			"$ABCDETEMPDIR/track$1.tta"
 			;;
 		wav)
 			run_command tagtrack-$OUTPUT-$1 true
@@ -1023,7 +1063,7 @@ do_nogap_encode ()
 		case "$OUTPUT" in
 		mp3)
 			case "$MP3ENCODERSYNTAX" in
-			lame|toolame)
+			lame)
 				(
 				cd "$ABCDETEMPDIR"
 				TRACKFILES=
@@ -1034,7 +1074,7 @@ do_nogap_encode ()
 				nice $ENCNICE $MP3ENCODER $MP3ENCODEROPTS --nogap $TRACKFILES
 				RETURN=$?
 				if [ "$RETURN" != "0" ]; then
-					echo "nogap-encode: $ENCODER returned code $RETURN" >> errors
+					echo "nogap-encode: $ENCODER returned code $RETURN" >> "$ABCDETEMPDIR/errors"
 				else
 					for UTRACKNUM in $TRACKQUEUE
 					do
@@ -1077,6 +1117,9 @@ do_encode ()
 			opus)
 				TEMPARG="PIPE_$OPUSENCODERSYNTAX"
 				;;
+			mka)
+				TEMPARG="PIPE_$MKAENCODERSYNTAX"
+				;;
 			flac)
 				TEMPARG="PIPE_$FLACENCODERSYNTAX"
 				;;
@@ -1088,6 +1131,9 @@ do_encode ()
 				;;
 			wv)
 				TEMPARG="PIPE_$WVENCODERSYNTAX"
+				;;
+			tta)
+				TEMPARG="PIPE_$TTAENCODERSYNTAX"
 				;;
 			aac)
 				TEMPARG="PIPE_$AACENCODERSYNTAX"
@@ -1110,6 +1156,9 @@ do_encode ()
 					;;
 				opus)
 					OUTPUT=$OPUSOUTPUTCONTAINER
+					;;
+				mka)
+					OUTPUT=$MKAOUTPUTCONTAINER
 					;;
 				flac)
 					OUTPUT=$FLACOUTPUTCONTAINER
@@ -1141,7 +1190,7 @@ do_encode ()
 				case "$2" in
 				%local*%)
 					case "$MP3ENCODERSYNTAX" in
-					lame|toolame|gogo) $RUN_COMMAND nice $EFFECTIVE_NICE $MP3ENCODER $MP3ENCODEROPTS "$IN" "$OUT" ;;
+					lame|gogo) $RUN_COMMAND nice $EFFECTIVE_NICE $MP3ENCODER $MP3ENCODEROPTS "$IN" "$OUT" ;;
 					bladeenc) $RUN_COMMAND nice $EFFECTIVE_NICE $MP3ENCODER $MP3ENCODEROPTS -quit "$IN" "$OUT" ;;
 					l3enc|xingmp3enc) $RUN_COMMAND nice $EFFECTIVE_NICE $MP3ENCODER "$IN" "$OUT" $MP3ENCODEROPTS ;;
 					mp3enc) $RUN_COMMAND nice $EFFECTIVE_NICE $MP3ENCODER -if "$IN" -of "$OUT" $MP3ENCODEROPTS ;;
@@ -1186,6 +1235,19 @@ do_encode ()
 					;;
 				esac
 				;;
+			mka)
+				case "$MKAENCODERSYNTAX" in
+				ffmpeg)
+					if [ "$DOTAG" = "y" ]; then
+						$RUN_COMMAND nice $EFFECTIVE_NICE $MKAENCODER -i "$IN" $MKAENCODEROPTS -metadata artist="$TRACKARTIST" \
+						-metadata album="$DALBUM" -metadata title="$TRACKNAME" -metadata track=${TRACKNUM:-$1} -metadata date="$CDYEAR" \
+						-metadata genre="$CDGENRE" -metadata comment="$COMMENT" "$OUT"
+					else
+						$RUN_COMMAND nice $EFFECTIVE_NICE $MKAENCODER -i "$IN" $MKAENCODEROPTS "$OUT"
+					fi
+				;;
+				esac
+				;;
 			flac)
 				case "$2" in
 				%local*%)
@@ -1224,16 +1286,50 @@ do_encode ()
 					$RUN_COMMAND nice $EFFECTIVE_NICE $MPCENCODER $MPCENCODEROPTS "$IN" "$OUT"
 				fi
 				;;
+			tta)
+				case "$TTAENCODERSYNTAX" in
+				# tta is the newer version with a small syntax change...
+					tta)
+					$RUN_COMMAND nice $EFFECTIVE_NICE $TTAENCODER -e $TTAENCODEROPTS "$IN" "$OUT"
+					;;
+					ttaenc)
+					$RUN_COMMAND nice $EFFECTIVE_NICE $TTAENCODER -e $TTAENCODEROPTS "$IN" -o "$OUT"
+					;;
+				esac
+				;;
 			wv)
-				if [ "$DOTAG" = "y" ]; then
-					$RUN_COMMAND nice $EFFECTIVE_NICE $WVENCODER $WVENCODEROPTS -w Artist="$TRACKARTIST" -w Album="$DALBUM" \
-					-w Title="$TRACKNAME" -w Track="$1" -w Genre="$CDGENRE" -w Year="$CDYEAR" ${COMMENT:+-w Comment="$COMMENT"} "$IN" -o "$OUT"
-				else
-					$RUN_COMMAND nice $EFFECTIVE_NICE $WVENCODER $WVENCODEROPTS "$IN" -o "$OUT"
-				fi
+			case "$WVENCODERSYNTAX" in
+				wavpack)
+					if [ "$DOTAG" = "y" ]; then
+						$RUN_COMMAND nice $EFFECTIVE_NICE $WVENCODER $WVENCODEROPTS -w Artist="$TRACKARTIST" -w Album="$DALBUM" \
+						-w Title="$TRACKNAME" -w Track="$1" -w Genre="$CDGENRE" -w Year="$CDYEAR" ${COMMENT:+-w Comment="$COMMENT"} "$IN" -o "$OUT"
+					else
+						$RUN_COMMAND nice $EFFECTIVE_NICE $WVENCODER $WVENCODEROPTS "$IN" -o "$OUT"
+					fi
+				;;
+				ffmpeg)
+					if [ "$DOTAG" = "y" ]; then
+						$RUN_COMMAND nice $EFFECTIVE_NICE $WVENCODER -i "$IN" $WVENCODEROPTS -metadata artist="$TRACKARTIST" \
+						-metadata album="$DALBUM" -metadata title="$TRACKNAME" -metadata track=${TRACKNUM:-$1} -metadata date="$CDYEAR" \
+						-metadata genre="$CDGENRE" -metadata comment="$COMMENT" "$OUT"
+					else
+						$RUN_COMMAND nice $EFFECTIVE_NICE $WVENCODER -i "$IN" $WVENCODEROPTS "$OUT"
+					fi
+				;;
+			esac
 				;;
 			ape)
 				$RUN_COMMAND nice $EFFECTIVE_NICE $APENCODER "$IN" "$OUT" $APENCODEROPTS
+				;;
+			mp2)
+				case "$MP2ENCODERSYNTAX" in
+					twolame)
+					$RUN_COMMAND nice $EFFECTIVE_NICE $MP2ENCODER $MP2ENCODEROPTS "$IN" "$OUT"
+					;;
+					ffmpeg)
+					$RUN_COMMAND nice $EFFECTIVE_NICE $MP2ENCODER -i "$IN" $MP2ENCODEROPTS "$OUT"
+					;;
+				esac
 				;;
 			aac)
 				# aac container is only used to catch faac encoded files where faac
@@ -1259,6 +1355,26 @@ do_encode ()
 							--title "$TRACKNAME" --track "$1" --genre "$CDGENRE" --date "$CDYEAR" --comment "$COMMENT" "$IN" -o "$OUT"
 						else
 							$RUN_COMMAND nice $EFFECTIVE_NICE $AACENCODER $AACENCODEROPTS "$IN" -o "$OUT"
+						fi
+						;;
+					qaac)
+						if [ "$DOTAG" = "y" ]; then
+							$RUN_COMMAND nice $EFFECTIVE_NICE $WINE $AACENCODER $AACENCODEROPTS  --artist "$TRACKARTIST" --album "$DALBUM" \
+							--title "$TRACKNAME" --track ${TRACKNUM:-$1} --date "$CDYEAR" --genre "$CDGENRE" --comment "$COMMENT" -o "$OUT" "$IN"
+						else
+							$RUN_COMMAND nice $EFFECTIVE_NICE $WINE $AACENCODER $AACENCODEROPTS -o "$OUT" "$IN"
+						fi
+						;;
+					fhgaacenc)
+						$RUN_COMMAND nice $EFFECTIVE_NICE $WINE $AACENCODER $AACENCODEROPTS "$IN" "$OUT"
+						;;
+					ffmpeg)
+						if [ "$DOTAG" = "y" ]; then
+							$RUN_COMMAND nice $EFFECTIVE_NICE $AACENCODER -i "$IN" $AACENCODEROPTS -metadata artist="$TRACKARTIST" \
+							-metadata album="$DALBUM" -metadata title="$TRACKNAME" -metadata track=${TRACKNUM:-$1} -metadata date="$CDYEAR" \
+							-metadata genre="$CDGENRE" -metadata comment="$COMMENT" "$OUT"
+						else
+							$RUN_COMMAND nice $EFFECTIVE_NICE $AACENCODER -i "$IN"  $AACENCODEROPTS "$OUT"
 						fi
 						;;
 					esac
@@ -1395,11 +1511,11 @@ do_batch_gain ()
 	$NORMALIZER -b $NORMALIZEROPTS $TRACKFILES
 	RETURN=$?
 	if [ "$RETURN" != "0" ]; then
-		echo "batch-normalize: $NORMALIZER returned code $RETURN" >> errors
+		echo "batch-normalize: $NORMALIZER returned code $RETURN" >> "$ABCDETEMPDIR/errors"
 	else
 		for UTRACKNUM in $TRACKQUEUE
 		do
-			echo normalizetrack-$UTRACKNUM >> status
+			echo "normalizetrack-$UTRACKNUM" >> "$ABCDETEMPDIR/status"
 		done
 	fi
 	)
@@ -1424,11 +1540,11 @@ do_batch_normalize ()
 	$NORMALIZER -b $NORMALIZEROPTS $TRACKFILES
 	RETURN=$?
 	if [ "$RETURN" != "0" ]; then
-		echo "batch-normalize: $NORMALIZER returned code $RETURN" >> errors
+		echo "batch-normalize: $NORMALIZER returned code $RETURN" >> "$ABCDETEMPDIR/errors"
 	else
 		for UTRACKNUM in $TRACKQUEUE
 		do
-			echo normalizetrack-$UTRACKNUM >> status
+			echo "normalizetrack-$UTRACKNUM" >> "$ABCDETEMPDIR/status"
 		done
 	fi
 	)
@@ -1466,9 +1582,9 @@ do_move ()
 		OUTPUT="$TMPOUTPUT"
 
 		# Create ALBUMFILE, ARTISTFILE, TRACKFILE
-		ALBUMFILE="$(mungefilename "$DALBUM")"
-		ARTISTFILE="$(mungefilename "$TRACKARTIST")"
-		TRACKFILE="$(mungefilename "$TRACKNAME")"
+		ALBUMFILE="$(mungealbumname "$DALBUM")"
+		ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
+		TRACKFILE="$(mungetrackname "$TRACKNAME")"
 		GENRE="$(mungegenre "$GENRE")"
 		YEAR=${CDYEAR:-$CDYEAR}
 		# If we want to start the tracks with a given number, we need to modify
@@ -1498,6 +1614,9 @@ do_move ()
 					;;
 				opus)
 					OUTPUT=$OPUSOUTPUTCONTAINER
+					;;
+				mka)
+					OUTPUT=$MKAOUTPUTCONTAINER
 					;;
 				flac)
 					OUTPUT=$FLACOUTPUTCONTAINER
@@ -1583,6 +1702,9 @@ do_playlist ()
 			opus)
 				OUTPUT=$OPUSOUTPUTCONTAINER
 				;;
+			mka)
+				OUTPUT=$MKAOUTPUTCONTAINER
+				;;
 			flac)
 				OUTPUT=$FLACOUTPUTCONTAINER
 				;;
@@ -1593,8 +1715,8 @@ do_playlist ()
 		# Create a playlist file for the playlist data to go into.
 		# We used to wipe it out if it existed. Now we request permission if interactive.
 		for LASTTRACK in $TRACKQUEUE; do :; done
-		ALBUMFILE="$(mungefilename "$DALBUM")"
-		ARTISTFILE="$(mungefilename "$DARTIST")"
+		ALBUMFILE="$(mungealbumname "$DALBUM")"
+		ARTISTFILE="$(mungeartistname "$DARTIST")"
 		GENRE="$(mungegenre "$GENRE")"
 		YEAR=${CDYEAR:-$CDYEAR}
 		if [ "$VARIOUSARTISTS" = "y" ] ; then
@@ -1633,9 +1755,9 @@ do_playlist ()
 				CDDBTRACKNUM=$(expr $UTRACKNUM - 1)
 				getcddbinfo TRACKNAME
 				splitvarious
-				TRACKFILE="$(mungefilename "$TRACKNAME")"
-				ARTISTFILE="$(mungefilename "$TRACKARTIST")"
-				ALBUMFILE="$(mungefilename "$DALBUM")"
+				TRACKFILE="$(mungetrackname "$TRACKNAME")"
+				ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
+				ALBUMFILE="$(mungealbumname "$DALBUM")"
 				# If we want to start the tracks with a given number, we need to modify the
 				# TRACKNUM value before evaluation
 				gettracknum
@@ -1789,9 +1911,9 @@ abcde.mkcue () {
 	fi
 
 	vecho "One track is $ONETRACK"
-	TRACKFILE="$(mungefilename "$TRACKNAME")"
-	ARTISTFILE="$(mungefilename "$TRACKARTIST")"
-	ALBUMFILE="$(mungefilename "$DALBUM")"
+	TRACKFILE="$(mungetrackname "$TRACKNAME")"
+	ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
+	ALBUMFILE="$(mungealbumname "$DALBUM")"
 	if [ "$ONETRACK" = "y" ]; then
 		if [ "$VARIOUSARTISTS" = "y" ]; then
 			CUEWAVFILE="$(eval echo \""$VAONETRACKOUTPUTFORMAT"\" | sed -e 's@^.*/@@').$OUTPUT"
@@ -1886,20 +2008,20 @@ do_discid ()
 					exit 1
 				fi
 				;;
-#			cdparanoia|debug)
-#				CDPARANOIAOUTPUT="$( $CDROMREADER -$CDPARANOIACDROMBUS "$CDROM" -Q --verbose 2>&1 )"
-#				RET=$?
-#				if [ ! "$RET" = "0" ];then
-#					log warning "something went wrong while querying the CD... Maybe a DATA CD?"
-#				fi
-#
-#				TRACKS="$(echo "$CDPARANOIAOUTPUT" | grep -E '^[[:space:]]+[[:digit:]]' | tail -n 1 | get_first | tr -d "." | tr '\n' ' ')"
-#				CDPARANOIAAUDIOTRACKS="$TRACKS"
-#
-#				LEADOUT="$(echo "$CDPARANOIAOUTPUT" | grep -Eo '^TOTAL[[:space:]]+([[:digit:]]+)' | get_last)"
-#				OFFSETS="$(echo "$CDPARANOIAOUTPUT" | sed -n -e's/^ .* \([0-9]\+\) \[.*/\1/p')"
-#				makeids
-#				;;
+			cdparanoia|debug)
+				CDPARANOIAOUTPUT="$( $CDROMREADER -$CDPARANOIACDROMBUS "$CDROM" -Q --verbose 2>&1 )"
+				RET=$?
+				if [ ! "$RET" = "0" ];then
+					log warning "something went wrong while querying the CD... Maybe a DATA CD?"
+				fi
+
+				TRACKS="$(echo "$CDPARANOIAOUTPUT" | grep -E '^[[:space:]]+[[:digit:]]' | tail -n 1 | get_first | tr -d "." | tr '\n' ' ')"
+				CDPARANOIAAUDIOTRACKS="$TRACKS"
+
+				LEADOUT="$(echo "$CDPARANOIAOUTPUT" | grep -Eo '^TOTAL[[:space:]]+([[:digit:]]+)' | get_last)"
+				OFFSETS="$(echo "$CDPARANOIAOUTPUT" | sed -n -e's/^ .* \([0-9]\+\) \[.*/\1/p')"
+				makeids
+				;;
 			*)
 				case "$CDDBMETHOD" in
 					cddb) TRACKINFO=$($CDDISCID "$CDROM") ;;
@@ -2150,9 +2272,9 @@ do_cleancue()
 				elif [ "$ONETRACK" = "y" ] &&
 						echo "$line" | grep '^FILE "dummy.wav" WAVE' > /dev/null 2>&1 ; then
 
-					TRACKFILE="$(mungefilename "$TRACKNAME")"
-					ARTISTFILE="$(mungefilename "$TRACKARTIST")"
-					ALBUMFILE="$(mungefilename "$DALBUM")"
+					TRACKFILE="$(mungetrackname "$TRACKNAME")"
+					ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
+					ALBUMFILE="$(mungealbumname "$DALBUM")"
 
 					if [ "$VARIOUSARTISTS" = "y" ]; then
 						OUTPUTFILE="$(eval echo \""$VAONETRACKOUTPUTFORMAT"\" | sed -e 's@^.*/@@').$OUTPUT"
@@ -2183,15 +2305,15 @@ do_cddbparse ()
 	if [ "$ONETRACK" = "y" ]; then
 		vecho "ONETRACK mode selected: displaying only the title of the CD..."
 	fi
-	echo "---- $(grep DTITLE "${CDDBPARSEFILE}" | cut '-d=' -f2- | tr -d \\r\\n ) ----"
+	echo "---- $(grep -a DTITLE "${CDDBPARSEFILE}" | cut '-d=' -f2- | tr -d \\r\\n ) ----"
 	if [ X"$SHOWCDDBYEAR" = "Xy" ]; then
-		PARSEDYEAR=$(grep DYEAR "${CDDBPARSEFILE}" | cut '-d=' -f2-)
+		PARSEDYEAR=$(grep -a DYEAR "${CDDBPARSEFILE}" | cut '-d=' -f2-)
 		if [ ! X"$PARSEDYEAR" = "X" ]; then
 			echo "Year: $PARSEDYEAR"
 		fi
 	fi
 	if [ X"$SHOWCDDBGENRE" = "Xy" ]; then
-		PARSEDGENRE=$(grep DGENRE "${CDDBPARSEFILE}" | cut '-d=' -f2-)
+		PARSEDGENRE=$(grep -a DGENRE "${CDDBPARSEFILE}" | cut '-d=' -f2-)
 		if [ ! X"$PARSEDGENRE" = "X" ]; then
 			echo "Genre: $PARSEDGENRE"
 		fi
@@ -2199,7 +2321,7 @@ do_cddbparse ()
 	if [ ! "$ONETRACK" = "y" ]; then
 		for TRACK in $(f_seq_row 1 $TRACKS)
 		do
-			echo $TRACK: "$(grep ^TTITLE$(expr $TRACK - 1)= "${CDDBPARSEFILE}" | cut -f2- -d= | tr -d \\r\\n)"
+			echo $TRACK: "$(grep -a ^TTITLE$(expr $TRACK - 1)= "${CDDBPARSEFILE}" | cut -f2- -d= | tr -d \\r\\n)"
 		done
 	fi
 }
@@ -2343,7 +2465,7 @@ do_cdtext ()
 		CDTEXT_READER=icedax
 	elif new_checkexec cdda2wav; then
 		CDTEXT_READER=cdda2wav
-    else
+	else
 		# Didn't find either, bail
 		return 0
 	fi
@@ -2365,7 +2487,7 @@ do_cdtext ()
 
 	# Do we have CD-Text on the disc (and can the drive read it?)
 	${CDTEXT_READER} -J -N -D ${CDDA2WAVCDROM} > "$ABCDETEMPDIR/cd-text" 2>&1
-	grep -q '^CD-Text: detected' "$ABCDETEMPDIR/cd-text"
+	grep -a -q '^CD-Text: detected' "$ABCDETEMPDIR/cd-text"
 	ERRORCODE=$?
 	if [ $ERRORCODE -ne 0 ]; then
 		# No CD-Text found, bail
@@ -2380,20 +2502,21 @@ do_cdtext ()
 	echo "done." >> "$ABCDETEMPDIR/cddbchoices"
 	echo cddb-read-1-complete >> "$ABCDETEMPDIR/status"
 	echo cddb-choice=1 >> "$ABCDETEMPDIR/status"
-	ATITLE=$(grep -e '^Album title:' "${ABCDETEMPDIR}/cd-text" | cut -c14- )
+	ATITLE=$(grep -ae '^Album title:' "${ABCDETEMPDIR}/cd-text" | cut -c14- )
 	echo "200 none ${ATITLE}" >> "$ABCDETEMPDIR/cddbquery"
 	# List out disc title/author and contents
 	echo ---- ${ATITLE} ---- >> "$ABCDETEMPDIR/cddbchoices"
 	for TRACK in $(f_seq_row 1 $TRACKS)
 	do
 		TRACKM1=$(($TRACK - 1))
-		TITLE="$(grep -E ^Track\ +$TRACK: "$ABCDETEMPDIR/cd-text" | tr -d \\r\\n | sed 's~^Track ..: .~~g;'"s~'$~~g")"
+		TITLE="$(grep -aE ^Track\ +$TRACK: "$ABCDETEMPDIR/cd-text" | tr -d \\r\\n | sed 's~^Track ..: .~~g;'"s~'$~~g")"
 		echo "$TRACK: $TITLE" >> "$ABCDETEMPDIR/cddbchoices"
-		sed "s~^TTITLE${TRACKM1}=.*~TTITLE${TRACKM1}=${TITLE}~" "$ABCDETEMPDIR/cddbread.1" > "$ABCDETEMPDIR/cddbread.new"
-        mv -f "$ABCDETEMPDIR/cddbread.new" "$ABCDETEMPDIR/cddbread.1"
+		sed "s~^TTITLE${TRACKM1}=.*~TTITLE${TRACKM1}=${TITLE}~" "$ABCDETEMPDIR/cddbread.1" > "$ABCDETEMPDIR/cddbread.new" && \
+			mv -f "$ABCDETEMPDIR/cddbread.new" "$ABCDETEMPDIR/cddbread.1"
 	done
-	sed "s~^DTITLE=.*~DTITLE=${ATITLE}~" "$ABCDETEMPDIR/cddbread.1" > "$ABCDETEMPDIR/cddbread.new"
-    mv -f "$ABCDETEMPDIR/cddbread.new" "$ABCDETEMPDIR/cddbread.1"
+	sed "s~^DTITLE=.*~DTITLE=${ATITLE}~" "$ABCDETEMPDIR/cddbread.1" > "$ABCDETEMPDIR/cddbread.new" && \
+		mv -f "$ABCDETEMPDIR/cddbread.new" "$ABCDETEMPDIR/cddbread.1"
+	rm -f "$ABCDETEMPDIR/cddbread.new" # In case a sed error occurred
 	echo >> "$ABCDETEMPDIR/cddbchoices"
 	echo "cdtext-readcomplete" >> "$ABCDETEMPDIR/status"
 }
@@ -2417,21 +2540,31 @@ do_musicbrainz ()
 		# The helper script will write disc matches out to
 		# cddbread.*. Count how many we have
 		if [ ! -f "${ABCDETEMPDIR}/cddbread.1" ] ; then
-			# No matches. Use the normal cddb template for the user to
-			# fill in
-			echo "No Musicbrainz match." >> "$ABCDETEMPDIR/cddbchoices"
-			$CDDBTOOL template $(cat "$ABCDETEMPDIR/discid") > "$ABCDETEMPDIR/cddbread.0"
-			# List out disc title/author and contents of template
-			echo ---- Unknown Artist / Unknown Album ---- >> "$ABCDETEMPDIR/cddbchoices"
-			UNKNOWNDISK=y
-			for TRACK in $(f_seq_row 1 $TRACKS)
-			do
-				echo $TRACK: "$(grep ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.0" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
-			done
-			echo >> "$ABCDETEMPDIR/cddbchoices"
-			echo cddb-read-0-complete >> "$ABCDETEMPDIR/status"
-			echo cddb-choice=0 >> "$ABCDETEMPDIR/status"
-			echo 503 > "$ABCDETEMPDIR/cddbquery"
+			if [ $CDDBLASTMETHOD = "y" ]
+			then
+				# We're the end of the line.
+				#
+				# No matches. Use the normal cddb template for the user to
+				# fill in
+				vecho "Unable to find a match with ${CDDBMETHCHOICE}, generating CDDB template."
+				echo "No Musicbrainz match." >> "$ABCDETEMPDIR/cddbchoices"
+				$CDDBTOOL template $(cat "$ABCDETEMPDIR/discid") > "$ABCDETEMPDIR/cddbread.0"
+				# List out disc title/author and contents of template
+				echo ---- Unknown Artist / Unknown Album ---- >> "$ABCDETEMPDIR/cddbchoices"
+				UNKNOWNDISK=y
+				for TRACK in $(f_seq_row 1 $TRACKS)
+				do
+					echo $TRACK: "$(grep -a ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.0" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
+				done
+				echo >> "$ABCDETEMPDIR/cddbchoices"
+				echo cddb-read-0-complete >> "$ABCDETEMPDIR/status"
+				echo cddb-choice=0 >> "$ABCDETEMPDIR/status"
+				echo 503 > "$ABCDETEMPDIR/cddbquery"
+			else
+				# Neat, we'll let the next guy take care of this CDDB
+				# file junk.
+				vecho "Unable to find a match with ${CDDBMETHCHOICE}, moving on to the next option."
+			fi
 		else
 			# We have some matches
 			NUM_RESPONSES=$(echo "${ABCDETEMPDIR}"/cddbread.* | wc -w)
@@ -2441,13 +2574,13 @@ do_musicbrainz ()
 				echo "done." >> "$ABCDETEMPDIR/cddbchoices"
 				echo cddb-read-1-complete >> "$ABCDETEMPDIR/status"
 				echo cddb-choice=1 >> "$ABCDETEMPDIR/status"
-				ATITLE=$(grep -e '^DTITLE=' "${ABCDETEMPDIR}/cddbread.1" | cut -c8- )
+				ATITLE=$(grep -a -e '^DTITLE=' "${ABCDETEMPDIR}/cddbread.1" | cut -c8- )
 				echo "200 none ${ATITLE}" >> "$ABCDETEMPDIR/cddbquery"
 				# List out disc title/author and contents
 				echo ---- ${ATITLE} ---- >> "$ABCDETEMPDIR/cddbchoices"
 				for TRACK in $(f_seq_row 1 $TRACKS)
 				do
-					echo $TRACK: "$(grep ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.1" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
+					echo $TRACK: "$(grep -a ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.1" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
 				done
 				echo >> "$ABCDETEMPDIR/cddbchoices"
 			else
@@ -2457,13 +2590,13 @@ do_musicbrainz ()
 				do
 					X=$(echo $file | sed 's/^.*cddbread\.//g')
 					echo cddb-read-$X-complete >> "$ABCDETEMPDIR/status"
-					ATITLE=$(grep -e '^DTITLE=' "${ABCDETEMPDIR}"/cddbread.$X | cut -c8- )
+					ATITLE=$(grep -a -e '^DTITLE=' "${ABCDETEMPDIR}"/cddbread.$X | cut -c8- )
 					echo "none ${ATITLE}" >> "$ABCDETEMPDIR/cddbquery"
 					# List out disc title/author and contents
 					echo "#$X: ---- ${ATITLE} ----" >> "$ABCDETEMPDIR/cddbchoices"
 					for TRACK in $(f_seq_row 1 $TRACKS)
 					do
-						echo $TRACK: "$(grep ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.$X" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
+						echo $TRACK: "$(grep -a ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.$X" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
 					done
 					echo >> "$ABCDETEMPDIR/cddbchoices"
 				done
@@ -2589,28 +2722,39 @@ do_cddbread ()
 			echo ---- "$(cut '-d ' -f4- "$ABCDETEMPDIR/cddbquery")" ---- >> "$ABCDETEMPDIR/cddbchoices"
 			for TRACK in $(f_seq_row 1 $TRACKS)
 			do
-				echo $TRACK: "$(grep ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.1" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
+				echo $TRACK: "$(grep -a ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.1" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
 			done
 			echo >> "$ABCDETEMPDIR/cddbchoices"
 			;;
-		202|403|409|503)
-			# No match
-			case "$RESPONSECODE" in
-			202) echo "No CDDB match." >> "$ABCDETEMPDIR/cddbchoices" ;;
-			403|409) echo "CDDB entry is corrupt, or the handshake failed." >> "$ABCDETEMPDIR/cddbchoices" ;;
-			503) echo "CDDB unavailable." >> "$ABCDETEMPDIR/cddbchoices" ;;
-			esac
-			$CDDBTOOL template $(cat "$ABCDETEMPDIR/discid") > "$ABCDETEMPDIR/cddbread.0"
-			# List out disc title/author and contents of template
-			echo ---- Unknown Artist / Unknown Album ---- >> "$ABCDETEMPDIR/cddbchoices"
-			UNKNOWNDISK=y
-			for TRACK in $(f_seq_row 1 $TRACKS)
-			do
-				echo $TRACK: "$(grep ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.0" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
-			done
-			echo >> "$ABCDETEMPDIR/cddbchoices"
-			echo cddb-read-0-complete >> "$ABCDETEMPDIR/status"
-			echo cddb-choice=0 >> "$ABCDETEMPDIR/status"
+		202|403|409|500|503)
+			# TODO: Explain these error codes a little more accurately:
+			# http://ftp.freedb.org/pub/freedb/misc/freedb_CDDB_protcoldoc.zip
+			# No match response:
+			if [ $CDDBLASTMETHOD = "y" ]
+			then
+				# We're the caboose, so we need to generate the CDDB
+				# template.
+				vecho "Unable to find a match with ${CDDBMETHCHOICE}, generating CDDB template."
+				case "$RESPONSECODE" in
+				202) echo "No CDDB match." >> "$ABCDETEMPDIR/cddbchoices" ;;
+				403|409) echo "CDDB entry is corrupt, or the handshake failed." >> "$ABCDETEMPDIR/cddbchoices" ;;
+				500|503) echo "CDDB unavailable." >> "$ABCDETEMPDIR/cddbchoices" ;;
+				esac
+				$CDDBTOOL template $(cat "$ABCDETEMPDIR/discid") > "$ABCDETEMPDIR/cddbread.0"
+				# List out disc title/author and contents of template
+				echo ---- Unknown Artist / Unknown Album ---- >> "$ABCDETEMPDIR/cddbchoices"
+				UNKNOWNDISK=y
+				for TRACK in $(f_seq_row 1 $TRACKS)
+				do
+					echo $TRACK: "$(grep -a ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.0" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
+				done
+				echo >> "$ABCDETEMPDIR/cddbchoices"
+				echo cddb-read-0-complete >> "$ABCDETEMPDIR/status"
+				echo cddb-choice=0 >> "$ABCDETEMPDIR/status"
+			else
+				# Template's the next chump's job.
+				vecho "Unable to find a match with ${CDDBMETHCHOICE}, moving on to the next option."
+			fi
 			;;
 		210|211)
 			# Multiple exact, (possibly multiple) inexact matches
@@ -2637,7 +2781,7 @@ do_cddbread ()
 				echo \#$X: ---- "$DISCINFO" ---- >> "$ABCDETEMPDIR/cddbchoices"
 				for TRACK in $(f_seq_row 1 $TRACKS)
 				do
-					echo $TRACK: "$(grep ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.$X" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
+					echo $TRACK: "$(grep -a ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.$X" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
 				done
 				echo >> "$ABCDETEMPDIR/cddbchoices"
 			done )
@@ -2648,7 +2792,7 @@ do_cddbread ()
 			# Using local copy.
 			for TRACK in $(f_seq_row 1 $TRACKS)
 			do
-				echo $TRACK: "$(grep ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.1" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
+				echo $TRACK: "$(grep -a ^TTITLE$(expr $TRACK - 1)= "$ABCDETEMPDIR/cddbread.1" | cut -f2- -d= | tr -d \\r\\n)" >> "$ABCDETEMPDIR/cddbchoices"
 			done
 			echo >> "$ABCDETEMPDIR/cddbchoices"
 			echo cddb-read-1-complete >> "$ABCDETEMPDIR/status"
@@ -2679,7 +2823,7 @@ do_cddbedit ()
 				CHOICE=$(checkstatus cddb-choice)
 				if [ -n "$CHOICE" ] ; then
 					case $CDDBCHOICES in
-						-1) if head -1 "$ABCDETEMPDIR/cddbquery" | grep "^$" > /dev/null 2>&1 ; then
+						-1) if head -1 "$ABCDETEMPDIR/cddbquery" | grep -a "^$" > /dev/null 2>&1 ; then
 								log error "CDDB query failed!"
 								exit 1
 							else
@@ -2746,7 +2890,7 @@ do_cddbedit ()
 						UNKNOWNDISK=y
 						$CDDBTOOL template $(cat "$ABCDETEMPDIR/discid") > "$ABCDETEMPDIR/cddbread.0"
 					else
-						echo "Selected: #$CDCHOICENUM ($(grep ^DTITLE= "$ABCDETEMPDIR/cddbread.$CDCHOICENUM" | cut -f2- -d= | tr -d \\r\\n))" >&2
+						echo "Selected: #$CDCHOICENUM ($(grep -a ^DTITLE= "$ABCDETEMPDIR/cddbread.$CDCHOICENUM" | cut -f2- -d= | tr -d \\r\\n))" >&2
 						do_cddbparse "$ABCDETEMPDIR/cddbread.$CDCHOICENUM"
 					fi
 					echo "cddb-choice=$CDCHOICENUM" >> "$ABCDETEMPDIR/status"
@@ -2795,7 +2939,7 @@ do_cddbedit ()
 				CDCHOICENUM=1
 				echo "cddb-choice=$CDCHOICENUM" >> "$ABCDETEMPDIR/status"
 			fi
-			echo "Selected: #$CDCHOICENUM ($(grep ^DTITLE= "$ABCDETEMPDIR/cddbread.$CDCHOICENUM" | cut -f2- -d= | tr -d \\r\\n))" >&2
+			echo "Selected: #$CDCHOICENUM ($(grep -a ^DTITLE= "$ABCDETEMPDIR/cddbread.$CDCHOICENUM" | cut -f2- -d= | tr -d \\r\\n))" >&2
 		fi
 	fi
 
@@ -2863,7 +3007,7 @@ do_cddbedit ()
 
 	# Some heuristics first. Look at Disc Title, and if it starts with
 	# "Various", then we'll assume Various Artists
-	if [ "$(grep ^DTITLE= "$CDDBDATA" | cut -f2- -d= | grep -Eci '^(various|soundtrack|varios|sonora|ost)')" != "0" ]; then
+	if [ "$(grep -a ^DTITLE= "$CDDBDATA" | cut -f2- -d= | grep -aEci '^(various|soundtrack|varios|sonora|ost)')" != "0" ]; then
 		echo "Looks like a Multi-Artist CD" >&2
 		VARIOUSARTISTS=y
 	else
@@ -2879,14 +3023,14 @@ do_cddbedit ()
 		# Set a default
 		DEFAULTSTYLE=1
 		# Need NUMTRACKS before cddb-tool will return it:
-		NUMTRACKS=$(grep -E '^TTITLE[0-9]+=' "$CDDBDATA" | wc -l)
-		if [ "$(grep -c "^TTITLE.*\/" "$CDDBDATA")" -gt "$(expr $NUMTRACKS / 2 )" ]; then
+		NUMTRACKS=$(grep -a -E '^TTITLE[0-9]+=' "$CDDBDATA" | wc -l)
+		if [ "$(grep -ac "^TTITLE.*\/" "$CDDBDATA")" -gt "$(expr $NUMTRACKS / 2 )" ]; then
 			# More than 1/2 tracks contain a "/", so guess forward
 			DEFAULTSTYLE=1
-		elif [ "$(grep -c "^TTITLE.*\-" "$CDDBDATA")" -gt "$(expr $NUMTRACKS / 2 )" ]; then
+		elif [ "$(grep -ac "^TTITLE.*\-" "$CDDBDATA")" -gt "$(expr $NUMTRACKS / 2 )" ]; then
 			# More than 1/2 contain a "-", so guess forward-dash
 			DEFAULTSTYLE=2
-		elif [ "$(grep -c "^TTITLE.*(.*)" "$CDDBDATA")" -gt "$(expr $NUMTRACKS / 2 )" ]; then
+		elif [ "$(grep -ac "^TTITLE.*(.*)" "$CDDBDATA")" -gt "$(expr $NUMTRACKS / 2 )" ]; then
 			# More than 1/2 contain something in parens, so guess trailing-paren
 			DEFAULTSTYLE=6
 		fi
@@ -2991,8 +3135,10 @@ do_cddbedit ()
 do_getalbumart()
 {
 	# set variables
-	ALBUMFILE="$(mungefilename "$DALBUM")"
-	ARTISTFILE="$(mungefilename "$DARTIST")"
+	ALBUMFILE="$(mungealbumname "$DALBUM")"
+	ARTISTFILE="$(mungeartistname "$DARTIST")"
+	GENRE="$(mungegenre "$GENRE")"
+	YEAR=${CDYEAR:-$CDYEAR}
 	# have we got a musicbrainz mbid or amazon asin?
 	case "$CDDBMETHOD" in
 		musicbrainz)
@@ -3102,11 +3248,19 @@ do_getalbumart()
 		for OUTPUT in $(echo $OUTPUTTYPE | tr , \ )
 		do
 			# put cover in the same place as the album
+			if [ "$ONETRACK" = "y" ] ; then
+				if [ "$VARIOUSARTISTS" = "y" ] ; then
+					ALBUMARTDIR="$(eval echo "$VAONETRACKOUTPUTFORMAT")"
+				else
+					ALBUMARTDIR="$(eval echo "$ONETRACKOUTPUTFORMAT")"
+			fi
+		else
 			if [ "$VARIOUSARTISTS" = "y" ] ; then
 				ALBUMARTDIR="$(eval echo "$VAOUTPUTFORMAT")"
 			else
 				ALBUMARTDIR="$(eval echo "$OUTPUTFORMAT")"
 			fi
+		fi
 			FINALALBUMARTDIR="$(dirname "$OUTPUTDIR/$ALBUMARTDIR")"
 			vecho "copying cover to target directory $FINALALBUMARTDIR" >&2
 			mkdir -p "$FINALALBUMARTDIR"
@@ -3136,11 +3290,13 @@ do_cdread ()
 		LASTTRACK=$(expr $3 + 0)
 		UTRACKNUM=$FIRSTTRACK
 		case "$CDROMREADERSYNTAX" in
-			flac) READTRACKNUMS="$FIRSTTRACK.1-$(($LASTTRACK + 1)).0" ;;
+			flac) READTRACKNUMS="-" ;;
 			cdparanoia|libcdio)
 				#XX FIXME XX
-				# Add a variable to check if tracks are provided in command line and if not, use "0-" to rip the tracks
-				READTRACKNUMS="$FIRSTTRACK-$LASTTRACK" ;;
+				# Add a variable to check if tracks are provided in command line and if not, rip the whole CD
+				# We must make sure to rip from sector 0, both lines below work
+				# READTRACKNUMS="-- -$LASTTRACK" ;;
+				READTRACKNUMS="[.0]-" ;;
 			cdda2wav | icedax) READTRACKNUMS="$FIRSTTRACK+$LASTTRACK" ;;
 			pird) READTRACKNUMS="$FIRSTTRACK..$LASTTRACK" ;;
 			*) echo "abcde error: $CDROMREADERSYNTAX does not support ONETRACK mode"
@@ -3153,7 +3309,6 @@ do_cdread ()
 	if [ "$USEPIPES" = "y" ]; then
 		TEMPARG="PIPERIPPER_$CDROMREADERSYNTAX"
 		FILEARG="$( eval echo "\$$TEMPARG" )"
-		REDIR=""
 		PIPE_MESSAGE="and encoding "
 	else
 		WAVDATA="$ABCDETEMPDIR/track$UTRACKNUM.wav"
@@ -3166,7 +3321,6 @@ do_cdread ()
 				FILEARG="$WAVDATA"
 				;;
 		esac
-		REDIR=">&2"
 	fi
 	if [ "$1" = "onetrack" ]; then
 		echo "Grabbing ${PIPE_MESSAGE}tracks $UTRACKNUM - $LASTTRACK as one track ..." >&2
@@ -3186,8 +3340,13 @@ do_cdread ()
 			STRIPTRACKNUM=$(expr $UTRACKNUM + 0)
 			nice $READNICE $FLAC -d -f --cue=${READTRACKNUMS:-$STRIPTRACKNUM.1-$(($STRIPTRACKNUM + 1)).0} "$FILEARG" "$CDROM" ;;
 		cdparanoia|libcdio)
-			nice $READNICE $CDROMREADER -$CDPARANOIACDROMBUS "$CDROM" ${READTRACKNUMS:-$UTRACKNUM} "$FILEARG" $REDIR ;;
-		cdda2wav | icedax)
+			if [ "$USEPIPES" = "y" ]; then
+				nice $READNICE $CDROMREADER -$CDPARANOIACDROMBUS "$CDROM" ${READTRACKNUMS:-$UTRACKNUM} "$FILEARG"
+			else
+				nice $READNICE $CDROMREADER -$CDPARANOIACDROMBUS "$CDROM" ${READTRACKNUMS:-$UTRACKNUM} "$FILEARG" >&2
+			fi
+			 ;;
+		cdda2wav|icedax)
 			if [ "$OSFLAVOUR" = "OSX" ] ; then
 				# Hei, we have to unmount the device before running anything like cdda2wav/icedax in OSX
 				diskutil unmount ${CDROM#/dev/}
@@ -3202,17 +3361,25 @@ do_cdread ()
 					CDDA2WAVCDROM="$CDROMID"
 				fi
 			fi
-			nice $READNICE $CDROMREADER -D $CDDA2WAVCDROM -t ${READTRACKNUMS:-$UTRACKNUM} "$FILEARG" $REDIR ;;
-		dagrab) nice $READNICE $CDROMREADER -d "$CDROM" -f "$FILEARG" -v $UTRACKNUM >&2 ;;
+			if [ "$USEPIPES" = "y" ]; then
+				nice $READNICE $CDROMREADER -D $CDDA2WAVCDROM -t ${READTRACKNUMS:-$UTRACKNUM} "$FILEARG"
+			else
+				nice $READNICE $CDROMREADER -D $CDDA2WAVCDROM -t ${READTRACKNUMS:-$UTRACKNUM} "$FILEARG" >&2
+			fi
+		;;
+		dagrab)
+					# I cannot get USEPIPES to work with dagrab so just this:
+				nice $READNICE $CDROMREADER -d "$CDROM" -f "$FILEARG" -v $UTRACKNUM >&2
+		;;
 		pird)
 			if [ "$USEPIPES" = "y" ]; then
 				nice $READNICE $CDROMREADER -j ${READTRACKNUMS:-$UTRACKNUM} "$CDROM" "$FILEARG"
 			else
 				# Write ripped audio data to stdout and redirect to $FILEARG.
-				# $REDIR can be ignored. Progress is written to stderr by default.
+				# Progress is written to stderr by default and thus >&2 is not required.
 				nice $READNICE $CDROMREADER -j ${READTRACKNUMS:-$UTRACKNUM} "$CDROM" "$PIPERIPPER_pird" > "$FILEARG"
 			fi
-			;;
+		;;
 		cddafs)
 			# Find the track's mounted path
 			REALTRACKNUM=$(expr $UTRACKNUM + 0)
@@ -3220,11 +3387,21 @@ do_cdread ()
 			FILEPATH=$(find "$FILEPATH" | grep "/$REALTRACKNUM ");
 			# If the file exists, copy it
 			if [ -e "$FILEPATH" ] ; then
-				nice $READNICE $CDROMREADER "$FILEPATH" "$FILEARG" $REDIR
+				if [ "$USEPIPES" = "y" ]; then
+					nice $READNICE $CDROMREADER "$FILEPATH" "$FILEARG"
+				else
+				nice $READNICE $CDROMREADER "$FILEPATH" "$FILEARG" >&2
+			fi
 			else
 				false
 			fi ;;
-		debug) nice $READNICE $CDROMREADER -$CDPARANOIACDROMBUS "$CDROM" -w $UTRACKNUM-[:1] "$FILEARG" $REDIR ;;
+		debug)
+			if [ "$USEPIPES" = "y" ]; then
+				nice $READNICE $CDROMREADER -$CDPARANOIACDROMBUS "$CDROM" -w $UTRACKNUM-[:1] "$FILEARG"
+			else
+				nice $READNICE $CDROMREADER -$CDPARANOIACDROMBUS "$CDROM" -w $UTRACKNUM-[:1] "$FILEARG" >&2
+			fi
+		;;
 	esac
 	RETURN=$?
 	# If we get some error or we get some missing wav
@@ -3312,6 +3489,24 @@ mungefilename ()
 	echo "$@" | sed -e 's/^\.*//' -e 's/ /_/g' | tr -d ":><|*/\"'?[:cntrl:]"
 }
 
+# Custom filename munging specific to track names:
+mungetrackname ()
+{
+	mungefilename $@
+}
+
+# Custom filename munging specific to artist names:
+mungeartistname ()
+{
+	mungefilename $@
+}
+
+# Custom filename munging specific to album names:
+mungealbumname ()
+{
+	mungefilename $@
+}
+
 # Custom genre munging:
 mungegenre ()
 {
@@ -3348,8 +3543,8 @@ post_encode ()
 # Builtin defaults
 
 # CDDB
-# Defaults to FreeDB, but musicbrainz can be used too, via the abcde-musicbrainz-tool script
-CDDBMETHOD=cddb
+# Currently two supported options ("musicbrainz" and "cddb" for freedb.org)
+CDDBMETHOD=musicbrainz
 CDDBURL="http://freedb.freedb.org/~cddb/cddb.cgi"
 CDDBSUBMIT=freedb-submit@freedb.org
 CDDBPROTO=6
@@ -3359,6 +3554,10 @@ CDDBLOCALPOLICY="always"
 CDDBLOCALRECURSIVE="y"
 CDDBLOCALDIR="$HOME/.cddb"
 CDDBUSELOCAL="n"
+# pre-declare a variable we'll use if the user provides a
+# comma-separated list of CDDBMETHODs
+declare -a CDDBMETHODS
+CDDBLASTMETHOD="n"
 
 # List of fields we parse and show during the CDDB parsing...
 SHOWCDDBFIELDS="year,genre"
@@ -3370,11 +3569,14 @@ ENCODERSYNTAX=default
 MP3ENCODERSYNTAX=default
 OGGENCODERSYNTAX=default
 OPUSENCODERSYNTAX=default
+MKAENCODERSYNTAX=default
 FLACENCODERSYNTAX=default
 SPEEXENCODERSYNTAX=default
 MPCENCODERSYNTAX=default
 WVENCODERSYNTAX=default
+TTAENCODERSYNTAX=default
 APENCODERSYNTAX=default
+MP2ENCODERSYNTAX=default
 AACENCODERSYNTAX=default
 NORMALIZERSYNTAX=default
 CUEREADERSYNTAX=default
@@ -3413,7 +3615,6 @@ CDPARANOIACDROMBUS="d"
 # program paths - defaults to checking your $PATH
 # mp3
 LAME=lame
-TOOLAME=toolame
 GOGO=gogo
 BLADEENC=bladeenc
 L3ENC=l3enc
@@ -3431,22 +3632,41 @@ SPEEXENC=speexenc
 # mpc (Musepack)
 MPCENC=mpcenc
 # wv (wavpack)
+# WVENC is retained in abcde 2.7.1 for backwards compatibility
+# with abcde 2.7:
 WVENC=wavpack
+WAVPACK=wavpack
+# True Audio: 'tta' is the newer version, 'ttaenc' is the older version:
+TTA=tta
+TTAENC=ttaenc
 # ape
 APENC=mac
 APETAG=apetag
+# mp2
+TWOLAME=twolame
 # m4a
 FAAC=faac
 NEROAACENC=neroAacEnc
 FDKAAC=fdkaac
+# Note that the qaac PATH will almost always require adjustment
+# as it is a Windows application being run through Wine. More
+# detailed notes in the sample abcde.conf file in the abcde tarball.
+QAAC=qaac
+FHGAACENC=fhgaacenc
+# The path to 'avconv' rather than 'ffmpeg'can be used here:
+FFMPEG=ffmpeg
 
 ID3=id3
 ID3V2=id3v2
+MID3V2=mid3v2
 EYED3=eyeD3
+ID3TAG=id3tag
 VORBISCOMMENT=vorbiscomment
 METAFLAC=metaflac
 NEROAACTAG=neroAacTag
+ATOMICPARSLEY=AtomicParsley
 
+WINE=wine
 CDPARANOIA=cdparanoia
 CD_PARANOIA=cd-paranoia
 CDDA2WAV=icedax
@@ -3481,7 +3701,6 @@ DISPLAYCMD=display
 # Options for programs called from abcde
 # mp3
 LAMEOPTS=
-TOOLAMEOPTS=
 GOGOOPTS=
 BLADEENCOPTS=
 L3ENCOPTS=
@@ -3505,20 +3724,29 @@ SPEEXENCOPTS=
 # mpc
 MPCENCOPTS=
 # wv
-WVENCOPTS=
+WAVPACKENCOPTS=
+# True Audio has no useful options but it is here anyway :)
+TTAENCOPTS=
 # ape
 # Monkey's Audio Console (mac) chokes without a mode setting
 # so we set one here.
 APENCOPTS='-c4000'
+# mp2
+TWOLAMENCOPTS=
 # m4a
 FAACENCOPTS=
 NEROACENCOPTS=
 # fdkaac chokes without either a bitrate or bitrate-mode specified so
 # we set bitrate here.
 FDKAACENCOPTS='--bitrate 192k'
+QAACENCOPTS=
+FHGAACENCOPTS=
+FFMPEGENCOPTS=
 
 ID3OPTS=
+ID3TAGOPTS=
 EYED3OPTS=""
+ATOMICPARSLEYOPTS=
 CDPARANOIAOPTS=
 PIRDOPTS=
 CDDA2WAVOPTS=
@@ -3553,7 +3781,7 @@ ACTIONS=cddb,read,encode,tag,move,clean
 
 # This option is basically for Debian package dependencies:
 # List of preferred outputs - by default, run with whatever we have in the path
-DEFAULT_OUTPUT_BINARIES=vorbis:oggenc,flac:flac,mp3:toolame,mp3:lame,mp3:bladeenc,spx:speex,m4a:faac:opus
+DEFAULT_OUTPUT_BINARIES=vorbis:oggenc,flac:flac,mp3:lame,mp3:bladeenc,spx:speex,m4a:fdkaac:opus
 
 # List of preferred cdromreaders - by default, run whichever we have in the path
 DEFAULT_CDROMREADERS="cdparanoia icedax cdda2wav libcdio pird"
@@ -3579,7 +3807,7 @@ elif [ X$(uname) = "XDarwin" ] ; then
 	# We won't find the eject program in OSX, and doing checkexec will fail further below...
 	unset EJECT
 elif [ X$(uname) = "XOpenBSD" ] ; then
-	HTTPGET=wget
+	HTTPGET=ftp
 	MD5SUM=md5
 	OSFLAVOUR=OBSD
 elif [ X$(uname) = "XNetBSD" ] ; then
@@ -3626,7 +3854,7 @@ fi
 if [ "$HTTPGETOPTS" = "" ] ; then
 	case $HTTPGET in
 		wget) HTTPGETOPTS="-q -nv -e timestamping=off -O -";;
-		curl) HTTPGETOPTS="-f -s";;
+		curl) HTTPGETOPTS="-f -s -L";;
 		fetch)HTTPGETOPTS="-q -o -";;
 		ftp)  HTTPGETOPTS="-a -V -o - ";;
 		*) log warning "HTTPGET in non-standard and HTTPGETOPTS are not defined." ;;
@@ -4011,12 +4239,15 @@ case "$OUTPUTTYPE" in *:*)
 		case "$OUTPUT" in
 			vorbis:*|ogg:*)	OGGENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 			opus:*)	OPUSENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
+			mka:*)	MKAENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 			mp3:*)	MP3ENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 			flac:*)	FLACENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 			spx:*)	SPEEXENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 			mpc:*)	MPCENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 			wv:*)	WVENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
+			tta:*)	TTAENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 			ape:*)	APENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
+			mp2:*)	MP2ENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 			m4a:*|aac:*)  AACENCODEROPTSCLI="$( echo $OUTPUT | cut -d: -f2- )" ;;
 		esac
 	done
@@ -4031,7 +4262,7 @@ case "$OUTPUTTYPE" in *:*)
 esac
 
 # If nothing has been specified, use oggenc for oggs and lame for mp3s and flac
-# for flacs and speexenc for speex and mpcenc for mpcs and faac for m4as and
+# for flacs and speexenc for speex and mpcenc for mpcs and fdkaac for m4as and
 # wavpack for wvs...
 
 # Getting ready for multiple output changes
@@ -4047,6 +4278,10 @@ do
 		opus)
 			[ "$OPUSENCODERSYNTAX" = "default" ] && OPUSENCODERSYNTAX=opusenc
 			OPUSOUTPUTCONTAINER=opus
+			;;
+		mka)
+			[ "$MKAENCODERSYNTAX" = "default" ] && MKAENCODERSYNTAX=ffmpeg
+			MKAOUTPUTCONTAINER=mka
 			;;
 		mp3)
 			[ "$MP3ENCODERSYNTAX" = "default" ] && MP3ENCODERSYNTAX=lame
@@ -4071,10 +4306,21 @@ do
 			[ "$WVENCODERSYNTAX" = "default" ] && WVENCODERSYNTAX=wavpack
 			[ "$DOTAG" = "y" ]
 			[ "$DOREPLAYGAIN" = "y" ] && NEEDWVGAIN=y
+			[ "$WVENCODERSYNTAX" = "ffmpeg" ] && DOREPLAYGAIN=n
 			;;
 		ape)
 			[ "$APENCODERSYNTAX" = "default" ] && APENCODERSYNTAX=mac
 			[ "$DOTAG" = "y" ] && NEEDAPETAG=y
+			;;
+		mp2)
+			[ "$MP2ENCODERSYNTAX" = "default" ] && MP2ENCODERSYNTAX=twolame
+			[ "$DOTAG" = "y" ] && NEEDMID3V2=y
+			[ "$MP2ENCODERSYNTAX" = "ffmpeg" ] && [ "$DOTAG" = "y" ]  && NEEDMID3V2=y
+			;;
+		tta)
+			[ "$TTAENCODERSYNTAX" = "default" ] && TTAENCODERSYNTAX=tta
+			[ "$DOTAG" = "y" ] && NEEDMID3V2=y
+			[ "$TTAENCODERSYNTAX" = "ttaenc" ] && [ "$DOTAG" = "y" ] && NEEDMID3V2=y
 			;;
 		aac)
 			[ "$AACENCODERSYNTAX" = "default" ] && AACENCODERSYNTAX=faac
@@ -4083,9 +4329,12 @@ do
 		# compiled without libmp4v2... Andrew.
 			;;
 		m4a)
-			[ "$AACENCODERSYNTAX" = "default" ] && AACENCODERSYNTAX=faac
-			[ "$DOTAG" = "y" ] && CHECKFAACBUILD=y
+			[ "$AACENCODERSYNTAX" = "default" ] && AACENCODERSYNTAX=fdkaac
+			[ "$AACENCODERSYNTAX" = "faac" ] && [ "$DOTAG" = "y" ] && CHECKFAACBUILD=y
 			[ "$AACENCODERSYNTAX" = "neroAacEnc" ] && NEEDNEROAACTAG=y
+			[ "$AACENCODERSYNTAX" = "qaac" ] && NEEDWINE=y
+			[ "$AACENCODERSYNTAX" = "fhgaacenc" ] && NEEDWINE=y && NEEDATOMICPARSLEY=y
+			[ "$AACENCODERSYNTAX" = "ffmpeg" ] && [ "$DOTAG" = "y" ]
 			;;
 		wav)
 			if [ "$KEEPWAVS" = "y" ]; then
@@ -4104,10 +4353,6 @@ case "$MP3ENCODERSYNTAX" in
 	lame)
 		MP3ENCODEROPTS="${MP3ENCODEROPTSCLI:-$LAMEOPTS}"
 		MP3ENCODER="$LAME"
-		;;
-	toolame)
-		MP3ENCODEROPTS="${MP3ENCODEROPTSCLI:-$TOOLAMEOPTS}"
-		MP3ENCODER="$TOOLAME"
 		;;
 	gogo)
 		MP3ENCODEROPTS="${MP3ENCODEROPTSCLI:-$GOGOOPTS}"
@@ -4146,6 +4391,12 @@ case "$OPUSENCODERSYNTAX" in
 		OPUSENCODER="$OPUSENC"
 		;;
 esac
+case "$MKAENCODERSYNTAX" in
+	ffmpeg)
+		MKAENCODEROPTS="${MKAENCODEROPTSCLI:-$FFMPEGENCOPTS}"
+		MKAENCODER="$FFMPEG"
+		;;
+esac
 case "$FLACENCODERSYNTAX" in
 	flac)
 		FLACENCODEROPTS="${FLACENCODEROPTSCLI:-$FLACOPTS}"
@@ -4178,8 +4429,29 @@ case "$MPCENCODERSYNTAX" in
 esac
 case "$WVENCODERSYNTAX" in
 	wavpack)
-		WVENCODEROPTS="${WVENCODEROPTSCLI:-$WVENCOPTS}"
-		WVENCODER="$WVENC"
+		# Syntax changed slightly between abcde 2.7 and abcde 2.7.1,
+		# and in the interests of backward compatibility:
+		if [ -z "$WAVPACKENCOPTS" ] && [ -n "$WVENCOPTS" ]; then
+			WVENCODEROPTS="${WVENCODEROPTSCLI:-$WVENCOPTS}"
+			WVENCODER="$WAVPACK"
+		else
+			WVENCODEROPTS="${WVENCODEROPTSCLI:-$WAVPACKENCOPTS}"
+			WVENCODER="$WAVPACK"
+		fi
+		;;
+	ffmpeg)
+		WVENCODEROPTS="${WVENCODEROPTSCLI:-$FFMPEGENCOPTS}"
+		WVENCODER="$FFMPEG"
+		;;
+esac
+case "$TTAENCODERSYNTAX" in
+	tta)
+		TTAENCODEROPTS="${TTAENCODEROPTSCLI:-$TTAENCOPTS}"
+		TTAENCODER="$TTA"
+		;;
+	ttaenc)
+		TTAENCODEROPTS="${TTAENCODEROPTSCLI:-$TTAENCOPTS}"
+		TTAENCODER="$TTAENC"
 		;;
 esac
 case "$APENCODERSYNTAX" in
@@ -4188,8 +4460,18 @@ case "$APENCODERSYNTAX" in
 		APENCODER="$APENC"
 		;;
 esac
+case "$MP2ENCODERSYNTAX" in
+	twolame)
+		MP2ENCODEROPTS="${MP2ENCODEROPTSCLI:-$TWOLAMENCOPTS}"
+		MP2ENCODER="$TWOLAME"
+		;;
+	ffmpeg)
+		MP2ENCODEROPTS="${MP2ENCODEROPTSCLI:-$FFMPEGENCOPTS}"
+		MP2ENCODER="$FFMPEG"
+		;;
+esac
 case "$AACENCODERSYNTAX" in
-		# Some elaborate 'if' work to keep backward compatability for those
+		# Some elaborate 'if' work to keep backward compatibility for those
 		# who don't realise that AACENCOPTS does not work with abcde from
 		# version 2.7 onwards.
 	faac)
@@ -4219,6 +4501,33 @@ case "$AACENCODERSYNTAX" in
 			AACENCODER="$FDKAAC"
 		fi
 		;;
+	qaac)
+		if [ -z "$QAACENCOPTS" ] && [ -n "$AACENCOPTS" ]; then
+			AACENCODEROPTS="${AACENCODEROPTSCLI:-$AACENCOPTS}"
+			AACENCODER="$QAAC"
+		else
+			AACENCODEROPTS="${AACENCODEROPTSCLI:-$QAACENCOPTS}"
+			AACENCODER="$QAAC"
+		fi
+		;;
+	fhgaacenc)
+		if [ -z "$FHGAACENCOPTS" ] && [ -n "$AACENCOPTS" ]; then
+			AACENCODEROPTS="${AACENCODEROPTSCLI:-$AACENCOPTS}"
+			AACENCODER="$FHGAACENC"
+		else
+			AACENCODEROPTS="${AACENCODEROPTSCLI:-$FHGAACENCOPTS}"
+			AACENCODER="$FHGAACENC"
+		fi
+		;;
+	ffmpeg)
+		if [ -z "$FFMPEGENCOPTS" ] && [ -n "$AACENCOPTS" ]; then
+			AACENCODEROPTS="${AACENCODEROPTSCLI:-$AACENCOPTS}"
+			AACENCODER="$FFMPEG"
+		else
+			AACENCODEROPTS="${AACENCODEROPTSCLI:-$FFMPEGENCOPTS}"
+			AACENCODER="$FFMPEG"
+		fi
+		;;
 esac
 
 # and which tagger
@@ -4232,6 +4541,11 @@ case "$ID3TAGV" in
 		TAGGER="$ID3V2"
 		ID3SYNTAX=id3v2
 		TAGGEROPTS="$ID3V2OPTS"
+		;;
+	id3tag)
+		TAGGER="$ID3TAG"
+		ID3SYNTAX=id3tag
+		TAGGEROPTS="$ID3TAGOPTS"
 		;;
 	id3v2.4)
 		TAGGER="$EYED3"
@@ -4278,6 +4592,23 @@ case "$CDDBTOOL" in
 	cddb) ;;
 	musicbrainz) ;;
 esac
+
+# 2016-08-30: adding comma-separated list (in this case, to be used in
+# sequence until successful) support ala OUTPUTYPE. -GR
+idx=0
+for CDDBCHOICE in $(echo "$CDDBMETHOD"  | tr -d '	 ' | tr , ' ')
+do
+	# The OUTPUTTYPE code uses bash-specific syntax (var=${var:+var}),
+	# but then doesn't just use an array to store the output, which seems
+	# weird. So I'm going to use an array for this...? -GR
+	CDDBMETHODS[$idx]=$CDDBCHOICE
+	vvecho "CDDB method $idx: $CDDBCHOICE"
+	idx=$((idx + 1))
+done
+
+# Just so CDDBMETHOD is a legible value for functions, in case I
+# miss something, set it to the first choice: -GR
+CDDBMETHOD=${CDDBMETHODS[0]}
 
 # Check if both OGGEOUTPUTCONTAINER and FLACOUTPUTCONTAINER are the same, and differentiante them
 if [ X"$OGGOUTPUTCONTAINER" = "Xogg" ] && [ X"$FLACOUTPUTCONTAINER" = "Xogg" ]; then
@@ -4359,6 +4690,11 @@ PIPE_speexenc="-"
 PIPE_mpcenc="-"
 PIPE_wavpack="-"
 PIPE_faac="-"
+PIPE_qaac="-"
+PIPE_fhgaacenc="-"
+PIPE_ffmpeg="-"
+PIPE_tta="-"
+PIPE_ttaenc="-"
 # Both neroAacEnc and fdkaac seem to manage without the addition of
 # the 'ignorelength' option in PIPE_$AACENCODERSYNTAX when piping
 # in this manner.                                           Andrew.
@@ -4376,6 +4712,8 @@ if [ "$USEPIPES" = "y" ]; then
 			PIPEENCODERSVARCHECK="PIPE_$OGGENCODERSYNTAX" ;;
 		opus)
 			PIPEENCODERSVARCHECK="PIPE_$OPUSENCODERSYNTAX" ;;
+		mka)
+			PIPEENCODERSVARCHECK="PIPE_$MKAENCODERSYNTAX" ;;
 		flac)
 			PIPEENCODERSVARCHECK="PIPE_$FLACENCODERSYNTAX" ;;
 		spx)
@@ -4384,6 +4722,8 @@ if [ "$USEPIPES" = "y" ]; then
 			PIPEENCODERSVARCHECK="PIPE_$MPCENCODERSYNTAX" ;;
 		wv)
 			PIPEENCODERSVARCHECK="PIPE_$WVENCODERSYNTAX" ;;
+		tta)
+			PIPEENCODERSVARCHECK="PIPE_$TTAENCODERSYNTAX" ;;
 		m4a)
 			PIPEENCODERSVARCHECK="PIPE_$AACENCODERSYNTAX" ;;
 		aac)
@@ -4407,8 +4747,8 @@ fi
 
 # Make sure a buncha things exist
 for X in $CDROMREADER $CDDISCID ${NEEDTAGGER+$TAGGER} $MP3ENCODER \
-	$OGGENCODER $OPUSENCODER $FLACENCODER $SPEEXENCODER $MPCENCODER \
-	$AACENCODER $WVENCODER $CDDBTOOL $APENCODER \
+	$OGGENCODER $OPUSENCODER $MKAENCODER $FLACENCODER $SPEEXENCODER $MPCENCODER \
+	$AACENCODER $WVENCODER $CDDBTOOL $APENCODER $MP2ENCODER $TTAENCODER \
 	${NEEDHTTPGET+$HTTPGET} ${NEEDDISTMP3+$DISTMP3} \
 	${NEEDCOMMENTER+$VORBISCOMMENT} ${NEEDMETAFLAC+$METAFLAC} \
 	${NEEDNORMALIZER+$NORMALIZER} ${NEEDEJECT+$EJECT} \
@@ -4417,7 +4757,8 @@ for X in $CDROMREADER $CDDISCID ${NEEDTAGGER+$TAGGER} $MP3ENCODER \
 	${NEEDMPCGAIN+$MPCGAIN} ${NEEDCUEREADER+$CUEREADER} \
 	${NEEDWVGAIN+WVGAIN} ${NEEDAPETAG+$APETAG} \
 	${NEEDCUE2DISCID+$CUE2DISCID} ${NEEDNEROAACTAG+$NEROAACTAG} \
-	${NEEDGLYRC+$GLYRC}
+	${NEEDGLYRC+$GLYRC} ${NEEDWINE+$WINE} ${NEEDATOMICPARSLEY+$ATOMICPARSLEY} \
+	${NEEDMID3V2+$MID3V2}
 do
 	checkexec "$X"
 done
@@ -4433,7 +4774,8 @@ if [ "$CHECKFAACBUILD" = "y" ] && [ "$AACENCODERSYNTAX" = "faac" ] ; then
 	if faac --help 2>&1 | grep -q -F 'MP4 support unavailable.'; then
 		echo "WARNING: Your copy of Faac does not have mp4 support"
 		echo "WARNING: Encoding untagged files to aac..."
-		OUTPUTTYPE=aac
+		# Replace m4a with aac for single and multi-output encodes:
+		OUTPUTTYPE=$(echo "$OUTPUTTYPE" | sed 's/m4a/aac/')
 	else
 		echo "Using Faac to Tag AAC Tracks..."
 	fi
@@ -4463,6 +4805,7 @@ HTTPGET="$HTTPGET $HTTPGETOPTS"
 # Here it used to say:
 # One thousand lines in, we can start doing stuff with things
 # Well, right now we are at line 3737 ;)
+# Hey, for grins, as of 2016-08-30 this is now line 4814! -GR
 
 # Export needed things so they can be read in this subshell
 export CDDBTOOL ABCDETEMPDIR TRACKQUEUE LOWDISK EJECTCD EJECT EJECTOPTS
@@ -4492,7 +4835,23 @@ if [ "$DOCDDB" = "y" ]; then
 		:
 	else
 		if [ "$CDDBLOCALSTATUS" = "notfound" ] ; then
-			case "$CDDBMETHOD" in
+			for CDDBMETHCHOICE in ${CDDBMETHODS[@]}
+			do
+				vecho "Trying CDDB method ${CDDBMETHCHOICE}."
+				if [ $CDDBLASTMETHOD = "n" ]
+				then
+					if [ ${#CDDBMETHODS[@]} -le 1 ]
+					# (number of items)
+					then
+						CDDBLASTMETHOD="y"
+					else
+						CDDBMETHODS=("${CDDBMETHODS[@]:1}")
+						# (performs shift on an array in bash)
+					fi
+				else
+					vvecho "(Last chance before manual entry...)"
+				fi
+				case "$CDDBMETHCHOICE" in
 				cddb)
 					do_cddbstat
 					do_cddbquery
@@ -4501,7 +4860,13 @@ if [ "$DOCDDB" = "y" ]; then
 				musicbrainz)
 					do_musicbrainz
 					;;
-			esac
+				esac
+				if [ -f "$ABCDETEMPDIR/cddbchoices" ]
+				then
+					# If this pass found something, we're done.
+					break
+				fi
+			done
 		fi
 		CHOICE=$(checkstatus cddb-choice)
 		if [ "$CHOICE" = 0 ] ; then
@@ -4656,7 +5021,7 @@ if [ "$EJECTCD" = "y" ]; then
 		$eject $EJECTOPTS $cd
 	elif [ X"$(uname)" = X"Darwin" ] ; then
 		diskutil eject ${CDROM#/dev/} 0
-    elif [ -x $(which $EJECT) ]; then
+	elif [ -x $(which $EJECT) ]; then
 		$EJECT $EJECTOPTS "$CDROM"
 	fi
 	#fi
@@ -4691,24 +5056,25 @@ fi
 #BACK
 if [ "$BATCHNORM" = "y" ] || [ "$NOGAP" = "y" ]; then
 	read GOAHEAD # For blocking - will contain either "NO" or "NEXTTRACK"
-	if [ "$GOAHEAD" = "NO" ]; then break; fi
-	for LASTTRACK in $TRACKQUEUE; do :; done
-	if checkstatus readtrack-$LASTTRACK; then
-		if [ "$DONORMALIZE" = "y" ] && [ "$BATCHNORM" = "y" ]; then
-			if checkstatus normalizetrack-$LASTTRACK; then :; else do_batch_normalize; fi
-			if checkerrors batch-normalize; then exit 1; fi
-		fi
-		if [ "$DOENCODE" = "y" ] && [ "$NOGAP" = "y" ]; then
-			if [ "$DONORMALIZE" = "y" ]; then
-				for UTRACKNUM in $TRACKQUEUE
-				do
-					if checkstatus readtrack-$UTRACKNUM; then
-						if checkstatus normalizetrack-$UTRACKNUM; then :; else do_normalize $UTRACKNUM; fi
-					fi
-				done
+	if [ "$GOAHEAD" != "NO" ]; then
+		for LASTTRACK in $TRACKQUEUE; do :; done
+		if checkstatus readtrack-$LASTTRACK; then
+			if [ "$DONORMALIZE" = "y" ] && [ "$BATCHNORM" = "y" ]; then
+				if checkstatus normalizetrack-$LASTTRACK; then :; else do_batch_normalize; fi
+				if checkerrors batch-normalize; then exit 1; fi
 			fi
-			if checkstatus encodetrack-$LASTTRACK; then :; else do_nogap_encode; fi
-			if checkerrors nogap-encode; then exit 1; fi
+			if [ "$DOENCODE" = "y" ] && [ "$NOGAP" = "y" ]; then
+				if [ "$DONORMALIZE" = "y" ]; then
+					for UTRACKNUM in $TRACKQUEUE
+					do
+						if checkstatus readtrack-$UTRACKNUM; then
+							if checkstatus normalizetrack-$UTRACKNUM; then :; else do_normalize $UTRACKNUM; fi
+						fi
+					done
+				fi
+				if checkstatus encodetrack-$LASTTRACK; then :; else do_nogap_encode; fi
+				if checkerrors nogap-encode; then exit 1; fi
+			fi
 		fi
 	fi
 fi

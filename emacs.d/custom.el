@@ -39,6 +39,7 @@
  '(TeX-source-specials-view-start-server t)
  '(TeX-style-private (quote ("~/.emacs.d/auctex/style")))
  '(auto-compression-mode t nil (jka-compr))
+ '(auto-dim-other-buffers-mode t)
  '(auto-save-list-file-prefix "~/.emacs.d/auto-save-list/saves-")
  '(backup-by-copying t)
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backups"))))
@@ -206,6 +207,12 @@
  '(msb-display-invisible-buffers-p t)
  '(nxml-auto-insert-xml-declaration-flag t)
  '(nxml-slash-auto-complete-flag t)
+ '(package-archives
+   (quote
+    (("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa" . "https://melpa.org/packages/"))))
+ '(package-enable-at-startup t)
+ '(package-selected-packages (quote (auctex auto-dim-other-buffers)))
  '(ps-line-number t)
  '(ps-paper-type (quote a4))
  '(rails-ws:default-server-type "thin")
@@ -230,7 +237,10 @@
    "\\(def\\|if\\|class\\|module\\|unless\\|case\\|while\\|do\\|until\\|for\\|begin\\)")
  '(safe-local-variable-values
    (quote
-    ((sh-basic-offset . 2)
+    ((TeX-auto-regexp-list . LaTeX-auto-regexp-list)
+     (TeX-auto-untabify)
+     (TeX-brace-indent-level . 4)
+     (sh-basic-offset . 2)
      (sh-indentation . 2)
      (TeX-master . "vorlage"))))
  '(save-abbrevs nil)
@@ -260,6 +270,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auto-dim-other-buffers-face ((t (:background "black"))))
  '(button ((t (:inherit variable-pitch :underline t))))
  '(custom-button ((((type x w32 mac) (class color)) (:inherit variable-pitch :background "#e4e2d4" :foreground "#4e4c40" :box (:line-width 2 :style released-button)))))
  '(custom-button-mouse ((((type x w32 mac) (class color)) (:inherit custom-button :background "grey90" :foreground "black"))))
@@ -275,10 +286,10 @@
  '(diff-removed ((((type x w32 mac) (class color)) (:inherit diff-changed :foreground "mediumpurple3"))))
  '(fixed-pitch ((t (:family "courier"))))
  '(flyspell-duplicate-face ((((class color)) (:inherit flyspell-incorrect-face :overline t))) t)
- '(font-latex-sedate-face ((((type x w32 mac) (class color) (background light)) (:foreground "DarkMagenta"))) t)
- '(font-latex-subscript-face ((t (:height 0.9))) t)
- '(font-latex-superscript-face ((t (:height 0.9))) t)
- '(font-latex-verbatim-face ((((type x w32 mac) (class color) (background light)) (:foreground "SaddleBrown"))) t)
+ '(font-latex-sedate-face ((((type x w32 mac) (class color) (background light)) (:foreground "DarkMagenta"))))
+ '(font-latex-subscript-face ((t (:height 0.9))))
+ '(font-latex-superscript-face ((t (:height 0.9))))
+ '(font-latex-verbatim-face ((((type x w32 mac) (class color) (background light)) (:foreground "SaddleBrown"))))
  '(highlight-current-line-face ((((type x w32 mac) (class color)) (:background "#dcd6c8"))) t)
  '(html-tag-face ((((type x w32 mac) (class color)) (:foreground "dodger blue"))) t)
  '(mouse ((((type x w32 mac) (class color)) (:background "black"))))

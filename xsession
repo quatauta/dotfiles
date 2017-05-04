@@ -73,6 +73,7 @@ case "${realstartup}" in
         _start_with_delay conky -d &
         _start_with_delay polkit-gnome-authentication-agent-1 &
         _start_with_delay unclutter &
+        _start_with_delay liferea -w hidden &
 
         ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""
 
