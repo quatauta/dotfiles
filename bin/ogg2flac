@@ -3,7 +3,7 @@
 renice 20 $$
 ionice -c3 -p$$
 
-CPUS=$(grep processor /proc/cpuinfo | wc -l)
+CPUS=$(nproc --ignore=$(($(nproc) / 2)))
 
 find $@ -iname "*.ogg" -print0 |
 sed -e 's|"|\\"|g' |
