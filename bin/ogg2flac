@@ -13,7 +13,6 @@ xargs -0r -P${CPUS} -IOGG sh -c 'if [ ! -r "OGG.flac" ] ; then
                                      oggdec -Q -o "OGG.wav" "OGG" &&
                                      flac -s --best "OGG.wav" ;
                                      rm -f "OGG.wav" ;
-                                     echo "$(date +%H:%M:%S) OGG done." ;
                                  fi'
 
 find $@  -iname "*.ogg" |
