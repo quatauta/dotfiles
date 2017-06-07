@@ -23,3 +23,5 @@ if [ -n "${GPGAGENT}" ] && [ -x "${GPGAGENT}" ] && ! pgrep -U "${UID}" -f "${GPG
     eval "$("${GPGAGENT}" --enable-ssh-support --sh --daemon --default-cache-ttl 300 --max-cache-ttl 3600)"
     [ -z "${GPG_AGENT_INFO}" ] && export GPG_AGENT_INFO=1
 fi
+
+alias g >/dev/null 2>&1 && type -p g  >/dev/null 2>&1 && unalias g >/dev/null 2>&1
