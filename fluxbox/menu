@@ -1,5 +1,5 @@
 [begin] (Fluxbox)
-  [exec] (Terminal) {xterm}
+  [exec] (Terminal) {gnome-terminal}
   [exec] (Opera)    {opera}
   [exec] (Sonos)    {sonos}
   [exec] (Gmrun)    {gmrun}

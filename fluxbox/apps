@@ -1,6 +1,9 @@
 [group]  (workspace=[current])
  [app] (name=.*[tT]erm(inal)?)
  [app] (name=[kK]onsole)
+ [app] (name=[Gg]nome-terminal)
+ [app] (name=gnome-terminal-server)
+ [app] (name=gnome-terminal-window.*)
   [Position]	(CENTER)	{0 0}
 [end]
 [group]  (workspace=[current])
