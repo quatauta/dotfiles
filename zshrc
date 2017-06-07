@@ -1,14 +1,14 @@
-# ~/.zshrc
+# ~/.zshrc for oh-my-zsh
+# vim:set syntax=zsh:
 
-ZSH_CONF_DIR="${HOME}/.zsh"
+export ZSH="${HOME}/.oh-my-zsh"
 
-fpath=(~/.zsh/functions ~/.zsh/functions/** $fpath)
+COMPLETION_WAITING_DOTS="true"
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+ENABLE_CORRECTION="true"
+HYPHEN_INSENSITIVE="true"
+ZSH_THEME="quatauta"
 
-shopt() { }
-test -r /etc/profile && source /etc/profile
+plugins=(git)
 
-for a in env functions options keys completion prompt ; do
-    if [ -r "${ZSH_CONF_DIR}/${a}" ] ; then
-        source "${ZSH_CONF_DIR}/${a}"
-    fi
-done
+source "${ZSH}/oh-my-zsh.sh"
