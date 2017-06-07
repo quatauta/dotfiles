@@ -24,5 +24,5 @@ RPS1='$(git_prompt_info)'
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%B%F{blue}(%F{red}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%F{blue})%F{yellow}✗"
+ZSH_THEME_GIT_PROMPT_DIRTY="%F{blue})%F{yellow}*"
 ZSH_THEME_GIT_PROMPT_CLEAN="%F{blue})"
