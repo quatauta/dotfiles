@@ -1,4 +1,5 @@
 # daniel prompt theme
+# vim:syntax=zsh:
 
 prompt_gentoo_daniel_help () {
   cat <<'EOF'
