@@ -5,11 +5,12 @@
 prompt_git_status() {
     local prefix="$1"
     local suffix="$2"
+    local prefix_dirty="$3"
+    local suffix_dirty="$4"
 
     local branch=""
     local branch_status=""
 
-    local separator=":"
     local remote_drift="#"
     local uncommitted="+"
     local unstaged="!"
@@ -28,7 +29,7 @@ prompt_git_status() {
             [ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]   && branch_status+="${untracked}"
             $(git rev-parse --verify refs/stash              1>/dev/null 2>&1) && branch_status+="${stashed}"
 
-            [ "" != "${branch_status}" ] && branch_status="${separator}${branch_status}"
+            [ "" != "${branch_status}" ] && branch_status="${prefix_dirty}${branch_status}${suffix_dirty}"
         fi
 
         # get the short symbolic ref
@@ -38,7 +39,7 @@ prompt_git_status() {
                   git rev-parse --short HEAD 2>/dev/null || \
                   printf "(unknown)")"
 
-        printf "%s" "${prefix}${branch}${branch_status}${suffix}"
+        printf "%s" "${prefix}${branch}${suffix}${branch_status}"
     else
         return
     fi
