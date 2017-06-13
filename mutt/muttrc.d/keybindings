@@ -19,3 +19,7 @@ bind pager <right>     view-attachments
 bind pager <up>        previous-line
 bind pager <down>      next-line
 bind pager <backspace> half-up
+
+bind index i change-newsgroup
+bind pager i change-newsgroup
+bind index y catchup
