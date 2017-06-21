@@ -51,7 +51,7 @@ fi
 _start fbsetroot -solid black &
 _start xmodmap "${HOME}/.Xmodmap" &
 _start xrdb -merge "${HOME}/.Xresources" &
-_start xset dpms 600 600 600 &
+_start xset dpms 300 300 300 &
 _start xset m 1 10000 &
 _start xset r rate 250 30 &
 ( _start numlockx off ; _start numlockx on ) &
@@ -59,7 +59,7 @@ _start xcape -e 'Control_L=Escape' &
 
 _start_with_delay xmodmap "${HOME}/.Xmodmap" &
 _start_with_delay xrdb -merge "${HOME}/.Xresources" &
-_start_with_delay xset dpms 600 600 600 &
+_start_with_delay xset dpms 300 300 300 &
 _start_with_delay xset m 1 10000 &
 _start_with_delay xset r rate 250 30 &
 _start_with_delay numlockx on &
