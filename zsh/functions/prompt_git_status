@@ -37,9 +37,9 @@ prompt_git_status() {
         # otherwise, just give up
         branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || \
                   git rev-parse --short HEAD 2>/dev/null || \
-                  printf "(unknown)")"
+                  printf "unknown")"
 
-        printf "%s" "${prefix}${branch}${suffix}${branch_status}"
+        printf "%s" "${prefix}${branch}${branch_status}${suffix}"
     else
         return
     fi

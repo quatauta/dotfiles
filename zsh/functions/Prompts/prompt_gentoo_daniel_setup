@@ -29,7 +29,7 @@ prompt_gentoo_daniel_setup () {
   # git repository details
   autoload prompt_git_status
   local git_status=""
-  type prompt_git_status 1>/dev/null 2>&1 && local git_status="\$(prompt_git_status '%f%b%k(' ')' '%B%F{yellow}' '%f%b%k')"
+  type prompt_git_status 1>/dev/null 2>&1 && local git_status="\$(prompt_git_status '%f%b%k(' '%f%b%k)' '%B%F{yellow}' '%f%b%k')"
 
   typeset -g PS1="$base_prompt $path_prompt %F{$prompt_user_style}%(!.#.>)%b%f%k $post_prompt"
   typeset -g PS2="$base_prompt$path_prompt %_> $post_prompt"
