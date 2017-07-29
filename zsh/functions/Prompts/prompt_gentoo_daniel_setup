@@ -1,7 +1,7 @@
 # daniel prompt theme
 # vim:syntax=zsh:
 
-prompt_gentoo_daniel_help () {
+prompt_gentoo_daniel_help() {
   cat <<'EOF'
 This prompt is color-scheme-able.  You can invoke it thus:
 
@@ -10,7 +10,7 @@ This prompt is color-scheme-able.  You can invoke it thus:
 EOF
 }
 
-prompt_gentoo_daniel_setup () {
+prompt_gentoo_daniel_setup() {
   local prompt_cwd=${1:-'yellow'}
   local prompt_user=${2:-'green'}
   local prompt_root=${3:-'red'}
@@ -31,7 +31,7 @@ prompt_gentoo_daniel_setup () {
   local git_status=""
   type prompt_git_status 1>/dev/null 2>&1 && local git_status="\$(prompt_git_status '%f%b%k(' '%f%b%k)' '%B%F{yellow}' '%f%b%k')"
 
-  typeset -g PS1="$base_prompt $path_prompt %F{$prompt_user_style}%(!.#.>)%b%f%k $post_prompt"
+  typeset -g PS1="$base_prompt $path_prompt %(?.%F{$prompt_user_style}.%B%F{red})%(!.#.>)%b%f%k $post_prompt"
   typeset -g PS2="$base_prompt$path_prompt %_> $post_prompt"
   typeset -g PS3="$base_prompt$path_prompt ?# $post_prompt"
   typeset -g RPS1="$git_status"
