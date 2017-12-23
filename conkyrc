@@ -29,6 +29,7 @@ conky.config = {
     use_xft = true,
 }
 
+
 conky.text = [[
 ${color0}root:${fs_used_perc /}% | \
 sys:${hwmon 0 temp 2}°C ${hwmon 0 fan 2}/m | \

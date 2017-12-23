@@ -32,6 +32,7 @@ unset crypt_autoencrypt
   set fast_reply
  #set header_cache      = ~/.mutt/cache/header
   set history_file      = ~/.cache/mutt-history
+  set history_remove_dups
   set imap_check_subscribed
   set imap_idle
   set include
@@ -54,6 +55,8 @@ unset markers
   set pager_index_lines = 7
   set pgp_entry_format  = "%4n %t%f %7a%4l/0x%k %[%Y-%m-%d] [%2c] %u"
   set pgp_long_ids
+  set pgp_self_encrypt
+  set postpone_encrypt
 unset pgp_show_unusable
   set pgp_sort_keys     = reverse-date
   set pgp_use_gpg_agent
@@ -69,6 +72,7 @@ unset reverse_name
   set sendmail_wait     = 7
   set sleep_time        = 0
   set smart_wrap
+  set smime_self_encrypt
   set sort              = threads
   set sort_aux          = last-date-sent
   set ssl_force_tls

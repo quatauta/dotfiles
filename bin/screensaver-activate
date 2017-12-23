@@ -39,6 +39,7 @@ _screensaver_command() {
 _freedesktop "Lock"
 _gnome "Lock"
 _screensaver_command "cinnamon-screensaver" "cinnamon-screensaver-command" "--lock"
+_screensaver_command "dm-tool"              "dm-tool"                      "lock"
 _screensaver_command "gnome-screensaver"    "gnome-screensaver-command"    "--lock"
 _screensaver_command "light-locker"         "light-locker-command"         "--lock"
 _screensaver_command "mate-screensaver"     "mate-screensaver-command"     "--lock"

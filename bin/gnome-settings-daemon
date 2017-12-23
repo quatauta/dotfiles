@@ -1,0 +1,19 @@
+#!/bin/sh
+
+renice 20 $$
+ionice -c3 -p$$
+
+GSD_LIBEXEC="/usr/libexec/"
+GSD="${GSD_LIBEXEC}/gnome-settings-daemon"
+GSD_XSETTINGS="${GSD_LIBEXEC}/gsd-xsettings"
+
+if [ -x "${GSD}" ] ; then
+    exec "${GSD}" &
+elif [ -x "${GSD_XSETTINGS}" ] ; then
+    find "${GSD_LIBEXEC}" -iname "gsd-*" |
+    egrep -v 'a11y|test|dummy|sound|locate-pointer|orientation|sharing|smartcard|sound|screensaver' |
+    sort |
+    while read GSD_MODULE ; do
+        [ -x "${GSD_MODULE}" ] && ( exec "${GSD_MODULE}" & )
+    done
+fi

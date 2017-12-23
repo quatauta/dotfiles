@@ -1,4 +1,6 @@
 .*.sw[opnm]
 .DS_Store
 _*
+emacs.d/auctex/auto-global
 emacs.d/elpa
+emacs.d/auto-save-list

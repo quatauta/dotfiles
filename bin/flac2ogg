@@ -5,7 +5,7 @@ ionice -c3 -p$$
 
 CPUS=$(nproc --ignore=$(($(nproc) / 2)))
 
-find $@ -iname "*.flac" -print0 |
+find ${@} -iname "*.flac" -print0 |
 sed -e 's|"|\\"|g' |
 sort -uz |
 xargs -0r -P${CPUS} -IFLAC sh -c 'if [ ! -r "FLAC.ogg" ] ; then
@@ -14,7 +14,7 @@ xargs -0r -P${CPUS} -IFLAC sh -c 'if [ ! -r "FLAC.ogg" ] ; then
                                       echo "$(date +%H:%M:%S) FLAC done." ;
                                   fi'
 
-find $@ -iname "*.flac" |
+find ${@} -iname "*.flac" |
 sort |
 while read flac ; do
     if [ -r "${flac}.ogg" ] ; then
@@ -36,7 +36,7 @@ while read flac ; do
     fi
 done
 
-find $@ -iname "*.ogg" -printf '%h\n' |
+find ${@} -iname "*.ogg" -printf '%h\n' |
 sort -u |
 while read a ; do
     printf '%s\0' "$a"

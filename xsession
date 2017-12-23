@@ -21,7 +21,7 @@ function _start_with_delay() {
 
     if [ -x "${DELAY}" ] && [ -x "${CMD}" ] ; then
         shift
-        "${DELAY}" -d 3 -- "${CMD}" "${@}" &
+        "${DELAY}" -d 2 -- "${CMD}" "${@}" &
     else
         echo "Can't start '${@}'." 1>&2
     fi
@@ -84,6 +84,16 @@ case "${realstartup}" in
         ( type systemctl 1>/dev/null && systemctl --failed --no-pager --no-legend >>"${HOME}/.xsession-errors" ) &
     ;;
 esac
+
+(
+    sleep 1
+    _start_with_delay xmodmap "${HOME}/.Xmodmap" &
+    _start_with_delay xrdb -merge "${HOME}/.Xresources" &
+    _start_with_delay xset dpms 300 300 300 &
+    _start_with_delay xset m 1 10000 &
+    _start_with_delay xset r rate 250 30 &
+    _start_with_delay numlockx on &
+) &
 
 # Start window manager
 if [ -n "${realstartup}" ] ; then

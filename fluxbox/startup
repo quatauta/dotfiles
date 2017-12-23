@@ -23,6 +23,7 @@ if [ -n "${DESKTOP_AUTOSTART_ID}" ] ; then
             "string:${DESKTOP_AUTOSTART_ID}"
     ) &
 
+    "${HOME}/.xsession"
     exec "${WINDOW_MANAGER}"
 else
     exec bash "${HOME}/.xsession"
