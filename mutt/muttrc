@@ -13,7 +13,7 @@ mailboxes "!" `~/.mutt/folders $HOME/Mail`
 set news_server = "localhost"
 set signature   = "/usr/bin/signify|"
 
-source "/etc/mutt/notmuch-mutt.rc"
+#source "/etc/mutt/notmuch-mutt.rc"
 
 source "~/.mutt/muttrc.local"
 
