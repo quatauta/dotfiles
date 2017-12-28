@@ -74,9 +74,9 @@ echo "Operating in $TMP_DIR ..."
         shred -zu "$REV_TMP"
     fi
 
-    for algo in sha1 sha512 ripemd320 ; do
-        echo "# shash -V -a '$algo' -c 'gnupg_${ID}.${algo}'" > "gnupg_${ID}.${algo}"
-        shash -a "$algo" *.asc *.txt >> "gnupg_${ID}.${algo}"
+    for algo in sha3-256 ripemd160 ; do
+        echo "# shash --check 'gnupg_${ID}.${algo}'" > "gnupg_${ID}.${algo}"
+        rhash --"$algo" *.asc *.txt >> "gnupg_${ID}.${algo}"
     done
 
     cd ..
