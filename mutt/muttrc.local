@@ -16,6 +16,8 @@ alternates "EMAIL1" "EMAIL2" "EMAIL3"
 #send2-hook 'SMIME_EMAIL' "set smime_is_default"
 
 #set pgp_sign_as       = "0xOPEN_PGP_KEY_ID"
-#my_hdr OpenPGP: id=OPEN_PGP_KEY_ID\; preference=sign\; url=https://pgp.mit.edu/pks/lookup?op=index&search=0xOPEN_PGP_KEY_ID
 #set smime_default_key = "SMIMS_SSL_KEY_ID"
 #set ssl_client_cert   = "~/.ssl/SMIME_SSL_USER_CERT.pem"
+
+#my_hdr OpenPGP: id=OPEN_PGP_KEY_ID\; preference=sign\; url=https://sks-keyservers.net/pks/lookup?op=index&search=0xOPEN_PGP_KEY_ID
+#my_hdr Autocrypt: addr=EMAIL\; keydata=OPEN_PGP_KEY_DATA
