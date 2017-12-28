@@ -28,7 +28,7 @@ unset crypt_autoencrypt
   set date_format       = "!%a, %d. %b %Y %T%z"
  #set display_filter    = ~/.mutt/display-filter
   set edit_headers
-  set editor            = "vi -c 'set fo+=w'"
+  set editor            = "vim -c 'set fo+=w'"
   set fast_reply
  #set header_cache      = ~/.mutt/cache/header
   set history_file      = ~/.cache/mutt-history
