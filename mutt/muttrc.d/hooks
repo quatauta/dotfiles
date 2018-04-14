@@ -17,7 +17,7 @@ save-hook "." "=.INBOX.%[%Y]"
 send-hook "."       unmy_hdr From Fcc
 send-hook "\.local" my_hdr Fcc: =.local
 
-send2-hook "."       'set sendmail = "msmtp-enqueue.sh"'
+send2-hook "."       'set sendmail = "~/bin/msmtp-enqueue.sh"'
 send2-hook "\.local" 'set sendmail = "/usr/sbin/sendmail -oem -oi"'
 
 open-hook   \\.bz2$ "bzip2 -cd %f >  %t"
