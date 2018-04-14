@@ -10,7 +10,7 @@ _opera_versions() {
     _operas |
     while read OPERA ; do
         if [ -x "${OPERA}" ] ; then
-            printf "%s\t%s\n" "$("${OPERA}" --version 2>/dev/null)" "${OPERA}"
+            printf "%s\t%s\n" "$("${OPERA}" --version 2>&1)" "${OPERA}"
         fi
     done
 }
