@@ -1,4 +1,3 @@
---limit-rate=800k
 --prefer-free-formats
 --console-title
 --ignore-errors
