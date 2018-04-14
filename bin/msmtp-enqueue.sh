@@ -14,7 +14,7 @@ cd "$QUEUEDIR" || exit 1
 # Create new unique filenames of the form
 # MAILFILE:  ccyy-mm-dd-hh.mm.ss[-x].mail
 # MSMTPFILE: ccyy-mm-dd-hh.mm.ss[-x].msmtp
-# where x is a consecutive number only appended if you send more than one 
+# where x is a consecutive number only appended if you send more than one
 # mail per second.
 BASE="`date +%Y-%m-%d-%H.%M.%S`"
 if [ -f "$BASE.mail" -o -f "$BASE.msmtp" ]; then
@@ -38,8 +38,7 @@ cat > "$MAILFILE" || exit 1
 # Replace the test with something suitable for your site.
 #ping -c 1 -w 2 SOME-IP-ADDRESS > /dev/null 
 #if [ $? -eq 0 ]; then
-DEFAULT_ROUTE="$(ip -4 route list match 100.0.0.1 ; ip -6 route list match 1::1)"
-if [ -n "${DEFAULT_ROUTE}" ] ; then
+if ip route | grep -q default ; then
     msmtp-runqueue.sh
 fi
 
