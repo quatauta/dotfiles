@@ -1,0 +1,15 @@
+#!/bin/sh
+
+export LANG=C
+
+if [ -r "PKGBUILD" ] ; then
+    updpkgsums &&
+    makepkg -fcC &&
+    namcap PKGBUILD &&
+    namcap *.pkg.tar.xz &&
+    (find -iname "*.pkg.tar.xz" | xargs -n1 gpg --detach-sign)
+    pacman -Qlip *.pkg.tar.xz
+else
+    echo "Not PKGBUILD found in current directory."
+    exit 1
+fi
