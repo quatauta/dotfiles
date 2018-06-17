@@ -73,3 +73,6 @@
 
 [submodule]
 	recurse = true
+
+[rerere]
+	enable = true
