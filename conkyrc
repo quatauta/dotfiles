@@ -31,8 +31,9 @@ conky.config = {
     use_spacer = "left",
     use_xft = true,
 
-    template0 = [[${if_up \1} | \1: ${color1 }${downspeed \1}${color0}r ${color1}${upspeed \1}${color0}u ${totaldown \1}r ${totalup \1}t ${addrs \1}${endif}]],
-    template1 = [[${if_up \1} ${wireless_essid \1}/${wireless_channel \1} ${wireless_bitrate \1}${wireless_link_qual_perc \1}%${endif}]],
+    template0 = [[${if_existing /dev/\1} | \1: ${color1}${diskio_read \1}${color0}r ${color1}${diskio_write \1}${color0}w${hddtemp /dev/\1}°C${endif}]],
+    template1 = [[${if_up \1} | \1: ${color1 }${downspeed \1}${color0}r ${color1}${upspeed \1}${color0}u ${totaldown \1}r ${totalup \1}t ${addrs \1}${endif}]],
+    template2 = [[${if_up \1} ${wireless_essid \1}/${wireless_channel \1} ${wireless_bitrate \1}${wireless_link_qual_perc \1}%${endif}]],
 }
 
 conky.text = [[
@@ -40,8 +41,8 @@ ${color0}root:${fs_used_perc /}% | \
 sys:${hwmon 0 temp 2}°C ${hwmon 0 fan 2}/m | \
 linux ${kernel} | \
 up: ${uptime_short} | \
-${time %F %a KW%_V %T%z} | \
-sda: ${color1}${diskio_read sda}${color0}r ${color1}${diskio_write sda}${color0}w${hddtemp /dev/sda}°C | \
+${time %F %a KW%_V %T%z}\
+${template0 sda} | \
 mail: ${color1}${new_mails /home/daniel/Mail 10}${color0} ${new_mails /var/spool/mail/daniel 60} ${new_mails /home/daniel/Mail/.spam 60}\
 ${if_existing /sys/class/power_supply/BAT0} | bat: ${battery_short} ${battery_time}${endif}\
 ${if_existing /sys/class/backlight/intel_backlight} | backlight: ${exec /home/daniel/bin/conky-backlight}${endif}
@@ -51,15 +52,12 @@ cpu:${color1}${cpu}%${color0}${hwmon 1 temp 5}°C ${hwmon 0 fan 1}/m | \
 mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
 entropy:${entropy_perc}%\
-${template0 eno1}\
-${template0 enp1s0}\
-${template0 eth0}\
-${template0 vlan0}\
-${template0 wlan0}${template1 wlan0}\
-${template0 wlp1s0u1}${template1 wlp1s0u1}\
-${template0 wwan0}\
-${template0 tun0}\
-${template0 vpn0}\
+${template1 eth0}\
+${template1 vlan0}\
+${template1 wlan0}${template2 wlan0}\
+${template1 wwan0}\
+${template1 tun0}\
+${template1 vpn0}\
  | \
 gw: ${gw_ip}
 ]]
