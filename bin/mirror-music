@@ -1,32 +1,28 @@
 #!/bin/sh
 
-MUSIC_DIR="$HOME/Dokumente/musik"
-REMOTE_HOST="narsbo"
-REMOTE_DIR="musik"
+MUSIC_DIR="$HOME/Musik"
+REMOTE_HOST="10.0.0.1"
+REMOTE_DIR="fritz.nas/Kingston-DataTraveler3-0-01/Musik"
 REMOTE_USER="daniel"
 SMB_URL="smb://WORKGROUP;${REMOTE_USER}@${REMOTE_HOST}/${REMOTE_DIR}"
 GVFS_DIR="/run/user/${UID}/gvfs"
-RSYNC_OPTS="-hir --delete --delete-after --modify-window=5 --stats"
+RSYNC_OPTS="-hir --delete --delete-after --modify-window=5 --stats --times"
 
 renice 20 $$ 1>/dev/null
 ionice -c 3 -p$$
 chmod -R a-w "${MUSIC_DIR}"
 
 if [ -d "${MUSIC_DIR}" ] ; then
-    gvfs-mount -i "${SMB_URL}"
+    gio mount -i "${SMB_URL}"
 
-    DIR="$(find "${GVFS_DIR}"/ -maxdepth 1 \
-                               -type d \
-                               -iname "*${REMOTE_HOST}*${REMOTE_DIR}*" \
-                               -printf "%p\n" |
-           head -n1)"
+    DIR="$(ls -d "/run/user/${UID}/gvfs/"*"${REMOTE_HOST}"*"${REMOTE_DIR%%/*}"*/"${REMOTE_DIR#*/}")"
 
     if [ -d "${DIR}" ] ; then
         echo "${MUSIC_DIR}/ -> ${DIR}/"
-        rsync -t ${RSYNC_OPTS} "${MUSIC_DIR}"/ "${DIR}"/
+        rsync ${RSYNC_OPTS} "${MUSIC_DIR}"/ "${DIR}"/
     else
         "gvfs mount point for ${SMB_URL} not found in ${GVFS_DIR}"
     fi
 
-    gvfs-mount -u "${SMB_URL}"
+    gio mount -u "${SMB_URL}"
 fi
