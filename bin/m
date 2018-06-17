@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export EDITOR="vim -f"
+
 for MUTT in neomutt mutt ; do
     if [ -x "$(which "${MUTT}")" ] ; then
         export MUTT
