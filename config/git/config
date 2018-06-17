@@ -1,72 +1,75 @@
 # ~/.config/git/config
 
 [include]
-path = ~/.config/git/config.local
-path = ~/.git.local
+	path = ~/.config/git/config.local
+	path = ~/.git.local
 
 [alias]
-b = branch
-br = branch
-c = commit
-ci = commit
-co = checkout
-d = diff
-di = diff
-f = fetch --all --prune --recurse-submodules --tags
-i = !git ignored
-ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
-l = log --pretty=decorate --decorate --graph --all
-p = pull --all --prune
-pl = pull --all --prune
-ps = push --prune
-s = status
-st = status
+	b = branch
+	br = branch
+	c = commit
+	ci = commit
+	co = checkout
+	d = diff
+	di = diff
+	f = fetch --all --prune --recurse-submodules --tags
+	i = !git ignored
+	ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
+	l = log --pretty=decorate --decorate --graph --all
+	p = pull --all --prune
+	pl = pull --all --prune
+	ps = push --prune
+	s = status
+	st = status
 
 [commit]
-gpgSign = true
+	gpgSign = true
 
 [core]
-pager = less -FRX
+	pager = less -FRX
 
 [credential]
-helper = cache
+	helper = cache
 
 [color]
-ui = auto
+	ui = auto
 
 [diff]
-mnemonicprefix = true
-renames = copies
-submodule = log
+	mnemonicprefix = true
+	renames = copies
+	submodule = log
 
 [help]
-autocorrect = -1
+	autocorrect = -1
 
 [merge]
-tool = meld
-ff = only
+	tool = meld
+	ff = only
 
 [push]
-default = simple
-followTags = true
+	default = simple
+	followTags = true
 
 [status]
-branch = true
-short = true
-submoduleSummary = true
+	branch = true
+	short = true
+	submoduleSummary = true
 
 [log]
-date = iso
+	date = iso
 
 [pretty]
-decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,trunc) (%C(auto,yellow)%ad %C(auto,magenta)%G?%C(auto,reset))
+	decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,trunc) (%C(auto,yellow)%ad %C(auto,magenta)%G?%C(auto,reset))
 
 [transfer]
-fsckObjects = true
+	fsckObjects = true
 
 [branch]
-autosetupmerge = always
-autosetuprebase = always
+	autosetupmerge = always
+	autosetuprebase = always
 
 [rebase]
-autosquash = true
+	autosquash = true
+
+[submodule]
+	recurse = true
