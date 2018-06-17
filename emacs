@@ -28,9 +28,11 @@
     (("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages (quote (inkpot-theme elixir-mode)))
+ '(server-mode t)
  '(show-paren-mode t)
  '(size-indication-mode t)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
