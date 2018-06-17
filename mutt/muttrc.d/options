@@ -36,7 +36,7 @@ unset crypt_autoencrypt
   set imap_check_subscribed
   set imap_idle
   set include
-  set index_format      = "%4C %Z %?H?%[%F][%H]&%[%F %R]? %-18.18L  %s %* |%?Y?%.14Y; %?%c"
+  set index_format      = "%4C %Z %?H?%[%F][%H]&%[%F %R]? %-18.18L  %s%*   %c%?Y? %.14Y?"
   set ispell            = "/usr/bin/aspell -e -c"
 unset mail_check_recent
   set mark_old          = no
