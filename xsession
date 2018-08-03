@@ -1,31 +1,15 @@
 #!/bin/bash
 
-function _which() {
-    env PATH="${PATH}":/usr/libexec which "${1}" 2>/dev/null
+_kill_and_start() {
+    local TEST="${1}"
+    shift
+    local CMD="${@}"
+
+    pkill -u "${USER}" "${TEST}" 1>/dev/null
+    ( delay -d 1 -- ${CMD} & )
 }
 
-function _start() {
-    local CMD="$(_which "${1}" 2>/dev/null)"
-
-    if [ -x "${CMD}" ] ; then
-        shift
-        "${CMD}" "${@}"
-    else
-        echo "Can't start '${@}'." 1>&2
-    fi
-}
-
-function _start_with_delay() {
-    local DELAY="$(_which delay)"
-    local CMD="$(_which "${1}" 2>/dev/null)"
-
-    if [ -x "${DELAY}" ] && [ -x "${CMD}" ] ; then
-        shift
-        "${DELAY}" -d 2 -- "${CMD}" "${@}" &
-    else
-        echo "Can't start '${@}'." 1>&2
-    fi
-}
+export PATH="${PATH}:/usr/libexec:${HOME}/bin"
 
 cd "${HOME}"
 source "${HOME}/.bashrc"
@@ -48,52 +32,49 @@ if [ -n "$realstartup" ] ; then
     realstartup="$(realpath "${realstartup}")"
 fi
 
-_start fbsetroot -solid black &
-_start xmodmap "${HOME}/.Xmodmap" &
-_start xrdb -merge "${HOME}/.Xresources" &
-_start xset dpms 300 300 300 &
-_start xset m 1 10000 &
-_start xset r rate 250 30 &
-( _start numlockx off ; _start numlockx on ) &
-_start xcape -e 'Control_L=Escape' &
+export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
+export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-GNOME}"
+systemctl --user import-environment DESKTOP_SESSION
+systemctl --user import-environment XDG_CURRENT_DESKTOP
 
-_start_with_delay xmodmap "${HOME}/.Xmodmap" &
-_start_with_delay xrdb -merge "${HOME}/.Xresources" &
-_start_with_delay xset dpms 300 300 300 &
-_start_with_delay xset m 1 10000 &
-_start_with_delay xset r rate 250 30 &
-_start_with_delay numlockx on &
+(
+    for I in {0..4} ; do
+        setxkbmap -layout "de(nodeadkeys)" -option "+capslock:ctrl_modifier"
+        xmodmap "${HOME}/.Xmodmap"
+        xrdb -merge "${HOME}/.Xresources"
+        xset dpms 300 300 300
+        xset m 1 10000
+        xset r rate 250 30
+        numlockx off
+        numlockx on
+        sleep 1
+    done
+) &
 
 case "${realstartup}" in
     *box )
-        [ -z "${DESKTOP_SESSION}" ] && export DESKTOP_SESSION="gnome"
-        systemctl --user import-environment DESKTOP_SESSION &
-        _start_with_delay gnome-settings-daemon &
-        _start_with_delay fluxbox-generate-menu &
-        _start_with_delay conky -d &
-        _start_with_delay polkit-gnome-authentication-agent-1 &
-        _start_with_delay unclutter &
-        _start_with_delay liferea -w hidden &
+        # fbsetroot -solid black
+        fbsetbg -l
 
-        ROOT_TAIL_OPTS="--fork --font \"-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso10646-1\" --interval 5 --wordwrap --cont \"» \""
-
-        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1155x435+30+50  "${HOME}/.xsession-errors" ">/dev/null" &
-        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 525x435+1215+50 --whole "${HOME}/.task/calendar" ">/dev/null" &
-        _start_with_delay root-tail ${ROOT_TAIL_OPTS} --color '"#9e9e92"' --geometry 1600x470+30-40 --cont "\"                         `hostname -s | sed -e 's/./ /g'`» \"" /var/log/messages ">/dev/null" &
+        _kill_and_start conky conky
+        _kill_and_start gsd gnome-settings-daemon
+        _kill_and_start redshift redshift-gtk -l 49.6:6.1
+        _kill_and_start unclutter unclutter
+        _kill_and_start xcape xcape -e 'Control_L=Escape'
 
         ( type systemctl 1>/dev/null && systemctl --failed --no-pager --no-legend >>"${HOME}/.xsession-errors" ) &
+        (
+            sleep 5
+            fluxbox-generate-menu &
+
+            ROOT_TAIL_OPTS="--fork --color '#9e9e92' --interval 5 --wordwrap --font '-misc-fixed-medium-r-normal-*-10-*-*-*-*-*-iso10646-1'"
+            set -x
+            root-tail ${ROOT_TAIL_OPTS} --geometry 1155x435+30+50 "${HOME}/.xsession-errors" &
+            root-tail ${ROOT_TAIL_OPTS} --geometry 525x435+1215+50 --whole "${HOME}/.task/calendar" &
+            root-tail ${ROOT_TAIL_OPTS} --geometry 1600x470+30-40 "/var/log/messages" &
+        ) &
     ;;
 esac
-
-(
-    sleep 1
-    _start_with_delay xmodmap "${HOME}/.Xmodmap" &
-    _start_with_delay xrdb -merge "${HOME}/.Xresources" &
-    _start_with_delay xset dpms 300 300 300 &
-    _start_with_delay xset m 1 10000 &
-    _start_with_delay xset r rate 250 30 &
-    _start_with_delay numlockx on &
-) &
 
 # Start window manager
 if [ -n "${realstartup}" ] ; then

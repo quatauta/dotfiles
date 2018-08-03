@@ -30,11 +30,10 @@
  [app] (class=Firefox) (role=browser)
  [app] (class=Chrome) (title=.*Chromium)
  [app] (class=Chromium.*) (title=.*Chromium)
- [app] (class=Google-chrome.*)
- [app] (class=google-chrome.*)
  [app] (class=Midori.*)
   [Dimensions]	{1200 1050}
   [Position]	(CENTER)	{0 0}
+  [Deco]        {NORMAL}
 [end]
 [app] (name=liferea)
   [Dimensions]	{1000 1050}

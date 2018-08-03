@@ -87,7 +87,7 @@ session.screen0.toolbar.alpha:	255
 session.screen0.toolbar.autoHide:	false
 session.screen0.toolbar.height:	0
 session.screen0.toolbar.layer:	Desktop
-session.screen0.toolbar.maxOver:	false
+session.screen0.toolbar.maxOver:	true
 session.screen0.toolbar.onTop:	False
 session.screen0.toolbar.onhead:	0
 session.screen0.toolbar.placement:	TopCenter
