@@ -7,7 +7,16 @@ if [ -r "PKGBUILD" ] ; then
     makepkg -fcC &&
     namcap PKGBUILD &&
     namcap *.pkg.tar.xz &&
-    (find -iname "*.pkg.tar.xz" | xargs -n1 gpg --detach-sign)
+    (
+        find -iname "*.pkg.tar.xz" |
+        while read PKG ; do
+            set -x
+            if ! [ -r "${PKG}.sig" ] || [ "${PKG}" -nt "${PKG}.sig" ] ; then
+                gpg --detach-sign "${PKG}"
+            fi
+            set +x
+        done
+    )
     pacman -Qlip *.pkg.tar.xz
 else
     echo "Not PKGBUILD found in current directory."
