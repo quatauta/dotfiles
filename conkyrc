@@ -3,13 +3,13 @@
 
 conky.config = {
     alignment = "bottom_left",
-    background = false,
+    background = true,
     border_width = 0,
     color0 = "cccccc",
     color1 = "ffffff",
     default_color = "ffffff",
     default_shade_color = "000000",
-    double_buffer = true,
+    double_buffer = false,
     draw_borders = false,
     draw_graph_borders = false,
     draw_outline = false,
@@ -20,7 +20,6 @@ conky.config = {
     if_up_strictness = "link",
     no_buffers = true,
     out_to_console = false,
-    own_window = true,
     own_window_argb_value = 70,
     own_window_argb_visual = true,
     own_window_colour = '000000',
