@@ -1,8 +1,8 @@
 #!/bin/sh
 
-MUSIC_DIR="$HOME/Musik"
+MUSIC_DIR="$HOME/Dokumente/musik"
 REMOTE_HOST="10.0.0.1"
-REMOTE_DIR="fritz.nas/Kingston-DataTraveler3-0-01/Musik"
+REMOTE_DIR="narsbo/musik/musik"
 REMOTE_USER="daniel"
 SMB_URL="smb://WORKGROUP;${REMOTE_USER}@${REMOTE_HOST}/${REMOTE_DIR}"
 GVFS_DIR="/run/user/${UID}/gvfs"
