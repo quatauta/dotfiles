@@ -10,11 +10,9 @@ if [ -r "PKGBUILD" ] ; then
     (
         find -iname "*.pkg.tar.xz" |
         while read PKG ; do
-            set -x
             if ! [ -r "${PKG}.sig" ] || [ "${PKG}" -nt "${PKG}.sig" ] ; then
                 gpg --detach-sign "${PKG}"
             fi
-            set +x
         done
     )
     pacman -Qlip *.pkg.tar.xz
