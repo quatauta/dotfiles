@@ -4,11 +4,13 @@
 test -d "$HOME/bin" && PATH="${HOME}/bin:${PATH}"
 test -d "$HOME/man" && MANPATH="${HOME}/man:${MANPATH}"
 
+export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
 export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
 export HISTSIZE="1000"
 export HTML_TIDY="~/.tidyrc"
 export QT_STYLE_OVERRIDE=gtk
 export SAVEHIST="${HISTSIZE}"
+export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-GNOME}"
 
 if [ -n "${DISPLAY}" ] ; then
     export EDITOR="gvim -f"
