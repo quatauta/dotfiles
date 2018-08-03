@@ -28,6 +28,7 @@
    (quote
     (("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/"))))
+ '(package-enable-at-startup t)
  '(package-selected-packages
    (quote
     (ob-elixir flycheck-mix flycheck-elixir alchemist company-statistics company-math company paced inkpot-theme)))
