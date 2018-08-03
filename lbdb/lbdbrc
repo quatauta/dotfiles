@@ -1,8 +1,6 @@
-#
 # ~/.lbdb/lbdbrc
-#
 
 METHODS="m_vcard m_gpg"
-MODULES_PATH="$HOME/.lbdb/modules /usr/lib/lbdb"
+MODULES_PATH="${MODULES_PATH} $HOME/.lbdb/modules"
 SORT_OUTPUT=comment
 VCARD_FILES="$HOME/Dokumente/adressbuch.vcf:utf8"
