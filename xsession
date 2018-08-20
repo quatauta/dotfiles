@@ -47,7 +47,7 @@ systemctl --user import-environment XDG_CURRENT_DESKTOP
         xset r rate 250 30
         numlockx off
         numlockx on
-        sleep 1
+        sleep 3
     done
 ) &
 
