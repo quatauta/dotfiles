@@ -1,5 +1,5 @@
 [begin] (Fluxbox)
-  [exec] (Terminal) {xterm}
+  [exec] (Terminal) {xterm -e tmux new-session}
   [exec] (Opera)    {opera}
   [exec] (Sonos)    {sonos}
   [exec] (Gmrun)    {gmrun}
@@ -37,4 +37,5 @@
   [exec] (Lock screen) {xdg-screensaver lock}
   [exec] (Sleep) {systemctl hybrid-sleep}
   [exec] (Exit Fluxbox) {fluxbox-exit}
+  [exec] (Shutdown) {systemctl poweroff}
 [end]
