@@ -30,7 +30,7 @@
  '(package-enable-at-startup t)
  '(package-selected-packages
    (quote
-    (ob-elixir flycheck-mix flycheck-elixir alchemist company-statistics company-math company paced inkpot-theme)))
+    (powerline mwim ob-elixir flycheck-mix flycheck-elixir alchemist company-statistics company-math company paced inkpot-theme)))
  '(server-mode t)
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -44,3 +44,7 @@
  )
 
 (require 'alchemist)
+(global-set-key (kbd "C-a") 'mwim-beginning-of-code-or-line)
+(global-set-key (kbd "C-e") 'mwim-end-of-code-or-line)
+(global-set-key (kbd "<home>") 'mwim-beginning-of-code-or-line)
+(global-set-key (kbd "<end>") 'mwim-end-of-code-or-line)
