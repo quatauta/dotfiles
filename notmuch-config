@@ -1,0 +1,31 @@
+# .notmuch-config - Configuration file for the notmuch mail system
+#
+# For more information about notmuch, see http://notmuchmail.org
+
+[database]
+path=/home/daniel/Mail
+
+[user]
+name=Daniel Schömer
+primary_email=daniel.schoemer@gmx.net
+other_email=daniel.schoemer@gmx.de;daniel.schoemer@web.de;schoemer.daniel@googlemail.com;daniel.schoemer@nurfuerspam.de;
+
+[new]
+tags=unread;inbox;
+ignore=dovecot.index.cache;dovecot.index.log;dovecot-uidlist
+
+[maildir]
+synchronize_flags=true
+
+[search]
+exclude_tags=
+
+# Cryptography related configuration
+#
+# The following option is supported here:
+#
+#	gpg_path
+#		binary name or full path to invoke gpg.
+#
+[crypto]
+gpg_path=gpg
