@@ -46,12 +46,13 @@ mail: ${color1}${new_mails /home/daniel/Mail 10}${color0} ${new_mails /var/spool
 ${if_existing /sys/class/power_supply/BAT0} | bat: ${battery_short} ${battery_time}${endif}\
 ${if_existing /sys/class/backlight/intel_backlight} | backlight: ${exec /home/daniel/bin/conky-backlight}${endif}
 tmp: ${fs_used_perc /tmp}% | \
+cpu:${color0}${hwmon 1 temp 5}°C ${hwmon 0 fan 1}/m${color1}${cpu}%${color0} | \
 load: ${color1}${loadavg 1}${color0} | \
-cpu:${color1}${cpu}%${color0}${hwmon 1 temp 5}°C ${hwmon 0 fan 1}/m | \
 mem:${color1}${memperc}%${color0} | \
 swap:${swapperc}% | \
 entropy:${entropy_perc}%\
 ${template1 eth0}\
+${template1 usb0}\
 ${template1 vlan0}\
 ${template1 wlan0}${template2 wlan0}\
 ${template1 wwan0}\
