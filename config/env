@@ -1,8 +1,15 @@
 # ~/.config/env
 # vim:syntax=sh:
 
-test -d "$HOME/bin" && PATH="${HOME}/bin:${PATH}"
-test -d "$HOME/man" && MANPATH="${HOME}/man:${MANPATH}"
+test -d "${HOME}/bin" && [ -n "${PATH##*${HOME}/bin*}" ] && PATH="${HOME}/bin:${PATH}"
+test -d "${HOME}/man" && [ -n "${MANDIR##*${HOME}/man*}" ] && MANPATH="${HOME}/man:${MANPATH}"
+
+for GEM_BIN in "${HOME}/.gem/ruby/"*"/bin" ; do
+    test -d "${GEM_BIN}" && [ -n "${PATH##*${GEM_BIN}*}" ] && PATH="${PATH}:${GEM_BIN}"
+done
+[ -x "$(which rbenv 2>/dev/null)" ] && eval "$(rbenv init -)"
+export BUNDLE_PATH="$(ruby -e 'puts Gem.user_dir')"
+export RUBY_BUILD_HTTP_CLIENT=wget
 
 export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
 export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
