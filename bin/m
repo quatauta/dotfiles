@@ -10,4 +10,7 @@ for MUTT in neomutt mutt ; do
 done
 
 "${MUTT}" -Z "$@" || "${MUTT}" -f = "$@"
-touch /var/mail/daniel
+(
+    touch /var/mail/daniel
+    offlineimap &
+) 1>/dev/null 2>&1 &
