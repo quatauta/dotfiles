@@ -4,74 +4,75 @@ export LANG=C
 
 KEY="$1"
 
-if [ -z "$KEY" ] ; then
+if [ -z "${KEY}" ] ; then
     echo "Please specify gnupg key to export."
     exit 1
 fi
 
-PUBLIC="`gpg --with-colons --list-key "$KEY"`"
-SECRET="`gpg --with-colons --list-secret-key "$KEY"`"
+PUBLIC="$(gpg --with-colons --list-key "${KEY}")"
+SECRET="$(gpg --with-colons --list-secret-key "${KEY}")"
 
-if [ -z "$PUBLIC" ] ; then
-    echo "Could not find a public key matching ,,$KEY''."
+if [ -z "${PUBLIC}" ] ; then
+    echo "Could not find a public key matching ,,${KEY}''."
     exit 2
 fi
 
-if [ -z "$SECRET" ] ; then
-    echo "Could not find a secret key matching ,,$KEY''."
+if [ -z "${SECRET}" ] ; then
+    echo "Could not find a secret key matching ,,${KEY}''."
     exit 3
 fi
 
-ID="`echo "$PUBLIC" | awk -F: '/^pub/ { print $5 }' | tr '[A-Z]' '[a-z]'`"
+ID="$(echo "${PUBLIC}" | awk -F: '/^pub/ { print $5 }' | tr '[A-Z]' '[a-z]')"
 
 if [ -z "ID" ] ; then
     echo "Error:  Could not determine key id."
     exit 4
 fi
 
-ID_COUNT="`echo "$ID" | wc -l`"
+ID_COUNT="$(echo "${ID}" | wc -l)"
 
-if [ "$ID_COUNT" -ne 1 ] ; then
-    echo "Please specify exactly one key, not $ID_COUNT: $KEY matches "$ID"."
+if [ "${ID_COUNT}" -ne 1 ] ; then
+    echo "Please specify exactly one key, not ${ID_COUNT}: ${KEY} matches "${ID}"."
     exit 5
 fi
 
-TMP_DIR="`mktemp -d -t export-gnupg-key.XXXXXX`" || ( echo "Could not create temp dir." ; exit 6 )
+TMP_DIR="$(mktemp -d -t export-gnupg-key.XXXXXX)" || ( echo "Could not create temp dir." ; exit 6 )
 
-echo "Operating in $TMP_DIR ..."
+echo "Operating in ${TMP_DIR} ..."
 
 (
     LIST_OPTS="--fingerprint --keyid-format=0xlong"
     EXPORT_OPTS="--armor"
     export ID
-    ORIG_PWD="`pwd`"
+    ORIG_PWD="$(pwd)"
     DIR="gnupg-key_${ID}"
     PUB="gnupg_${ID}_public.asc"
     SEC="gnupg_${ID}_secret.asc"
     SEC_PAPER="gnupg_${ID}_secret_paperkey.txt"
     REV="gnupg_${ID}_revoke.asc"
     REV_TMP="gnupg_${ID}_revoke-tmp.asc"
+    ARCHIVE="${DIR}_$(date "+%Y-%m-%d")"
 
-    cd "$TMP_DIR" ;
-    mkdir "$DIR/"
+    cd "${TMP_DIR}" ;
+    mkdir "${DIR}/"
 
-    cd "$DIR"
-    (   gpg $LIST_OPTS --list-sigs "$ID" &&
-        gpg $EXPORT_OPTS --armor --export "$ID"
-    ) >"$PUB"
-    (   gpg $LIST_OPTS --list-sigs "$ID" &&
-        gpg $EXPORT_OPTS --armor --export "$ID" &&
-        gpg $EXPORT_OPTS --armor --export-secret-keys "$ID"
-        gpg $EXPORT_OPTS --armor --export-secret-subkeys "$ID"
-    ) >"$SEC"
-    gpg --export-secret-keys "$ID" | paperkey > "$SEC_PAPER"
-    gpg --gen-revoke -o "$REV_TMP" "$ID"
+    cd "${DIR}"
+    (   gpg ${LIST_OPTS} --list-sigs "${ID}" &&
+        gpg ${EXPORT_OPTS} --armor --export "${ID}"
+    ) >"${PUB}"
+    (   gpg ${LIST_OPTS} --list-sigs "${ID}" &&
+        gpg ${EXPORT_OPTS} --armor --export "${ID}" &&
+        gpg ${EXPORT_OPTS} --armor --export-secret-keys "${ID}"
+        gpg ${EXPORT_OPTS} --armor --export-secret-subkeys "${ID}"
+    ) >"${SEC}"
+    gpg --export-secret-keys "${ID}" | paperkey > "${SEC_PAPER}"
+    gpg --gen-revoke -o "${REV_TMP}" "${ID}"
 
-    if [ -r "$REV_TMP" ] ; then
-        (   gpg $LIST_OPTS --list-sigs "$ID" &&
-            cat "$REV_TMP"
-        ) >"$REV"
-        shred -zu "$REV_TMP"
+    if [ -r "${REV_TMP}" ] ; then
+        (   gpg ${LIST_OPTS} --list-sigs "${ID}" &&
+            cat "${REV_TMP}"
+        ) >"${REV}"
+        shred -zu "${REV_TMP}"
     fi
 
     for algo in sha3-256 ripemd160 ; do
@@ -80,13 +81,13 @@ echo "Operating in $TMP_DIR ..."
     done
 
     cd ..
-    tar zcf "$DIR".tar.gz "$DIR/"
-    gpg --force-mdc -sc "$DIR".tar.gz
-    mv "$DIR".tar.gz.gpg "$ORIG_PWD"
+    tar zcf "${ARCHIVE}.tar.gz" "${DIR}/"
+    gpg --force-mdc -sc "${ARCHIVE}.tar.gz"
+    mv "${ARCHIVE}.tar.gz.gpg" "${ORIG_PWD}"
 
     unset ID
 )
 
-echo "Deleting $TMP_DIR ..."
-find "$TMP_DIR" -type f -print0 | xargs -0r shred -zu
-rm -rf "$TMP_DIR"
+echo "Deleting ${TMP_DIR} ..."
+find "${TMP_DIR}" -type f -print0 | xargs -0r shred -zu
+rm -rf "${TMP_DIR}"
