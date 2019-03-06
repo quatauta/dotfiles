@@ -4,9 +4,11 @@
 test -d "${HOME}/bin" && [ -n "${PATH##*${HOME}/bin*}" ] && PATH="${HOME}/bin:${PATH}"
 test -d "${HOME}/man" && [ -n "${MANDIR##*${HOME}/man*}" ] && MANPATH="${HOME}/man:${MANPATH}"
 
-for GEM_BIN in "${HOME}/.gem/ruby/"*"/bin" ; do
-    test -d "${GEM_BIN}" && [ -n "${PATH##*${GEM_BIN}*}" ] && PATH="${PATH}:${GEM_BIN}"
-done
+if [ -d "${HOME}/.gem/ruby" ] ; then
+    for GEM_BIN in "${HOME}/.gem/ruby/"*"/bin" ; do
+        test -d "${GEM_BIN}" && [ -n "${PATH##*${GEM_BIN}*}" ] && PATH="${PATH}:${GEM_BIN}"
+    done
+fi
 [ -x "$(which rbenv 2>/dev/null)" ] && eval "$(rbenv init -)"
 export BUNDLE_PATH="$(ruby -e 'puts Gem.user_dir')"
 export RUBY_BUILD_HTTP_CLIENT=wget
