@@ -31,7 +31,7 @@ conky.config = {
     use_xft = true,
 
     template0 = [[${if_existing /dev/\1} | \1: ${color1}${diskio_read \1}${color0}r ${color1}${diskio_write \1}${color0}w${hddtemp /dev/\1}°C${endif}]],
-    template1 = [[${if_up \1} | \1: ${color1 }${downspeed \1}${color0}r ${color1}${upspeed \1}${color0}u ${totaldown \1}r ${totalup \1}t ${addrs \1}${endif}]],
+    template1 = [[${if_up \1} | \1: ${color1 }${downspeed \1}${color0}r ${color1}${upspeed \1}${color0}t ${totaldown \1}r ${totalup \1}t ${addrs \1}${endif}]],
     template2 = [[${if_up \1} ${wireless_essid \1}/${wireless_channel \1} ${wireless_bitrate \1}${wireless_link_qual_perc \1}%${endif}]],
 }
 
