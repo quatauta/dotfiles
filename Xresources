@@ -56,7 +56,7 @@ xterm*foreground:       lightgray
 xterm*geometry:         130x75
 xterm*multiScroll:      true
 xterm*saveLines:        5000
-xterm*scrollBar:        true
+xterm*scrollBar:        false
 xterm*scrollKey:        true
 xterm*scrollTtyOutput:  false
 xterm*sessionMgt:       false
