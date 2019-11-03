@@ -1,16 +1,3 @@
 #!/bin/sh
 
-case $1 in
-    cli )
-        shift
-        "$HOME/bin/sonos.py" "${@}"
-        ;;
-    wine )
-        shift
-        nice wine "$HOME/.wine/drive_c/Program Files (x86)/Sonos/sonos.exe" "${@}"
-        ;;
-    java | * )
-        shift
-        "$HOME/bin/janos/janos.sh" "${@}" 1>/dev/null 2>&1
-        ;;
-esac
+"$HOME/bin/janos/janos.sh" "${@}"
