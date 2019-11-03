@@ -3,10 +3,12 @@
 
 autoload -Uz promptinit
 promptinit
-prompt gentoo_daniel
 
 case $TERM in
     xterm*)
         precmd () {print -Pn "\e]0;%n@%m: %~\a"}
         ;;
 esac
+
+source "${HOME}/Dokumente/workspace/liquidprompt/liquidprompt"
+true
