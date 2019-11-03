@@ -3,7 +3,7 @@
 export EDITOR="vim -f"
 
 for MUTT in neomutt mutt ; do
-    if [ -x "$(which "${MUTT}")" ] ; then
+    if [ -x "$(which "${MUTT}" 2>/dev/null)" ] ; then
         export MUTT
         break
     fi
