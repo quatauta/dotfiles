@@ -9,7 +9,7 @@ for MUTT in neomutt mutt ; do
     fi
 done
 
-if [ -x "${MUTT}" ] ; then
+if [ -n "${MUTT}" ] ; then
     "${MUTT}" -Z "$@" || "${MUTT}" -f = "$@"
     (
         touch /var/mail/daniel
