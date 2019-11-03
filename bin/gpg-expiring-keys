@@ -1,0 +1,8 @@
+#!/bin/sh
+
+DAYS=${1:-31}
+
+gpg --with-colons -k |
+awk -vFS=: 'BEGIN { DAYS='"${DAYS}"' ; REFERENCE=systime() + 60 * 60 * 24 * DAYS }
+            $2 ~ /[-a-qs-z]/ && $7 ~ /[0-9]+/ && $7 <= REFERENCE { print $5 }' |
+xargs -r gpg -k
