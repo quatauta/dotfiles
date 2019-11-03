@@ -12,7 +12,9 @@ fi
 [ -x "$(which rbenv 2>/dev/null)" ] && eval "$(rbenv init -)"
 export BUNDLE_PATH="$(ruby -e 'puts Gem.user_dir')"
 export RUBY_BUILD_HTTP_CLIENT=wget
+export RUBY_CONFIGURE_OPTS="--with-jemalloc"
 
+export MAKEOPTS="${MAKEOPTS:--j$(nproc)}"
 export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
 export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
 export HISTSIZE="1000"
