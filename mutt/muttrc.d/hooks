@@ -3,8 +3,6 @@
 
 # hooks
 
-folder-hook "news:"   "push <toggle-read><collapse-all>"
-
 folder-hook "\.*"      "set trash==.trash"
 folder-hook "!"        "set trash==.local"
 folder-hook "=\.local" "unset trash"
@@ -19,10 +17,3 @@ send-hook "\.local" my_hdr Fcc: =.local
 
 send2-hook "."       'set sendmail = "$HOME/bin/msmtp-enqueue.sh"'
 send2-hook "\.local" 'set sendmail = "/usr/sbin/sendmail -oem -oi"'
-
-open-hook   \\.bz2$ "bzip2 -cd %f >  %t"
-open-hook   \\.gz$  "gzip  -cd %f >  %t"
-append-hook \\.bz2$ "bzip2 -c  %t >> %f"
-append-hook \\.gz$  "gzip  -c  %t >> %f"
-close-hook  \\.bz2$ "bzip2 -c  %t >  %f"
-close-hook  \\.gz$  "gzip  -c  %t >  %f"

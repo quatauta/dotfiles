@@ -8,12 +8,9 @@ set record    = "="
 #set trash    = "=.trash" # Set via folder-hooks in ~/.mutt/muttrc_hooks
 set nm_default_uri = "notmuch://$HOME/Mail"
 
-mailboxes "!" `~/.mutt/folders $HOME/Mail`
+mailboxes "!" "=" "=.local" "=.spam"
 
-set news_server = "localhost"
-set signature   = "/usr/bin/signify|"
-
-#source "/etc/mutt/notmuch-mutt.rc"
+set signature = "/usr/bin/signify|"
 
 source "~/.mutt/muttrc.local"
 

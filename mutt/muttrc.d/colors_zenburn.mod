@@ -71,4 +71,3 @@ color quoted5    color247 default
 color quoted6    color108 default
 color quoted7    color116 default
 color quoted8    color247 default
-color quoted9    color108 default

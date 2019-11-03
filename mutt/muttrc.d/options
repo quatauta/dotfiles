@@ -12,7 +12,6 @@ spam "X-(GMX-Antivirus|Virus-Status): (1|Yes)"                 "Virus"
   set auto_tag
   set attribution       = "%n schrieb:\n>"
 #unset bounce_delivered
-  set catchup_newsgroup = no
   set certificate_file  = "~/.mutt/certificates"
  #set certificate_file  = "/etc/ssl/certs/ca-certificates.crt"
   set check_mbox_size
@@ -30,7 +29,6 @@ unset crypt_autoencrypt
   set edit_headers
   set editor            = "vim -c 'set fo+=w'"
   set fast_reply
- #set header_cache      = ~/.mutt/cache/header
   set history_file      = ~/.cache/mutt-history
   set history_remove_dups
   set imap_check_subscribed
@@ -42,15 +40,10 @@ unset mail_check_recent
   set mark_old          = no
 unset markers
   set mbox_type         = maildir
- #set message_cache_clean
- #set message_cachedir  = ~/.mutt/cache/body
   set mime_forward      = ask-no
   set move              = yes
   set narrow_tree
   set net_inc           = 500
-  set news_cache_dir    = ~/.mutt/_cache/news
-  set newsrc            = ~/.mutt/_newsrc
-  set nntp_context      = 5000
   set pager_context     = 2
   set pager_index_lines = 7
   set pgp_entry_format  = "%4n %t%f %7a%4l/0x%k %[%Y-%m-%d] [%2c] %u"
