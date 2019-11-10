@@ -97,7 +97,7 @@ file=$1
 # This is more secure than creating a temporary file in an existing
 # directory.
 
-tmpdir=$TMP
+tmpdir=${TMP:-/tmp}
 umask 077
 tmpfile="$tmpdir/mutt_bgrun_${$}_$(date +%s)_${RANDOM}_${file##*/}"
 
