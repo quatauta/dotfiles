@@ -13,7 +13,6 @@ spam "X-(GMX-Antivirus|Virus-Status): (1|Yes)"                 "Virus"
   set attribution       = "%n schrieb:\n>"
 #unset bounce_delivered
   set certificate_file  = "~/.mutt/certificates"
- #set certificate_file  = "/etc/ssl/certs/ca-certificates.crt"
   set check_mbox_size
 unset crypt_autoencrypt
   set crypt_autosign
@@ -25,7 +24,6 @@ unset crypt_autoencrypt
   set crypt_use_pka
   set crypt_verify_sig
   set date_format       = "!%a, %d. %b %Y %T%z"
- #set display_filter    = ~/.mutt/display-filter
   set edit_headers
   set editor            = "vim -c 'set fo+=w'"
   set fast_reply
@@ -36,8 +34,9 @@ unset crypt_autoencrypt
   set include
   set index_format      = "%4C %Z %?H?%[%F][%H]&%[%F %R]? %-18.18L  %s%*   %c%?Y? %.14Y?"
   set ispell            = "/usr/bin/aspell -e -c"
-unset mail_check_recent
-  set mark_old          = no
+#unset mail_check_recent
+  set mail_check_stats
+unset mark_old
 unset markers
   set mbox_type         = maildir
   set mime_forward      = ask-no
