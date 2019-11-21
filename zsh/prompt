@@ -6,9 +6,10 @@ promptinit
 
 case $TERM in
     xterm*)
-        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+        precmd () { print -Pn "\e]0;%n@%m: %~\a" }
         ;;
 esac
 
+# eval "$(starship init zsh)"
 source "${HOME}/Dokumente/workspace/liquidprompt/liquidprompt"
 true
