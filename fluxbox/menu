@@ -1,5 +1,5 @@
 [begin] (Fluxbox)
-  [exec] (Terminal) {xterm -e tmux new-session}
+  [exec] (Terminal) {lxterminal -e tmux new-session}
   [exec] (Opera)    {opera}
   [exec] (Sonos)    {sonos}
   [exec] (Gmrun)    {gmrun}
