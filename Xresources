@@ -14,6 +14,7 @@ Xcursor.theme: jaguarx
 *tip*font:     -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
 *tip*fontList: -*-dejavu sans-medium-r-normal--*-80-*-*-*-*-*-*
 
+rofi.font:   Sans:10
 XTerm*font:   -*-fixed-medium-r-normal-*-13-*-*-*-*-*-iso10646-1
 XTerm*font1:  -*-fixed-medium-r-normal-*-6-*-*-*-*-*-iso10646-1
 XTerm*font2:  -*-fixed-medium-r-normal-*-8-*-*-*-*-*-iso10646-1

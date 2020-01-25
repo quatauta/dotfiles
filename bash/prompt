@@ -1,53 +1,5 @@
 #!/bin/bash
 
-# Copied and adapted from Nicolas Gallagher (necolas)
-# https://github.com/necolas/dotfiles/blob/master/shell/bash_prompt
-prompt_gentoo_daniel() {
-    local black="\033[0;30m"
-    local blue="\033[0;34m"
-    local brown="\033[0;33m"
-    local cyan="\033[0;36m"
-    local drak_gray="\033[1;30m"
-    local green="\033[0;32m"
-    local purple="\033[0;35m"
-    local red="\033[0;31m"
-    local white="\033[1;37m"
-    local yellow="\033[1;33m"
-    local light_blue="\033[1;34m"
-    local light_cyan="\033[1;36m"
-    local light_gray="\033[0;37m"
-    local light_green="\033[1;32m"
-    local light_purple="\033[1;35m"
-    local light_red="\033[1;31m"
-
-    local bold=""
-    local reset="\e[0m"
-
-    local user_style="$green"
-    local host_style="$reset"
-
-    [ "$EUID" = "0" ] && user_style="$red"    # logged in as root
-    [ "$SSH_TTY" ]    && host_style="$yellow" # connected via ssh
-
-    # reset prompt
-    PS1=""
-
-    # set the terminal title to the current working directory
-    PS1+="\[\033]0;\u@\h \w\007\]"
-
-    # user@host ~/current/directory
-    PS1+="\[$user_style\]\u\[$reset\]@\[$host_style\]\h\[$reset\] \[$brown\]\w\[$reset\]"
-
-    # git repository details
-    type prompt_git_status 1>/dev/null 2>&1 && PS1="\$(printf \"%\$((COLUMNS - 1))s\r\" \$(prompt_git_status \"[\" \"]\"))$PS1"
-
-    # > for user, # for root
-    [ "$EUID" != "0" ] && PS1+=" \[$user_style\]>\[$reset\] "
-    [ "$EUID"  = "0" ] && PS1+=" \[$user_style\]#\[$reset\] "
-
-    export PROMPT_DIRTRIM=3
-    export PS1
-    export PS2="\[$green\]>\[$reset\] "
-}
-
-prompt_gentoo_daniel
+eval "$(starship init bash)"
+# source "${HOME}/Dokumente/workspace/liquidprompt/liquidprompt"
+true

@@ -1,0 +1,152 @@
+// vim:syntax=yaml shiftwidth=2:
+{
+  "layer": "top", // Waybar at top layer
+  // "position": "bottom", // Waybar position (top|bottom|left|right)
+  "modules-left": ["sway/workspaces", "sway/mode"],
+  "modules-center": ["sway/window"], 
+  "modules-right": [
+    "idle_inhibitor",
+    // "pulseaudio",
+    "network",
+    // "cpu",
+    "temperature",
+    "custom/loadavg",
+    "memory",
+    "custom/disk",
+    "backlight",
+    "battery",
+    "battery#bat2",
+    "custom/mail",
+    "tray",
+    "clock"
+  ],
+  "sway/workspaces": {
+    "disable-scroll": true,
+    "all-outputs": true,
+    "format": "{name}: {icon}",
+    "format-icons": {
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "urgent": "",
+      "focused": "",
+      "default": ""
+    }
+  },
+  "sway/mode": {
+      "format": "<span style=\"italic\">{}</span>"
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    },
+    "tooltip": false
+  },
+  "tray": {
+    // "icon-size": 21,
+    "spacing": 0
+  },
+  "clock": {
+    "format": "{:%a %-d %b %H:%M}",
+    "tooltip": false,
+    "interval": 10
+  },
+  "cpu": {
+    "format": " {usage}%",
+    "tooltip": false,
+    "interval": 10
+  },
+  "disk": {
+    "format": " {percentage_used}%",
+    "tooltip": false,
+    "interval": 60,
+    "path": "/"
+  },
+  "memory": {
+    "format": " {}%",
+    "tooltip": false,
+    "interval": 10
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon1/temp5_input",
+    "critical-threshold": 80,
+    // "format-critical": "{icon} {temperatureC}°C",
+    "format": "{icon} {temperatureC}°C",
+    "format-icons": ["", "", ""],
+    "interval": 60
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{icon} {percent}%",
+    "format-icons": ["", ""]
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    "format-charging": "{capacity}% ",
+    "format-plugged": "{capacity}% ",
+    "format-alt": "{time} {icon}",
+    "format-good": "", // An empty format will hide the module
+    "format-full": "",
+    "format-icons": ["", "", "", "", ""],
+    "interval": 60
+  },
+  "network": {
+    // "interface": "wlp2*", // (Optional) To force the use of this interface
+    "format-wifi": " {essid} {signalStrength}%",
+    "format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+    "format-linked": "{ifname} (No IP)",
+    "format-disconnected": "Disconnected",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "tooltip": false,
+    "interval": 10
+  },
+  "pulseaudio": {
+    // "scroll-step": 1, // %, can be a float
+    "format": "{icon} {volume}% {format_source}",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": "{format_source}",
+    "format-source": "{volume}%",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
+    },
+    "on-click": "pavucontrol",
+    "tooltip": false,
+    "interval": 10
+  },
+  "custom/mail": {
+    "exec-if": "test 0 -lt \"$(notmuch count tag:unread)\"",
+    "exec": "notmuch count tag:unread",
+    "interval": 60,
+    "format": "📬 {}"
+  },
+  "custom/loadavg": {
+    "exec-if": "awk '{ if ( $1 < 1 ) exit 1 }' /proc/loadavg",
+    "exec": "cut -d' ' -f1 /proc/loadavg",
+    "interval": 10,
+    "format": "ø {}"
+  },
+  "custom/disk": {
+    "exec-if": "df --output=pcent / | awk '/[0-9]/ { if (  $1 < 80 ) exit 1 }'",
+    "exec": "df --output=pcent / | awk '/[0-9]/ { printf(\"%d\", $1) }'",
+    "interval": 10,
+    "format": " {}%"
+  }
+}

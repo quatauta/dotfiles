@@ -1,0 +1,7 @@
+configuration {
+  font: "Fira Sans 10";
+  terminal: "lxterminal";
+  ssh-client: "ssh";
+  ssh-command: "{terminal} -e tmux new-session {ssh-client} {host} [-p {port}]";
+  run-shell-command: "{terminal} -e tmux new-session {cmd}";
+}

@@ -32,6 +32,7 @@ import gtk
 
 seticon = False
 iconsize = 16
+nosvg = False
 desktop = False
 submenu = True
 pekwmdynamic = False
@@ -42,7 +43,7 @@ max_icon_size = False
 # 'not_set' it looks in the currect directory tree for the .directory
 # files. If it is actually set to something else, it looks under there
 # for them, where they should be if this was installed properly
-prefix = '/usr/local'
+prefix = '/usr'
 if prefix == 'not_set':
     desktop_dir = '../desktop-directories/'
 else:
@@ -150,7 +151,7 @@ other_icon = de.getIcon()
 terminal_app = os.getenv("XDGMENUMAKERTERM")
 if not terminal_app:
     try:
-        config = cp.ConfigParser()
+        config = cp.SafeConfigParser()
         config.read(os.path.expanduser('~/.config/xdgmenumaker.cfg'))
         terminal_app = config.get('Terminal', 'terminal')
     # if there isn't, on debian and debian-likes, use the alternatives
@@ -167,6 +168,7 @@ def main(argv):
     global desktop
     global seticon
     global iconsize
+    global nosvg
     global submenu
     global pekwmdynamic
     global twmtitles
@@ -177,6 +179,7 @@ def main(argv):
                                                      "pekwm-dynamic",
                                                      "twm-titles",
                                                      "max-icon-size",
+                                                     "no-svg",
                                                      "size=",
                                                      "format="])
     except getopt.GetoptError:
@@ -214,6 +217,8 @@ def main(argv):
             except ImportError:
                 usage()
                 sys.exit('ERROR: --max-icon-size requires Pillow')
+        elif opt == "--no-svg":
+            nosvg = True
         elif opt in ("-f", "--format"):
             desktop = arg
     if not desktop:
@@ -238,6 +243,9 @@ def main(argv):
         compizboxmenu()
     elif desktop == "twm":
         twm()
+    elif desktop == "amiwm":
+        seticon = False
+        amiwm()
     else:
         usage()
         sys.exit(2)
@@ -248,10 +256,11 @@ def usage():
     print()
     print('OPTIONS:')
     print('    -f, --format         the output format to use.')
-    print('                         Valid options are blackbox, compizboxmenu, fluxbox,')
-    print('                         fvwm, twm, icewm, jwm, windowmaker and pekwm')
+    print('                         Valid options are amiwm, blackbox, compizboxmenu,')
+    print('                         fluxbox, fvwm, twm, icewm, jwm, windowmaker and pekwm')
     print('    -i, --icons          enable support for icons in the')
-    print('                         menus. Does not work with windowmaker')
+    print('                         menus. Does not work with windowmaker or amiwm')
+    print('        --no-svg         Do not use SVG icons even for WMs that support it')
     print('    -s, --size           preferred icon size in pixels (default: 16)')
     print('    -n, --no-submenu     do not create a submenu. Does not work with')
     print('                         windowmaker')
@@ -294,21 +303,34 @@ def icon_full_path(icon):
     # If the icon path is absolute and exists, leave it alone.
     # This takes care of software that has its own icons stored
     # in non-standard directories.
-    # But we don't want to do this for svg icons, since none of the WMs
-    # supports them. In that case, just fall back to looking for the icon
-    # elsewhere in the system.
     ext = os.path.splitext(icon)[1].lower()
-    if os.path.exists(icon) and ext != ".svg" and ext != ".svgz":
-        if max_icon_size:
-            return icon_max_size(icon)
+    if os.path.exists(icon):
+        if ext == ".svg" or ext == ".svgz":
+            # only jwm supports svg icons
+            if desktop == "jwm" and not nosvg:
+                return icon
         else:
-            return icon
+            # icon is not svg
+            if max_icon_size:
+                return icon_max_size(icon)
+            else:
+                return icon
+    # fall back to looking for the icon elsewhere in the system
     icon = icon_strip(icon)
     icon_theme = gtk.icon_theme_get_default()
-    icon = icon_theme.lookup_icon(icon, iconsize, gtk.ICON_LOOKUP_NO_SVG)
+    try:
+        # JWM supports svg icons
+        if desktop == "jwm" and not nosvg:
+            icon = icon_theme.lookup_icon(icon, iconsize, gtk.ICON_LOOKUP_FORCE_SVG)
+        # but none of the other WMs does
+        else:
+            icon = icon_theme.lookup_icon(icon, iconsize, gtk.ICON_LOOKUP_NO_SVG)
+    except AttributeError:
+        sys.exit('ERROR: You need to run xdgmenumaker inside an X session.')
     if icon:
         icon = icon.get_filename()
-        if max_icon_size:
+        # icon size only matters for non-SVG icons
+        if icon and max_icon_size and (ext != ".svg" or ext != ".svgz"):
             icon = icon_max_size(icon)
     return icon
 
@@ -347,32 +369,25 @@ def remove_command_keys(command, desktopfile, icon):
 def clean_up_categories(categories):
     # cleaning up categories and keeping only registered freedesktop.org main
     # categories
-    if 'AudioVideo' in categories:
-        category = multimedia
-    elif 'Audio' in categories:
-        category = multimedia
-    elif 'Video' in categories:
-        category = multimedia
-    elif 'Development' in categories:
-        category = development
-    elif 'Education' in categories:
-        category = education
-    elif 'Game' in categories:
-        category = games
-    elif 'Graphics' in categories:
-        category = graphics
-    elif 'Network' in categories:
-        category = network
-    elif 'Office' in categories:
-        category = office
-    elif 'System' in categories:
-        category = system
-    elif 'Settings' in categories:
-        category = settings
-    elif 'Utility' in categories:
-        category = accessories
-    else:
-        category = other
+    category_menus = {
+        "AudioVideo":   multimedia,
+        "Audio":        multimedia,
+        "Video":        multimedia,
+        "Development":  development,
+        "Education":    education,
+        "Game":         games,
+        "Graphics":     graphics,
+        "Network":      network,
+        "Office":       office,
+        "System":       system,
+        "Settings":     settings,
+        "Utility":      accessories
+    }
+    category = other
+    for candidate in categories:
+        if candidate in category_menus:
+            category = category_menus.get(candidate)
+            break
     return category
 
 def get_entry_info(desktopfile, ico_paths=True):
@@ -857,6 +872,26 @@ def twm():
             else:
                 print('    "{n}" f.exec "{c} &"'.format(n=name, c=command))
         print("}")
+
+def amiwm():
+    for menu_category in menu():
+        category = menu_category.category
+        cat_name = category.decode()
+        print('ToolItem "{}" {{'.format(cat_name))
+        for app in menu_category.applist:
+            name = app.name.decode()
+            # for some apps (like netbeans) the command is launched with
+            # /bin/sh "command"
+            # and the quotes get mixed up with the quotes amim needs
+            # around the command, so we're just stripping the quotes
+            command = app.command.replace('"', '')
+            path = app.path
+            if path is not None:
+                print('  ToolItem "{n}" "cd {p} ; {c}" ""'.format(n=name, p=path, c=command))
+            else:
+                print('  ToolItem "{n}" "{c}" ""'.format(n=name, c=command))
+        print("}")
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -71,7 +71,7 @@ session.screen0.slit.onTop:	False
 session.screen0.slit.onhead:	0
 session.screen0.slit.placement:	RightCenter
 session.screen0.sloppywindowgrouping:	true
-session.screen0.strftimeFormat:	%d.%m. %H:%M
+session.screen0.strftimeFormat:	%a %-d %b %H:%M
 session.screen0.tab.alignment:	Left
 session.screen0.tab.height:	16
 session.screen0.tab.placement:	TopLeft

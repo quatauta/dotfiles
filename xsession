@@ -39,7 +39,8 @@ systemctl --user import-environment XDG_CURRENT_DESKTOP
 
 (
     for I in {0..4} ; do
-        setxkbmap -layout "de(nodeadkeys)" -option "+capslock:ctrl_modifier"
+        setxkbmap -layout "de" -model pc105 -variant "nodeadkeys" -option "terminate:ctrl_alt_bksp,caps:ctrl_modifier"
+        setxkbmap -layout "de-daniel" -model pc105 -variant "nodeadkeys" -option "terminate:ctrl_alt_bksp,caps:ctrl_modifier"
         xmodmap "${HOME}/.Xmodmap"
         xrdb -merge "${HOME}/.Xresources"
         xset dpms 300 300 300
@@ -58,7 +59,7 @@ case "${realstartup}" in
 
         _kill_and_start conky conky
         _kill_and_start gsd gnome-settings-daemon
-        _kill_and_start redshift redshift-gtk -l 49.6:6.1
+        #_kill_and_start redshift redshift-gtk -l 49.6:6.1
         _kill_and_start unclutter unclutter
         _kill_and_start xcape xcape -e 'Control_L=Escape'
 
@@ -72,6 +73,7 @@ case "${realstartup}" in
             root-tail ${ROOT_TAIL_OPTS} --geometry 1155x435+30+50 "${HOME}/.xsession-errors" &
             root-tail ${ROOT_TAIL_OPTS} --geometry 525x435+1215+50 --whole "${HOME}/.task/calendar" &
             root-tail ${ROOT_TAIL_OPTS} --geometry 1600x470+30-40 "/var/log/messages" &
+            light-locker &
         ) &
     ;;
 esac

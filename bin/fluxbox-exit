@@ -31,7 +31,8 @@ question() {
         --title="${question}" \
         --ok-label="_Ja" \
         --cancel-label="_Nein" \
-        --text="${text}"
+        --text="${text}" \
+        --width=300
 }
 
 if question "Fluxbox beenden?" ; then

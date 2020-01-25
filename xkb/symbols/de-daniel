@@ -1,0 +1,20 @@
+// On german keyboard layouts, braces and brackets are only available with altGr+[7-0].
+// This is anoing for Java, Bash of LaTeX coding, so map them to altGr+[öä] (and +shift).
+// This way, there are reachable with the thumb, middle- or ringfinger and the small-(?)-finger
+
+default partial alphanumeric_keys
+xkb_symbols "de-daniel" {
+    name[Group1]="German (nodeadkeys, caps:ctrl, Daniel)";
+
+    include "de(nodeadkeys)"
+    include "capslock(ctrl_modifier)"
+    include "terminate(ctrl_alt_bksp)"
+
+    key <AD10> { [          p,          P,  parenleft,          THORN ] };
+    key <AD11> { [ udiaeresis, Udiaeresis, parenright,      diaeresis ] };
+    key <AC10> { [ odiaeresis, Odiaeresis,  braceleft,    bracketleft ] };
+    key <AC11> { [ adiaeresis, Adiaeresis, braceright,   bracketright ] };
+    key <AB08> { [      comma,  semicolon,       less,  guillemotleft ] };
+    key <AB09> { [     period,      colon,    greater, guillemotright ] };
+    key <AB10> { [      minus, underscore,      slash,      backslash ] };
+};

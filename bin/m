@@ -10,9 +10,7 @@ for MUTT in neomutt mutt ; do
 done
 
 if [ -n "${MUTT}" ] ; then
+    ( offlineimap & ) 1>/dev/null 2>&1 &
     "${MUTT}" -Z "$@" || "${MUTT}" -f = "$@"
-    (
-        touch /var/mail/daniel
-        offlineimap &
-    ) 1>/dev/null 2>&1 &
+    ( offlineimap & ) 1>/dev/null 2>&1 &
 fi
