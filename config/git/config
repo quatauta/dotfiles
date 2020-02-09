@@ -18,10 +18,17 @@ ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\
 l = "!git log --pretty=decorate --decorate --graph --left-right --cherry-pick --boundary ${1:---all} #"
 p = pull --all --prune
 pl = pull --all --prune
-ps = push --all --prune --set-upstream
+ps = push --prune --set-upstream
 psm = push --prune --set-upstream -o merge_request.create
 s = status
 st = status
+
+[branch]
+autosetupmerge = always
+autosetuprebase = always
+
+[color]
+ui = auto
 
 [commit]
 gpgSign = true
@@ -32,80 +39,93 @@ pager = less -FRX
 [credential]
 helper = cache
 
-[color]
-ui = auto
-
 [diff]
+colormoved = default
 mnemonicprefix = true
 renames = copies
 submodule = log
 
+[diff "bin"]
+binary = true
+textconv = hexdump -v -C
+
+[diff "bz2"]
+binary = true
+textconv = bzcat
+
+[diff "gz"]
+binary = true
+textconv = gzip -dc
+
+[diff "odf"]
+binary = true
+textconv = odt2txt
+
+[diff "pdf"]
+binary = true
+textconv = pdfinfo
+
+[diff "tar"]
+binary = true
+textconv = tar -O -xf
+
+[diff "tar-bz2"]
+binary = true
+textconv = tar -O -xjf
+
+[diff "tar-gz"]
+binary = true
+textconv = tar -O -xzf
+
+[diff "tar-xz"]
+binary = true
+textconv = tar -O -xJf
+
+[diff "xz"]
+binary = true
+textconv = xzcat
+
+[diff "zip"]
+binary = true
+textconv = unzip -p
+
+[fetch]
+prune = true
+
 [help]
 autocorrect = -1
 
+[include]
+path = ~/.git.local
+
+[log]
+date = iso
+
 [merge]
-tool = meld
 ff = only
+tool = meld
+
+[pretty]
+decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,trunc) (%C(auto,yellow)%ad %C(auto,magenta)%G?%C(auto,reset))
 
 [push]
-default = simple
+default = current
 followTags = true
+
+[rebase]
+autosquash = true
+
+[rerere]
+enable = true
 
 [status]
 branch = true
 short = true
 submoduleSummary = true
 
-[log]
-date = iso
-
-[pretty]
-decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,trunc) (%C(auto,yellow)%ad %C(auto,magenta)%G?%C(auto,reset))
+[submodule]
+recurse = true
 
 [transfer]
 fsckObjects = true
 
-[branch]
-autosetupmerge = always
-autosetuprebase = always
-
-[rebase]
-autosquash = true
-
-[submodule]
-recurse = true
-
-[rerere]
-enable = true
-
-[diff "zip"]
-textconv = unzip -p
-binary = true
-[diff "gz"]
-textconv = gzip -dc
-binary = true
-[diff "bz2"]
-textconv = bzcat
-binary = true
-[diff "xz"]
-textconv = xzcat
-binary = true
-[diff "tar"]
-textconv = tar -O -xf
-binary = true
-[diff "tar-bz2"]
-textconv = tar -O -xjf
-binary = true
-[diff "tar-gz"]
-textconv = tar -O -xzf
-binary = true
-[diff "tar-xz"]
-textconv = tar -O -xJf
-binary = true
-
-[diff "odf"]
-textconv = odt2txt
-[diff "pdf"]
-textconv = pdfinfo
-[diff "bin"]
-textconv = hexdump -v -C
