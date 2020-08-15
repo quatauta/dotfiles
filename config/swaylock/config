@@ -1,0 +1,4 @@
+image=/etc/lightdm/background.jpg
+font=Fira Sans
+show-keyboard-layout
+indicator-caps-lock

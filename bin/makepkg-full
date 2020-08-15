@@ -6,16 +6,16 @@ if [ -r "PKGBUILD" ] ; then
     updpkgsums &&
     makepkg -fcC &&
     namcap PKGBUILD &&
-    namcap *.pkg.tar.xz &&
+    namcap *.pkg.tar.zst &&
     (
-        find -iname "*.pkg.tar.xz" |
+        find -iname "*.pkg.tar.zst" |
         while read PKG ; do
             if ! [ -r "${PKG}.sig" ] || [ "${PKG}" -nt "${PKG}.sig" ] ; then
                 gpg --detach-sign "${PKG}"
             fi
         done
     )
-    pacman -Qlip *.pkg.tar.xz
+    pacman -Qlip *.pkg.tar.zst
 else
     echo "Not PKGBUILD found in current directory."
     exit 1

@@ -11,7 +11,7 @@ if [ -x "${GSD}" ] ; then
     exec "${GSD}" &
 elif [ -x "${GSD_XSETTINGS}" ] ; then
     find "${GSD_LIBEXEC}" -iname "gsd-*" |
-    egrep -v 'a11y|test|dummy|sound|locate-pointer|orientation|sharing|smartcard|sound|screensaver' |
+    egrep -v 'gsd-(print|wacom)' |
     sort |
     while read GSD_MODULE ; do
         if [ -x "${GSD_MODULE}" ] ; then

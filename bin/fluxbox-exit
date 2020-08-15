@@ -1,16 +1,16 @@
 #!/bin/sh
 
 windows() {
-    local lines wid desktop pid host name
-
-    lines=""
-
-    lines="$(wmctrl -lp |
-             while read wid desktop pid host name ; do
-                 printf '  - (%d) %s\n' $(($desktop + 1)) "${name}"
-             done)"
-
-    echo "$lines" | sort
+    (
+        wmctrl -lp |
+        while read wid desktop pid host name ; do
+            printf -- '%s\n' "${name}"
+        done
+        swaymsg -t get_tree |
+        jq -r '.nodes[1].nodes[].nodes[] | .. | .name?' |
+        grep -v '^null$'
+    ) |
+    sort -u
 }
 
 question() {
@@ -35,10 +35,8 @@ question() {
         --width=300
 }
 
-if question "Fluxbox beenden?" ; then
-    if pgrep -U"${USER}" gnome-session ; then
-        gnome-session-quit --logout --force --no-prompt
-    else
-        pkill -TERM 'fluxbox'
-    fi
+if question "Session beenden?" ; then
+    gnome-session-quit --logout --force --no-prompt
+    swaymsg exit
+    pkill -TERM /usr/bin/fluxbox
 fi

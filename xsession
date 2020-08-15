@@ -12,7 +12,8 @@ _kill_and_start() {
 export PATH="${PATH}:/usr/libexec:${HOME}/bin"
 
 cd "${HOME}"
-source "${HOME}/.bashrc"
+source "${HOME}/.config/env"
+source "${HOME}/.config/env.local"
 
 # Determine the window manger to use
 if [ -n "${WINDOW_MANAGER}" ]; then

@@ -3,6 +3,5 @@
 /var/mail/$(USER)
 $(HOME)/Mail
 $(HOME)/Mail/.postponed
-$(HOME)/Mail/.sent
 $(HOME)/Mail/.spam
 $(HOME)/Mail/.trash

@@ -3,7 +3,7 @@
 
 # options
 
-alternative_order text/plain text/* image/*
+alternative_order text/plain text/html text/* image/*
 mime_lookup application/octet-stream application/vnd.ms-excel application/vnd.ms-word
 
 spam "X-(DSPAM-Result|GMX-Antispam|Spam-Status): (Spam|1|Yes)" "Spam"
