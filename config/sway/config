@@ -51,6 +51,7 @@ xwayland enable
 
 bindsym $mod+Return          exec rofi -show run -modi "run,drun,ssh,window"
 # bindsym $mod+a               exec lxterminal -e tmux new-session ~/bin/m
+bindsym $mod+a               exec /var/lib/snapd/snap/bin/hey
 # bindsym $mod+Shift+c         exec qalculate-gtk
 # bindsym $mod+e               exec emacs
 # bindsym $mod+f               exec exec nice firefox
@@ -82,7 +83,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
-bindsym $mod+a focus parent
+#bindsym $mod+a focus parent
 
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
