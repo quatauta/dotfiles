@@ -37,7 +37,7 @@ set copyindent
 set endofline
 set expandtab
 set formatoptions=12cjlmnoqrt
-set guifont=Source\ Code\ Pro\ 9
+set guifont=Fira\ Code\ 10
 set guioptions=acgLmrt
 set hidden
 set history=50
