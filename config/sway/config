@@ -5,6 +5,7 @@
 set $mod Mod4
 set $font Fira Sans 10
 set $term lxterminal -e tmux new-session
+set $laptop eDP-1
 
 output * bg '/etc/lightdm/background.jpg' fill
 
@@ -20,6 +21,9 @@ exec swayidle -w \
   before-sleep 'gpg-connect-agent updatestartuptty /bye >/dev/null; swaylock -f'
 exec export GTK_OVERLAY_SCROLLING=0
 exec gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.UpdateActivationEnvironment '{"GTK_OVERLAY_SCROLLING": "0"}'
+
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
 
 input type:keyboard {
   repeat_delay 300
