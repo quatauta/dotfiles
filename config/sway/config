@@ -65,7 +65,7 @@ bindsym $mod+l               exec swaylock -f
 bindsym $mod+n               exec nice ionice -c3 pcmanfm
 bindsym $mod+q               exec nice opera
 bindsym XF86HomePage         exec nice opera
-bindsym XF86Mail             exec lxterminal -e "tmux -c /home/daniel/bin/m"
+bindsym XF86Mail             exec /var/lib/snapd/snap/bin/hey-mail
 bindsym XF86Calculator       exec qalculate-gtk
 bindsym $mod+Shift+q         exec nice liferea
 # bindsym $mod+s               exe exec nice ionice -c3 sonos
@@ -74,6 +74,12 @@ bindsym Shift+$mod+y         exec /home/daniel/bin/fluxbox-exit
 bindsym Control+Shift+$mod+y exec systemctl poweroff
 bindsym --release Print      exec sway-screenshot
 bindsym --release $mod+Print exec sway-screenshot-selection
+
+bindsym XF86AudioRaiseVolume  exec amixer sset Master 5%+
+bindsym XF86AudioLowerVolume  exec amixer sset Master 5%-
+bindsym XF86AudioMute         exec amixer sset Master toggle
+bindsym XF86MonBrightnessUp   exec light -A 5%
+bindsym XF86MonBrightnessDown exec light -U 5%
 
 # bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
