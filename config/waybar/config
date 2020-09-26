@@ -10,12 +10,11 @@
     "network",
     "cpu",
     "temperature",
-    // "custom/loadavg",
     "memory",
     "disk",
     "backlight",
     "battery",
-    "battery#bat2",
+    // "battery#bat2",
     "custom/mail",
     "tray"
   ],
@@ -83,18 +82,22 @@
   "backlight": {
     // "device": "acpi_video1",
     "format": "{icon}{percent}%",
-    "format-icons": ["", ""]
+    "format-icons": ["", ""],
+    "on-scroll-up": "light -A 5%",
+    "on-scroll-down": "light -U 5%"
   },
   "battery": {
     "states": {
-      "good": 95,
+      // "good": 95,
       "warning": 30,
       "critical": 15
     },
-    "format": "{icon}{capacity}%",
-    "format-charging": "{capacity}%",
-    "format-plugged": "{capacity}%",
-    "format-alt": "{time}{icon}",
+    "format": "{icon}",
+    "format-charging": "{icon}{capacity}%",
+    "format-plugged": "{icon}{capacity}%",
+    "format-warning": "{icon}{capacity}% {time}",
+    "format-critical": "{icon}{capacity}% {time}",
+    "format-alt": "{icon}{time}",
     "format-good": "", // An empty format will hide the module
     "format-full": "",
     "format-icons": ["", "", "", "", ""],
@@ -136,12 +139,6 @@
     "exec": "notmuch count tag:unread and not folder:.spam and not folder:.trash",
     "interval": 60,
     "format": " 📬{}"
-  },
-  "custom/loadavg": {
-    "exec-if": "awk '{ if ( $1 < 1 ) exit 1 }' /proc/loadavg",
-    "exec": "cut -d' ' -f1 /proc/loadavg",
-    "interval": 10,
-    "format": "ø{}"
   },
   "custom/disk": {
     "exec-if": "df --output=pcent / | awk '/[0-9]/ { if (  $1 < 80 ) exit 1 }'",
