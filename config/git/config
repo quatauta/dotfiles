@@ -108,6 +108,9 @@ tool = meld
 [pretty]
 decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,trunc) (%C(auto,yellow)%ad %C(auto,magenta)%G?%C(auto,reset))
 
+[pull]
+ff = only
+
 [push]
 default = current
 followTags = true
