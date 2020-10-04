@@ -7,7 +7,7 @@ set $font Fira Sans 10
 set $term lxterminal -e tmux new-session
 set $laptop eDP-1
 
-output * bg '/etc/lightdm/background.jpg' fill
+output * bg '${HOME}/.cache/wallpaper.jpg' fill
 
 exec autotiling
 exec mako

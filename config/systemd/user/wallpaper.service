@@ -1,0 +1,6 @@
+[Unit]
+Description=Symlink a background/wallpaer image to $HOME/.cache/wallpaper.jpg
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/wallpaper

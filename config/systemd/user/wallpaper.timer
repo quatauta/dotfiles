@@ -1,0 +1,11 @@
+[Unit]
+Description=Symlink a background/wallpaer image to $HOME/.cache/wallpaper.jpg
+
+[Timer]
+OnBootSec=5m
+OnCalendar=daily
+AccuracySec=5m
+Persistent=true
+
+[Install]
+WantedBy=timers.target
