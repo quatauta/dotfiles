@@ -1,5 +1,6 @@
 #!/bin/sh
 
-find /usr/share/backgrounds/ /usr/share/wallpapers/ -type f -iname "*.jpg" -print0 \! -iname "*screenshot*"|
+find /usr/share/backgrounds/ /usr/share/wallpapers/ -type f -iname "*.jpg" -print0 |
+fgrep -zZ -v screenshot |
 shuf -z -n1 |
 xargs -0r -I JPG ln -fsv JPG "${HOME}/.cache/wallpaper.jpg"
