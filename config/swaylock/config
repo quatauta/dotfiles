@@ -1,4 +1,5 @@
-image=/etc/lightdm/background.jpg
 font=Fira Sans
-show-keyboard-layout
+image=$HOME/.cache/wallpaper.jpg
 indicator-caps-lock
+indicator-idle-visible
+show-keyboard-layout
