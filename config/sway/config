@@ -53,46 +53,53 @@ seat * hide_cursor 2000
 title_align center
 xwayland enable
 
-bindsym $mod+Return          exec rofi -show run -modi "run,drun,ssh,window"
+bindsym $mod+Return          exec rofi -show run -modi "run,drun,ssh,window,keys"
+bindsym $mod+Space           exec rofi -show run -modi "run,drun,ssh,window,keys"
 # bindsym $mod+a               exec lxterminal -e tmux new-session ~/bin/m
-bindsym $mod+a               exec /var/lib/snapd/snap/bin/hey
-# bindsym $mod+Shift+c         exec qalculate-gtk
+bindsym XF86Mail             exec /var/lib/snapd/snap/bin/hey-mail
+bindsym $mod+a               exec /var/lib/snapd/snap/bin/hey-mail
+bindsym XF86Calculator       exec qalculate-gtk
+bindsym $mod+c               exec qalculate-gtk
 # bindsym $mod+e               exec emacs
 # bindsym $mod+f               exec exec nice firefox
 bindsym $mod+g               exec geeqie $HOME/Dokumente/bilder
-bindsym $mod+Shift+g         exec gimp
+bindsym $mod+g+Shift         exec gimp
 bindsym $mod+l               exec swaylock -f
 bindsym $mod+n               exec nice ionice -c3 pcmanfm
-bindsym $mod+q               exec nice opera
 bindsym XF86HomePage         exec nice opera
-bindsym XF86Mail             exec /var/lib/snapd/snap/bin/hey-mail
-bindsym XF86Calculator       exec qalculate-gtk
-bindsym $mod+Shift+q         exec nice liferea
+bindsym $mod+q               exec nice opera
+bindsym $mod+q+Shift         exec nice liferea
 # bindsym $mod+s               exe exec nice ionice -c3 sonos
 bindsym $mod+y               exec lxterminal -e tmux new-session
-bindsym Shift+$mod+y         exec /home/daniel/bin/fluxbox-exit
-bindsym Control+Shift+$mod+y exec systemctl poweroff
+bindsym $mod+y+Alt           exec systemctl reboot
+bindsym $mod+y+Control       exec systemctl suspend-then-hibernate
+bindsym $mod+y+Shift+Control exec systemctl poweroff
+bindsym $mod+y+Shift         exec /home/daniel/bin/fluxbox-exit
 bindsym --release Print      exec sway-screenshot
 bindsym --release $mod+Print exec sway-screenshot-selection
 
-bindsym XF86AudioRaiseVolume  exec amixer sset Master 5%+
-bindsym XF86AudioLowerVolume  exec amixer sset Master 5%-
-bindsym XF86AudioMute         exec amixer sset Master toggle
-bindsym XF86MonBrightnessUp   exec light -A 5%
-bindsym XF86MonBrightnessDown exec light -U 5%
+bindsym XF86AudioRaiseVolume       exec amixer sset Master 5%+
+bindsym XF86AudioLowerVolume       exec amixer sset Master 5%-
+bindsym XF86AudioMute              exec amixer sset Master toggle
+bindsym XF86AudioMute+$mod         exec amixer sset Capture toggle
+bindsym XF86AudioMicMute           exec amixer sset Capture toggle
+bindsym XF86AudioRaiseVolume+$mod  exec amixer sset Capture 5%+
+bindsym XF86AudioLowerVolume+$mod  exec amixer sset Capture 5%-
+bindsym XF86MonBrightnessUp        exec light -A 5%
+bindsym XF86MonBrightnessDown      exec light -U 5%
 
 # bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
-bindsym $mod+h splith
-bindsym $mod+v splitv
+bindsym $mod+h+shift splith
+bindsym $mod+v+shift splitv
 bindsym $mod+s layout stacking
 bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 bindsym $mod+f fullscreen
-bindsym $mod+Shift+space floating toggle
-bindsym $mod+space focus mode_toggle
+bindsym $mod+space+Shift   floating toggle
+bindsym $mod+space+Control focus mode_toggle
 #bindsym $mod+a focus parent
 
 bindsym $mod+Left focus left
