@@ -15,8 +15,8 @@ exec nm-applet --indicator
 exec redshift-gtk -l 49.6:6.1
 exec /home/daniel/bin/gnome-settings-daemon
 exec swayidle -w \
-  timeout 300 'gpg-connect-agent updatestartuptty /bye >/dev/null; swaylock -f' \
-  timeout 600 'gpg-connect-agent updatestartuptty /bye >/dev/null; swaymsg "output * dpms off"' \
+  timeout 180 'gpg-connect-agent updatestartuptty /bye >/dev/null; swaylock -f' \
+  timeout 300 'gpg-connect-agent updatestartuptty /bye >/dev/null; swaymsg "output * dpms off"' \
   resume 'gpg-connect-agent updatestartuptty /bye >/dev/null; swaymsg "output * dpms on"' \
   before-sleep 'gpg-connect-agent updatestartuptty /bye >/dev/null; swaylock -f'
 exec export GTK_OVERLAY_SCROLLING=0
