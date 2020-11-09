@@ -72,7 +72,7 @@ bindsym $mod+q+Shift         exec nice liferea
 # bindsym $mod+s               exe exec nice ionice -c3 sonos
 bindsym $mod+y               exec lxterminal -e tmux new-session
 bindsym $mod+y+Alt           exec systemctl reboot
-bindsym $mod+y+Control       exec systemctl suspend-then-hibernate
+bindsym $mod+y+Control       exec systemctl suspend
 bindsym $mod+y+Shift+Control exec systemctl poweroff
 bindsym $mod+y+Shift         exec /home/daniel/bin/fluxbox-exit
 bindsym --release Print      exec sway-screenshot
