@@ -6,12 +6,9 @@ path = ~/.git.local
 
 [alias]
 b = branch
-br = branch
 c = commit
-ci = commit
 co = checkout
 d = diff
-di = diff
 f = fetch --all --prune --recurse-submodules --tags
 i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
@@ -21,7 +18,8 @@ pl = pull --all --prune
 ps = push --prune --set-upstream
 psm = push --prune --set-upstream -o merge_request.create
 s = status
-st = status
+branch-clean-local = ! "git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -rt git branch -d"
+bcl = branch-clean-local
 
 [branch]
 autosetupmerge = always
