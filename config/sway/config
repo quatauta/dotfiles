@@ -56,8 +56,8 @@ xwayland enable
 bindsym $mod+Return          exec rofi -show run -modi "run,drun,ssh,window,keys"
 bindsym $mod+Space           exec rofi -show run -modi "run,drun,ssh,window,keys"
 # bindsym $mod+a               exec lxterminal -e tmux new-session ~/bin/m
-bindsym XF86Mail             exec /var/lib/snapd/snap/bin/hey-mail
-bindsym $mod+a               exec /var/lib/snapd/snap/bin/hey-mail
+bindsym XF86Mail             exec xdg-open https://app.hey.com/
+bindsym $mod+a               exec xdg-open https://app.hey.com/
 bindsym XF86Calculator       exec qalculate-gtk
 bindsym $mod+c               exec qalculate-gtk
 # bindsym $mod+e               exec emacs
