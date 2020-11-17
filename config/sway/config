@@ -17,11 +17,12 @@ exec /home/daniel/bin/gnome-settings-daemon
 exec swayidle -w \
   timeout 180 'swaylock -f ; gpg-connect-agent updatestartuptty /bye >/dev/null' \
   timeout 300 'swaymsg "output * dpms off" ; gpg-connect-agent updatestartuptty /bye >/dev/null' \
-  after-resume 'swaymsg "output * dpms on" ; gpg-connect-agent updatestartuptty /bye >/dev/null' \
-  before-sleep 'swaylock -f ; gpg-connect-agent updatestartuptty /bye >/dev/null' \
-  lock 'swaylock -f' \
-  unlock 'gpg-connect-agent updatestartuptty /bye >/dev/null' \
-  idlehint 180
+       resume 'swaymsg "output * dpms on" ; gpg-connect-agent updatestartuptty /bye >/dev/null' \
+ after-resume 'swaymsg "output * dpms on" ; gpg-connect-agent updatestartuptty /bye >/dev/null' \
+ before-sleep 'swaylock -f ; gpg-connect-agent updatestartuptty /bye >/dev/null' \
+         lock 'swaylock -f' \
+       unlock 'gpg-connect-agent updatestartuptty /bye >/dev/null' \
+     idlehint 180
 exec export GTK_OVERLAY_SCROLLING=0
 exec gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.UpdateActivationEnvironment '{"GTK_OVERLAY_SCROLLING": "0"}'
 
