@@ -4,13 +4,12 @@
 test -d "${HOME}/bin" && [ -n "${PATH##*${HOME}/bin*}" ] && PATH="${HOME}/bin:${PATH}"
 test -d "${HOME}/man" && [ -n "${MANDIR##*${HOME}/man*}" ] && MANPATH="${HOME}/man:${MANPATH}"
 
-find "${HOME}/.gem" -type d -name bin 2>/dev/null |
-grep 'ruby/[0-9]\.[0-9]\.[0-9]/bin' |
-sort -h |
-tail -n1 |
-while read GEM_BIN  ; do
-    test -d "${GEM_BIN}" && [ -n "${PATH##*${GEM_BIN}*}" ] && PATH="${GEM_BIN}:${PATH}"
-done
+if which ruby >/dev/null && which gem >/dev/null ; then
+    GEM_USER_DIR="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
+    if ! echo "${PATH}" | fgrep -q "${GEM_USER_DIR}" ; then
+        export PATH="${GEM_USER_DIR}:${PATH}"
+    fi
+fi
 
 export BUNDLE_JOBS="$(nproc)"
 export BUNDLE_PATH="${HOME}/.gem"
