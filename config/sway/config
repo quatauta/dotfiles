@@ -87,10 +87,12 @@ bindsym XF86AudioLowerVolume       exec amixer sset Master 5%-
 bindsym XF86AudioMute              exec amixer sset Master toggle
 bindsym XF86AudioMute+$mod         exec amixer sset Capture toggle
 bindsym XF86AudioMicMute           exec amixer sset Capture toggle
-bindsym XF86AudioRaiseVolume+$mod  exec amixer sset Capture 5%+
-bindsym XF86AudioLowerVolume+$mod  exec amixer sset Capture 5%-
+bindsym XF86AudioRaiseVolume+Shift exec amixer sset Capture 5%+
+bindsym XF86AudioLowerVolume+Shift exec amixer sset Capture 5%-
 bindsym XF86MonBrightnessUp        exec light -A 5%
 bindsym XF86MonBrightnessDown      exec light -U 5%
+bindsym XF86AudioRaiseVolume+Alt   exec light -A 5%
+bindsym XF86AudioLowerVolume+Alt   exec light -U 5%
 
 # bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
