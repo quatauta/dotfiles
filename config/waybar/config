@@ -16,7 +16,7 @@
     "backlight",
     "battery",
     // "battery#bat2",
-    "custom/mail",
+    // "custom/mail",
     "tray"
   ],
   "sway/workspaces": {
