@@ -5,6 +5,7 @@
   "modules-left": ["sway/workspaces", "sway/mode"],
   "modules-center": ["clock"], // "sway/window"
   "modules-right": [
+    "custom/kernel-update",
     "idle_inhibitor",
     "pulseaudio",
     "network",
@@ -145,5 +146,11 @@
     "exec": "df --output=pcent / | awk '/[0-9]/ { printf(\"%d\", $1) }'",
     "interval": 10,
     "format": "{}%"
+  },
+  "custom/kernel-update": {
+    "exec-if": "test \"$(uname -r)\" != \"$(pacman -Qi linux | awk '/^Version/ { print $3 }')\"",
+    "exec": "pacman -Qi linux | awk '/^Version/ { print $3 }'",
+    "interval": 120,
+    "format": "↻🐧{}"
   }
 }
