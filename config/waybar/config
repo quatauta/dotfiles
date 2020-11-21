@@ -148,9 +148,9 @@
     "format": "{}%"
   },
   "custom/kernel-update": {
-    "exec-if": "test \"$(uname -r)\" != \"$(pacman -Qi linux | awk '/^Version/ { print $3 }')\"",
-    "exec": "pacman -Qi linux | awk '/^Version/ { print $3 }'",
-    "interval": 120,
-    "format": "↻🐧{}"
+    "exec-if": "kernel-update.sh",
+    "exec": "kernel-update.sh",
+    "interval": 10,
+    "format": "{}"
   }
 }
