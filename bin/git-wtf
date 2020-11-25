@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-HELP = <<EOS
+HELP = <<~EOS
 git-wtf displays the state of your repository in a readable, easy-to-scan
 format. It's useful for getting a summary of how a branch relates to a remote
 server, and for wrangling many topic branches.
@@ -15,7 +15,7 @@ git-wtf is best used before a git push, or between a git fetch and a git
 merge. Be sure to set color.ui to auto or yes for maximum viewing pleasure.
 EOS
 
-KEY = <<EOS
+KEY = <<~EOS
 KEY:
 () branch only exists locally
 {} branch only exists on a remote repo
@@ -30,7 +30,7 @@ that's a less common case and git-wtf currently doesn't display anything
 special for it.)
 EOS
 
-USAGE = <<EOS
+USAGE = <<~EOS
 Usage: git wtf [branch+] [options]
 
 If [branch] is not specified, git-wtf will use the current branch. The possible
@@ -61,7 +61,7 @@ with heads/, e.g. "heads/master". Remote branches must be of the form
 remotes/<remote>/<branch>.
 EOS
 
-COPYRIGHT = <<EOS
+COPYRIGHT = <<~EOS
 git-wtf Copyright 2008--2009 William Morgan <wmorgan at the masanjin dot nets>.
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free
@@ -76,10 +76,12 @@ more details.
 You can find the GNU General Public License at: http://www.gnu.org/licenses/
 EOS
 
-require 'yaml'
+require "yaml"
 CONFIG_FN = ".git-wtfrc"
 
-class Numeric; def pluralize s; "#{to_s} #{s}" + (self != 1 ? "s" : "") end end
+class Numeric; def pluralize s; 
+                 "#{self} #{s}" + (self != 1 ? "s" : "") 
+               end end
 
 if ARGV.delete("--help") || ARGV.delete("-h")
   puts USAGE
@@ -94,11 +96,11 @@ $all_commits = ARGV.delete("--all-commits") || ARGV.delete("-A")
 $dump_config = ARGV.delete("--dump-config")
 $key = ARGV.delete("--key") || ARGV.delete("-k")
 $show_relations = ARGV.delete("--relations") || ARGV.delete("-r")
-ARGV.each { |a| abort "Error: unknown argument #{a}." if a =~ /^--/ }
+ARGV.each { |a| abort "Error: unknown argument #{a}." if /^--/.match?(a) }
 
 ## search up the path for a file
 def find_file fn
-  while true
+  loop do
     return fn if File.exist? fn
     fn2 = File.join("..", fn)
     return nil if File.expand_path(fn2) == File.expand_path(fn)
@@ -109,16 +111,33 @@ end
 want_color = `git config color.wtf`
 want_color = `git config color.ui` if want_color.empty?
 $color = case want_color.chomp
-  when "true"; true
-  when "auto"; $stdout.tty?
+  when "true" then true
+  when "auto" then $stdout.tty?
 end
 
-def red s; $color ? "\033[31m#{s}\033[0m" : s end
-def green s; $color ? "\033[32m#{s}\033[0m" : s end
-def yellow s; $color ? "\033[33m#{s}\033[0m" : s end
-def cyan s; $color ? "\033[36m#{s}\033[0m" : s end
-def grey s; $color ? "\033[1;30m#{s}\033[0m" : s end
-def purple s; $color ? "\033[35m#{s}\033[0m" : s end
+def red s; 
+  $color ? "\033[31m#{s}\033[0m" : s 
+end
+
+def green s; 
+  $color ? "\033[32m#{s}\033[0m" : s 
+end
+
+def yellow s; 
+  $color ? "\033[33m#{s}\033[0m" : s 
+end
+
+def cyan s; 
+  $color ? "\033[36m#{s}\033[0m" : s 
+end
+
+def grey s; 
+  $color ? "\033[1;30m#{s}\033[0m" : s 
+end
+
+def purple s; 
+  $color ? "\033[35m#{s}\033[0m" : s 
+end
 
 ## the set of commits in 'to' that aren't in 'from'.
 ## if empty, 'to' has been merged into 'from'.
@@ -130,32 +149,30 @@ def commits_between from, to
   end.split(/[\r\n]+/)
 end
 
-def show_commits commits, prefix="    "
+def show_commits commits, prefix = "    "
   if commits.empty?
     puts "#{prefix} none"
   else
     max = $all_commits ? commits.size : $config["max_commits"]
     max -= 1 if max == commits.size - 1 # never show "and 1 more"
-    commits[0 ... max].each { |c| puts "#{prefix}#{c}" }
+    commits[0...max].each { |c| puts "#{prefix}#{c}" }
     puts grey("#{prefix}... and #{commits.size - max} more (use -A to see all).") if commits.size > max
   end
 end
 
 def ahead_behind_string ahead, behind
-  [ahead.empty? ? nil : "#{ahead.size.pluralize 'commit'} ahead",
-   behind.empty? ? nil : "#{behind.size.pluralize 'commit'} behind"].
-   compact.join("; ")
+  [ahead.empty? ? nil : "#{ahead.size.pluralize "commit"} ahead",
+    behind.empty? ? nil : "#{behind.size.pluralize "commit"} behind"]
+    .compact.join("; ")
 end
 
-def widget merged_in, remote_only=false, local_only=false, local_only_merge=false
-  left, right = case
-    when remote_only; %w({ })
-    when local_only; %w{( )}
+def widget merged_in, remote_only = false, local_only = false, local_only_merge = false
+  left, right = if remote_only then %w[{ }]
+    elsif local_only then %w[( )]
     else %w([ ])
   end
-  middle = case
-    when merged_in && local_only_merge; green("~")
-    when merged_in; green("x")
+  middle = if merged_in && local_only_merge then green("~")
+    elsif merged_in then green("x")
     else " "
   end
   print left, middle, right
@@ -166,8 +183,8 @@ def show b
 
   pushc, pullc, oosync = if have_both
     [x = commits_between(b[:remote_branch], b[:local_branch]),
-     y = commits_between(b[:local_branch], b[:remote_branch]),
-     !x.empty? && !y.empty?]
+      y = commits_between(b[:local_branch], b[:remote_branch]),
+      !x.empty? && !y.empty?]
   end
 
   if b[:local_branch]
@@ -249,8 +266,8 @@ def show_relations b, all_branches
       if ahead.empty?
         puts "#{widget true, local_only} merged into #{name}"
       else
-        #behind = commits_between b[:local_branch], v
-        puts "#{widget false, local_only} NOT merged into #{name} (#{ahead.size.pluralize 'commit'} ahead)"
+        # behind = commits_between b[:local_branch], v
+        puts "#{widget false, local_only} NOT merged into #{name} (#{ahead.size.pluralize "commit"} ahead)"
         show_commits ahead unless $short
       end
     end
@@ -260,9 +277,9 @@ end
 #### EXECUTION STARTS HERE ####
 
 ## find config file and load it
-$config = { "integration-branches" => %w(heads/master heads/next heads/edge), "ignore" => [], "max_commits" => 5 }.merge begin
+$config = {"integration-branches" => %w[heads/master heads/next heads/edge], "ignore" => [], "max_commits" => 5}.merge begin
   fn = find_file CONFIG_FN
-  if fn && (h = YAML::load_file(fn)) # yaml turns empty files into false
+  if fn && (h = YAML.load_file(fn)) # yaml turns empty files into false
     h["integration-branches"] ||= h["versions"] # support old nomenclature
     h
   else
@@ -276,27 +293,25 @@ if $dump_config
 end
 
 ## first, index registered remotes
-remotes = `git config --get-regexp ^remote\.\*\.url`.split(/[\r\n]+/).inject({}) do |hash, l|
-  l =~ /^remote\.(.+?)\.url (.+)$/ or next hash
+remotes = `git config --get-regexp ^remote\.\*\.url`.split(/[\r\n]+/).each_with_object({}) { |l, hash|
+  l =~( /^remote\.(.+?)\.url (.+)$/) || next hash
   hash[$1] ||= $2
-  hash
-end
+}
 
 ## next, index followed branches
-branches = `git config --get-regexp ^branch\.`.split(/[\r\n]+/).inject({}) do |hash, l|
+branches = `git config --get-regexp ^branch\.`.split(/[\r\n]+/).each_with_object({}) { |l, hash|
   case l
   when /branch\.(.*?)\.remote (.+)/
     name, remote = $1, $2
 
     hash[name] ||= {}
-    hash[name].merge! :remote => remote, :remote_url => remotes[remote]
+    hash[name].merge! remote: remote, remote_url: remotes[remote]
   when /branch\.(.*?)\.merge ((refs\/)?heads\/)?(.+)/
     name, remote_branch = $1, $4
     hash[name] ||= {}
-    hash[name].merge! :remote_mergepoint => remote_branch
+    hash[name].merge! remote_mergepoint: remote_branch
   end
-  hash
-end
+}
 
 ## finally, index all branches
 remote_branches = {}
@@ -307,7 +322,7 @@ remote_branches = {}
     name = $1
     next if name == "HEAD"
     branches[name] ||= {}
-    branches[name].merge! :name => name, :local_branch => ref
+    branches[name].merge! name: name, local_branch: ref
   elsif ref =~ /^remotes\/(.+?)\/(.+)$/ # remote branch
     remote, name = $1, $2
     remote_branches["#{remote}/#{name}"] = true
@@ -322,7 +337,7 @@ remote_branches = {}
     end
 
     branches[name] ||= {}
-    branches[name].merge! :name => name, :remote => remote, :remote_branch => "#{remote}/#{branch}", :remote_url => remotes[remote], :ignore => ignore
+    branches[name].merge! name: name, remote: remote, remote_branch: "#{remote}/#{branch}", remote_url: remotes[remote], ignore: ignore
   end
 end
 
@@ -342,7 +357,7 @@ targets = if ARGV.empty?
   [`git symbolic-ref HEAD`.chomp.sub(/^refs\/heads\//, "")]
 else
   ARGV.map { |x| x.sub(/^heads\//, "") }
-end.map { |t| branches[t] or abort "Error: can't find branch #{t.inspect}." }
+end.map { |t| branches[t] || abort("Error: can't find branch #{t.inspect}.") }
 
 targets.each do |t|
   show t
@@ -350,7 +365,7 @@ targets.each do |t|
 end
 
 modified = show_dirty && `git ls-files -m` != ""
-uncommitted = show_dirty &&  `git diff-index --cached HEAD` != ""
+uncommitted = show_dirty && `git diff-index --cached HEAD` != ""
 
 if $key
   puts

@@ -1,18 +1,17 @@
 #!/usr/bin/env ruby
 
-require 'vcard'
-
+require "vcard"
 
 module Vcard
   class Vcard
     def nick_or_name
-      self.nickname || self.name.formatted
+      nickname || name.formatted
     end
 
     def <=> other
       a, b = [self, other].map { |c|
         [c.name.family, c.name.given,
-         c.name.formatted, c.nickname].compact.reject { |n|
+          c.name.formatted, c.nickname].compact.reject { |n|
           n.empty?
         }.join(", ")
       }
@@ -22,9 +21,9 @@ module Vcard
     def sorted_to_s
       str = []
       str << "BEGIN:VCARD"
-      str << "VERSION:#{self.version / 10.0}"
+      str << "VERSION:#{version / 10.0}"
 
-      self.to_s.gsub(/[\r\n]+ +/, "") \
+      to_s.gsub(/[\r\n]+ +/, "") \
         .split(/[\r\n]+/) \
         .reject { |line| /^(BEGIN|VERSION|END):/ =~ line } \
         .sort.each do |line|
@@ -36,7 +35,6 @@ module Vcard
     end
   end
 end
-
 
 def read_files
   lines = ""
@@ -57,7 +55,6 @@ def decode(lines)
 
   cards.sort
 end
-
 
 print(decode(read_files).sort.map { |card|
         card.sorted_to_s

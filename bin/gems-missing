@@ -1,39 +1,37 @@
 #!/usr/bin/env ruby
 
-require 'benchmark'
-require 'pp'
-require 'rubygems'
-
+require "benchmark"
+require "rubygems"
 
 class Gem::Specification
   include Comparable
 
   def <=> other
-    [ self.name, self.version ] <=> [ other.name, other.version ]
+    [name, version] <=> [other.name, other.version]
   end
 
   def missing_dependencies(available, cache = nil)
     missing = nil
 
-    self.dependencies.select { |dep|
+    dependencies.select { |dep|
       dep.type == :runtime
-    } .each do |dep|
+    }.each do |dep|
       cache_key = dep.to_s.to_sym
-      satisfied = if cache && cache.include?(cache_key)
-                    cache[cache_key]
-                  else
-                    available.any? { |spec| spec.satisfies_requirement? dep }
-                  end
+      satisfied = if cache&.include?(cache_key)
+        cache[cache_key]
+      else
+        available.any? { |spec| spec.satisfies_requirement? dep }
+      end
 
       (missing ||= []) << dep unless satisfied
-      cache[cache_key]  = satisfied if cache
+      cache[cache_key] = satisfied if cache
     end
 
     missing
   end
 
   def to_s
-    "#{self.name} (#{self.version})"
+    "#{name} (#{version})"
   end
 end
 
@@ -60,12 +58,12 @@ end
 
 def benchmark
   Benchmark.bmbm do |x|
-    n   = 1000
-    c   = {}
+    n = 1000
+    c = {}
     all = installed_gems
 
-    x.report("plain")         { n.times { specs_missing_deps(all, all) } }
-    x.report("spec cache:")   { n.times { specs_missing_deps(all, all, {}) } }
+    x.report("plain") { n.times { specs_missing_deps(all, all) } }
+    x.report("spec cache:") { n.times { specs_missing_deps(all, all, {}) } }
     x.report("global cache:") { n.times { specs_missing_deps(all, all, c) } }
   end
 end
@@ -73,7 +71,7 @@ end
 if __FILE__ == $0
   benchmark if ARGV.any? { |a| /^b(ench)?(m(arks?)?)?$/i =~ a }
 
-  installed   = installed_gems
+  installed = installed_gems
   unsatisfied = specs_missing_deps(installed, installed, {})
 
   width = unsatisfied.keys.inject(0) { |memo, spec|
@@ -82,7 +80,7 @@ if __FILE__ == $0
 
   unsatisfied.sort.each do |spec, dependencies|
     dependencies.each do |dependency|
-      puts("%*s is missing %s" % [ -width, spec, dependency ])
+      puts("%*s is missing %s" % [-width, spec, dependency])
     end
   end
 end
