@@ -53,7 +53,7 @@ floating_modifier Mod1 normal
 focus_follows_mouse no
 font $font
 hide_edge_borders both
-seat * hide_cursor 2000
+seat * hide_cursor 5000
 title_align center
 xwayland enable
 
@@ -76,9 +76,9 @@ bindsym $mod+q+Shift         exec nice liferea
 # bindsym $mod+s               exe exec nice ionice -c3 sonos
 bindsym $mod+y               exec lxterminal -e tmux new-session
 bindsym $mod+y+Alt           exec systemctl reboot
-bindsym $mod+y+Control       exec systemctl suspend-than-hibernate
+bindsym $mod+y+Control       exec systemctl suspend-then-hibernate
 bindsym $mod+y+Shift+Control exec systemctl poweroff
-bindsym $mod+y+Shift         exec /home/daniel/bin/fluxbox-exit
+bindsym $mod+y+Shift         exec swaymsg exit
 bindsym --release Print      exec sway-screenshot
 bindsym --release $mod+Print exec sway-screenshot-selection
 

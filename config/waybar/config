@@ -148,8 +148,8 @@
     "format": "{}%"
   },
   "custom/kernel-update": {
-    "exec-if": "kernel-update.sh",
-    "exec": "kernel-update.sh",
+    "exec-if": "/home/daniel/bin/kernel-update.sh",
+    "exec": "/home/daniel/bin/kernel-update.sh",
     "interval": 10,
     "format": "{}"
   }
