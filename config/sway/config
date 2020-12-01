@@ -4,14 +4,13 @@
 
 set $mod Mod4
 set $font Fira Sans 10
-set $term lxterminal -e tmux new-session
+set $term xfce4-terminal -e tmux
 set $laptop eDP-1
 
 output * bg '${HOME}/.cache/wallpaper.jpg' fill
 
 exec autotiling
 exec mako
-exec nm-applet --indicator
 exec redshift-gtk -l 49.6:6.1
 exec /home/daniel/bin/gnome-settings-daemon
 exec swayidle -w \
@@ -59,9 +58,10 @@ xwayland enable
 
 bindsym $mod+Return          exec rofi -show run -modi "run,drun,ssh,window,keys"
 bindsym $mod+Space           exec rofi -show run -modi "run,drun,ssh,window,keys"
-# bindsym $mod+a               exec lxterminal -e tmux new-session ~/bin/m
 bindsym XF86Mail             exec xdg-open https://app.hey.com/
 bindsym $mod+a               exec xdg-open https://app.hey.com/
+# bindsym XF86Mail             exec $term ~/bin/m
+# bindsym $mod+a               exec $term ~/bin/m
 bindsym XF86Calculator       exec qalculate-gtk
 bindsym $mod+c               exec qalculate-gtk
 # bindsym $mod+e               exec emacs
@@ -69,12 +69,12 @@ bindsym $mod+c               exec qalculate-gtk
 bindsym $mod+g               exec geeqie $HOME/Dokumente/bilder
 bindsym $mod+g+Shift         exec gimp
 bindsym $mod+l               exec swaylock -f
-bindsym $mod+n               exec nice ionice -c3 pcmanfm
+bindsym $mod+n               exec nice ionice -c3 thunar "${HOME}/Documents"
 bindsym XF86HomePage         exec nice opera
 bindsym $mod+q               exec nice opera
 bindsym $mod+q+Shift         exec nice liferea
 # bindsym $mod+s               exe exec nice ionice -c3 sonos
-bindsym $mod+y               exec lxterminal -e tmux new-session
+bindsym $mod+y               exec $term
 bindsym $mod+y+Alt           exec systemctl reboot
 bindsym $mod+y+Control       exec systemctl suspend-then-hibernate
 bindsym $mod+y+Shift+Control exec systemctl poweroff
@@ -85,7 +85,7 @@ bindsym --release $mod+Print exec sway-screenshot-selection
 bindsym XF86AudioRaiseVolume       exec amixer sset Master 5%+
 bindsym XF86AudioLowerVolume       exec amixer sset Master 5%-
 bindsym XF86AudioMute              exec amixer sset Master toggle
-bindsym XF86AudioMute+$mod         exec amixer sset Capture toggle
+bindsym XF86AudioMute+Shift        exec amixer sset Capture toggle
 bindsym XF86AudioMicMute           exec amixer sset Capture toggle
 bindsym XF86AudioRaiseVolume+Shift exec amixer sset Capture 5%+
 bindsym XF86AudioLowerVolume+Shift exec amixer sset Capture 5%-
