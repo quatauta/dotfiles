@@ -9,8 +9,8 @@
     "idle_inhibitor",
     "pulseaudio",
     "network",
-    "cpu",
     "temperature",
+    "cpu",
     "memory",
     "disk",
     "backlight",
@@ -35,7 +35,7 @@
     }
   },
   "sway/mode": {
-      "format": "<span style=\"italic\">{}</span>"
+    "format": "<span style=\"italic\">{}</span>"
   },
   "idle_inhibitor": {
     "format": "{icon}",
@@ -43,7 +43,7 @@
       "activated": "",
       "deactivated": ""
     },
-    "tooltip": false
+    "tooltip": true
   },
   "tray": {
     // "icon-size": 21,
@@ -62,13 +62,13 @@
   },
   "disk": {
     "format": "{percentage_used}%",
-    "tooltip": false,
+    "tooltip": true,
     "interval": 60,
     "path": "/"
   },
   "memory": {
     "format": "{}%",
-    "tooltip": false,
+    "tooltip": true,
     "interval": 10
   },
   "temperature": {
@@ -132,7 +132,7 @@
       "default": ["", "", ""]
     },
     "on-click": "pavucontrol",
-    "tooltip": false,
+    "tooltip": true,
     "interval": 10
   },
   "custom/mail": {
