@@ -27,6 +27,5 @@ SYMLINK_DIRS="
   muttrc.d
   pry
   themes
-  vim
   zsh
 "
