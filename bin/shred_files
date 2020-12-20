@@ -1,9 +1,0 @@
-#!/bin/bash
-
-[ 0 -eq $# ] && exit 1
-find "$@" -type f -print0 2>/dev/null |
-sort -z |
-nice ionice -c3 xargs -0r shred -zun0
-
-find "$@" -depth -type d -print0 2>/dev/null |
-xargs -0r rmdir
