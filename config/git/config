@@ -28,11 +28,23 @@ autosetuprebase = always
 [color]
 ui = auto
 
+[color "diff"]
+meta = 11
+frag = magenta bold
+commit = yellow bold
+whitespace = red reverse
+
+[color "diff-highlight"]
+oldNormal = red
+oldHighlight = red bold 52
+newNormal = green
+newHighlight = green bold 22
+
 [commit]
 gpgSign = true
 
 [core]
-pager = less -FRX
+pager = /usr/share/git/diff-highlight/diff-highlight | less -FRX
 
 [credential]
 helper = cache
