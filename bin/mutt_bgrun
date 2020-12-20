@@ -1,6 +1,5 @@
-#!/bin/sh
-# vim:syntax=sh:
-#
+#!/bin/bash
+# vim:syntax=bash:
 # @(#) mutt_bgrun $Revision: 1.4 $
 
 #   mutt_bgrun - run an attachment viewer from mutt in the background

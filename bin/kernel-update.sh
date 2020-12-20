@@ -1,11 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 _running_kernel() {
     uname -r
 }
 
 _installed_kernel() {
-    local KERNEL_VERSION="$(file "/boot/vmlinuz-linux")"
+    local KERNEL_VERSION
+    KERNEL_VERSION="$(file "/boot/vmlinuz-linux")"
 
     KERNEL_VERSION="${KERNEL_VERSION#*version }"
     KERNEL_VERSION="${KERNEL_VERSION%% (*}"

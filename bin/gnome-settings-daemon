@@ -11,9 +11,9 @@ if [ -x "${GSD}" ] ; then
     exec "${GSD}" &
 elif [ -x "${GSD_XSETTINGS}" ] ; then
     find "${GSD_LIBEXEC}" -iname "gsd-*" |
-    egrep -v 'gsd-(print|wacom)' |
+    grep -Ev 'gsd-(print|wacom)' |
     sort |
-    while read GSD_MODULE ; do
+    while read -r GSD_MODULE ; do
         if [ -x "${GSD_MODULE}" ] ; then
             pkill -u "${USER}" -f "${GSD_MODULE}" 1>/dev/null
             ( exec "${GSD_MODULE}" 1>/dev/null 2>&1 & )

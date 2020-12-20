@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 _mode() {
     MODES="tmux screen"
@@ -35,8 +35,10 @@ _attach_session_tmux() {
     fi
 }
 
-export MODE="$(_mode)"
-export DETACHED_SESSION="$(_detached_session_"${MODE}")"
+MODE="$(_mode)"
+DETACHED_SESSION="$(_detached_session_"${MODE}")"
+export MODE
+export DETACHED_SESSION
 
 if [ -n "${DETACHED_SESSION}" ] ; then
     _attach_session_"${MODE}" "${DETACHED_SESSION}"

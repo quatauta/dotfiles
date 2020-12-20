@@ -22,9 +22,9 @@ if [ -z "${SECRET}" ] ; then
     exit 3
 fi
 
-ID="$(echo "${PUBLIC}" | awk -F: '/^pub/ { print $5 }' | tr '[A-Z]' '[a-z]')"
+ID="$(echo "${PUBLIC}" | awk -F: '/^pub/ { print $5 }' | tr '[:upper:]' ':lower:')"
 
-if [ -z "ID" ] ; then
+if [ -z "${ID}" ] ; then
     echo "Error:  Could not determine key id."
     exit 4
 fi
@@ -32,7 +32,7 @@ fi
 ID_COUNT="$(echo "${ID}" | wc -l)"
 
 if [ "${ID_COUNT}" -ne 1 ] ; then
-    echo "Please specify exactly one key, not ${ID_COUNT}: ${KEY} matches "${ID}"."
+    echo "Please specify exactly one key, not ${ID_COUNT}: ${KEY} matches ${ID}."
     exit 5
 fi
 
@@ -53,10 +53,10 @@ echo "Operating in ${TMP_DIR} ..."
     REV_TMP="gnupg_${ID}_revoke-tmp.asc"
     ARCHIVE="${DIR}_$(date "+%Y-%m-%d")"
 
-    cd "${TMP_DIR}" ;
+    cd "${TMP_DIR}" || exit
     mkdir "${DIR}/"
 
-    cd "${DIR}"
+    cd "${DIR}" || exit
     (   gpg ${LIST_OPTS} --list-sigs "${ID}" &&
         gpg ${EXPORT_OPTS} --armor --export "${ID}"
     ) >"${PUB}"
@@ -77,7 +77,7 @@ echo "Operating in ${TMP_DIR} ..."
 
     for algo in sha3-256 ripemd160 ; do
         echo "# shash --check 'gnupg_${ID}.${algo}'" > "gnupg_${ID}.${algo}"
-        rhash --"$algo" *.asc *.txt >> "gnupg_${ID}.${algo}"
+        rhash --"$algo" ./*.asc ./*.txt >> "gnupg_${ID}.${algo}"
     done
 
     cd ..

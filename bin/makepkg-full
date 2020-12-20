@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export LANG=C
 
@@ -6,16 +6,16 @@ if [ -r "PKGBUILD" ] ; then
     updpkgsums &&
     makepkg -fcC &&
     namcap PKGBUILD &&
-    namcap *.pkg.tar.zst &&
+    namcap ./*.pkg.tar.zst &&
     (
-        find -iname "*.pkg.tar.zst" |
-        while read PKG ; do
+        find . -iname "*.pkg.tar.zst" |
+        while read -r PKG ; do
             if ! [ -r "${PKG}.sig" ] || [ "${PKG}" -nt "${PKG}.sig" ] ; then
                 gpg --detach-sign "${PKG}"
             fi
         done
     )
-    pacman -Qlip *.pkg.tar.zst
+    pacman -Qlip ./*.pkg.tar.zst
 else
     echo "Not PKGBUILD found in current directory."
     exit 1

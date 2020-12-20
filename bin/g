@@ -3,7 +3,7 @@
 # Invoke git. Without arguments, some verbose status about the repository is displayed.
 
 git_has_remote() {
-    if git rev-list --count @{upstream} 1>/dev/null 2>&1 ; then
+    if git rev-list --count '@{upstream}' 1>/dev/null 2>&1 ; then
         echo "yes"
     else
         echo "no"
@@ -19,7 +19,7 @@ ssh_agent_running() {
 }
 
 ssh_agent_has_key() {
-    if ssh-add -l | fgrep -q "${HOME}/.ssh/id_rsa" ; then
+    if ssh-add -l | grep -Fq "${HOME}/.ssh/id_rsa" ; then
         echo "yes"
     else
         echo "no"
