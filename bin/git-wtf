@@ -294,7 +294,7 @@ end
 
 ## first, index registered remotes
 remotes = `git config --get-regexp ^remote\.\*\.url`.split(/[\r\n]+/).each_with_object({}) { |l, hash|
-  l =~( /^remote\.(.+?)\.url (.+)$/) || next hash
+  l =~( /^remote\.(.+?)\.url (.+)$/) || next
   hash[$1] ||= $2
 }
 
