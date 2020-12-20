@@ -6,8 +6,9 @@ if has("gui_win32")
 endif
 
 if &t_Co >= 256 || has("gui_running")
-  colorscheme inkpot
+  " colorscheme inkpot
   let &guicursor = &guicursor . ",a:blinkon0"
+  set cursorline
 endif
 
 if &t_Co > 2 || has("gui_running")
@@ -16,7 +17,6 @@ endif
 
 if has("gui_running")
   gui
-  set cursorline
 endif
 
 " When editing a file, always jump to the last known cursor position.
@@ -31,13 +31,15 @@ augroup END
 set autoindent
 set autoread
 set autowrite
+set background=dark
 set backspace=indent,eol,start
 set cmdheight=2
 set copyindent
 set endofline
 set expandtab
 set formatoptions=12cjlmnoqrt
-set guifont=Fira\ Code\ 10
+set guifont=Iosevka\ Extended\ 10
+set updatetime=300
 set guioptions=acgLmrt
 set hidden
 set history=50
@@ -69,8 +71,9 @@ set smarttab
 set softtabstop=4
 set switchbuf+=useopen,usetab
 set tabstop=8
-set title
+set termguicolors
 set textwidth=90
+set title
 set undofile
 set undolevels=1000
 set virtualedit=block
@@ -92,3 +95,30 @@ function! HashCompletePrev()
 endfunction
 
 map! # <C-R>=HashCompletePrev()<CR>
+
+let g:PaperColor_Theme_Options = {
+  \   'theme': {
+  \     'default.dark': {
+  \       'override' : {
+  \         'color00' : ['#000000', '0'],
+  \         'linenumber_bg' : ['#000000', '0'],
+  \       }
+  \     }
+  \   }
+  \ }
+
+" https://github.com/junegunn/vim-plug
+" Make sure you use single quotes
+" To update: reload ~/.vimrc and :PlugInstall
+call plug#begin('~/.vim/plugged')
+  Plug 'dense-analysis/ale'
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'NLKNguyen/papercolor-theme'
+  Plug 'preservim/nerdtree'
+call plug#end()
+
+if &t_Co >= 256 || has("gui_running")
+  " colorscheme inkpot
+  colorscheme PaperColor
+  let &guicursor = &guicursor . ",a:blinkon0"
+endif
