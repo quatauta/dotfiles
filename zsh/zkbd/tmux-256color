@@ -5,7 +5,12 @@ key[Home]='^[[1~'
 key[PageUp]='^[[5~'
 key[PageDown]='^[[6~'
 key[Delete]='^[[3~'
-key[End]='^[[F'
+key[End]='^[[4~'
+
+# key[C-Left]='^[OD'
+# key[A-Left]='^[^[[D'
+# key[C-Right]='^[OC'
+# key[A-Right]='^[^[[C'
 
 key[C-Left]='^[[1;5D'
 key[A-Left]='^[[1;3D'
