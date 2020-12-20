@@ -26,6 +26,4 @@ SYMLINK_DIRS="
   lbdb
   muttrc.d
   pry
-  themes
-  zsh
 "

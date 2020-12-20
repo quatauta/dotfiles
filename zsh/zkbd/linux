@@ -1,8 +1,0 @@
-typeset -g -A key
-
-key[Insert]='^[[2~'
-key[Home]='^[[1~'
-key[PageUp]='^[[5~'
-key[PageDown]='^[[6~'
-key[Delete]='^[[3~'
-key[End]='^[[4~'
