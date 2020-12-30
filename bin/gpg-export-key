@@ -22,7 +22,7 @@ if [ -z "${SECRET}" ] ; then
     exit 3
 fi
 
-ID="$(echo "${PUBLIC}" | awk -F: '/^pub/ { print $5 }' | tr '[:upper:]' ':lower:')"
+ID="$(echo "${PUBLIC}" | awk -F: '/^pub/ { print $5 }' | tr '[:upper:]' '[:lower:]')"
 
 if [ -z "${ID}" ] ; then
     echo "Error:  Could not determine key id."
@@ -76,7 +76,8 @@ echo "Operating in ${TMP_DIR} ..."
     fi
 
     for algo in sha3-256 ripemd160 ; do
-        echo "# shash --check 'gnupg_${ID}.${algo}'" > "gnupg_${ID}.${algo}"
+        echo "# https://github.com/rhash/RHash"
+        echo "# rhash --check 'gnupg_${ID}.${algo}'" > "gnupg_${ID}.${algo}"
         rhash --"$algo" ./*.asc ./*.txt >> "gnupg_${ID}.${algo}"
     done
 
