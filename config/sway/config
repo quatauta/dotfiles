@@ -4,7 +4,7 @@
 
 set $mod Mod4
 set $font Fira Sans 10
-set $term xfce4-terminal -e tmux
+set $term kitty -e tmux
 set $laptop eDP-1
 
 output * bg '${HOME}/.cache/wallpaper.jpg' fill
