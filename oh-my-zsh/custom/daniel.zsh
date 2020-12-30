@@ -4,21 +4,14 @@
 # completion for 'g' as wrapper script for git
 compdef _git g=git
 
+test -r /etc/profile && source /etc/profile
+
 for ENV in "${HOME}"/.{,config/}env{,.local} ; do
     [ -r "${ENV}" ] && source "${ENV}"
 done
 
-[[ -n ${key[Insert]} ]]   && bindkey "${key[Insert]}"   yank-pop
-[[ -n ${key[Home]} ]]     && bindkey "${key[Home]}"     beginning-of-line
-[[ -n ${key[PageUp]} ]]   && bindkey "${key[PageUp]}"   history-beginning-search-backward
-[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" history-beginning-search-forward
-[[ -n ${key[Delete]} ]]   && bindkey "${key[Delete]}"   delete-char
-[[ -n ${key[End]} ]]      && bindkey "${key[End]}"      end-of-line
-
-[[ -n ${key[C-Left]} ]]  && bindkey "${key[C-Left]}"  backward-word
-[[ -n ${key[A-Left]} ]]  && bindkey "${key[A-Left]}"  backward-word
-[[ -n ${key[C-Right]} ]] && bindkey "${key[C-Right]}" forward-word
-[[ -n ${key[A-Right]} ]] && bindkey "${key[A-Right]}" forward-word
+[[ -n ${terminfo[kpp]} ]] && bindkey "${terminfo[kpp]}" history-beginning-search-backward
+[[ -n ${terminfo[knp]} ]] && bindkey "${terminfo[knp]}" history-beginning-search-forward
 
 setopt append_history
 setopt auto_continue
