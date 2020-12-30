@@ -6,6 +6,8 @@ path = ~/.git.local
 
 [alias]
 b = branch
+bcl = branch-clean-local
+branch-clean-local = ! "git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -rt git branch -d"
 c = commit
 co = checkout
 d = diff
@@ -18,8 +20,6 @@ pl = pull --all --prune
 ps = push --prune --set-upstream
 psm = push --prune --set-upstream -o merge_request.create
 s = status
-branch-clean-local = ! "git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -rt git branch -d"
-bcl = branch-clean-local
 
 [branch]
 autosetupmerge = always
@@ -74,6 +74,9 @@ textconv = odt2txt
 [diff "pdf"]
 binary = true
 textconv = pdfinfo
+
+[diff "rspec"]
+xfuncname = "^[ \t]*((RSpec|describe|context|it|before|after|around|feature|scenario|background)[ \t].*)$"
 
 [diff "tar"]
 binary = true
@@ -141,4 +144,3 @@ recurse = true
 
 [transfer]
 fsckObjects = true
-
