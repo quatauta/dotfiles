@@ -1,36 +1,36 @@
 # ~/.config/env
 # vim:syntax=sh:
 
-test -d "${HOME}/bin" && [ -n "${PATH##*${HOME}/bin*}" ] && PATH="${HOME}/bin:${PATH}"
-test -d "${HOME}/man" && [ -n "${MANDIR##*${HOME}/man*}" ] && MANPATH="${HOME}/man:${MANPATH}"
-
-if which ruby >/dev/null && which gem >/dev/null ; then
-    GEM_USER_DIR="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
-    if ! echo "${PATH}" | fgrep -q "${GEM_USER_DIR}" ; then
-        export PATH="${GEM_USER_DIR}:${PATH}"
-    fi
-fi
+for BIN_DIR in "${HOME}/bin" \
+               "${HOME}/.local/bin" \
+               "$(ruby -r rubygems -e 'puts "#{Gem.user_dir}/bin"' 2>/dev/null)" ; do
+    test -d "${BIN_DIR}" && [ -n "${PATH##*${BIN_DIR}*}" ] && PATH="${BIN_DIR}:${PATH}"
+done
 
 export BUNDLE_JOBS="$(nproc)"
 export BUNDLE_PATH="${HOME}/.gem"
 export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
+export GTK_OVERLAY_SCROLLING=0
 export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
 export HISTSIZE="1000"
 export HTML_TIDY="~/.tidyrc"
 export MAKEOPTS="${MAKEOPTS:--j$(nproc)}"
+export PATH
 export QT_STYLE_OVERRIDE="gtk"
 export SAVEHIST="${HISTSIZE}"
 export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-Unity}"
-export GTK_OVERLAY_SCROLLING=0
 
 gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.UpdateActivationEnvironment '{"GTK_OVERLAY_SCROLLING": "0"}' 1>/dev/null 2>&1
 
 if [ -n "${DISPLAY}" ] ; then
-    export EDITOR="gvim -f"
+    command -v gvim >/dev/null     && export EDITOR="gvim -f"
+    command -v nvim-gtk >/dev/null && export EDITOR="nvim-gtk --no-fork"
     export ALTERNATE_EDITOR="emacs"
 else
-    export EDITOR="vi"
-    export ALTERNATE_EDITOR="vi"
+    command -v vi >/dev/null   && export EDITOR="vi"
+    command -v vim >/dev/null  && export EDITOR="vim"
+    command -v nvim >/dev/null && export EDITOR="nvim"
+    export ALTERNATE_EDITOR="emacs"
 fi
 
 GPGAGENT="`which gpg-agent 2>/dev/null`"
