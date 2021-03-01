@@ -15,8 +15,8 @@ f = fetch --all --prune --recurse-submodules --tags
 i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
 l = "!git log --pretty=decorate --decorate --graph --left-right --cherry-pick --boundary ${1:---all} #"
-p = pull --all --prune
-pl = pull --all --prune
+p = pull --prune
+pl = pull --prune
 ps = push --prune --set-upstream
 psm = push --prune --set-upstream -o merge_request.create
 s = status
