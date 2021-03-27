@@ -98,7 +98,7 @@
     "format-plugged": "{icon}{capacity}%",
     "format-warning": "{icon}{capacity}% {time}",
     "format-critical": "{icon}{capacity}% {time}",
-    "format-alt": "{icon}{time}",
+    "format-alt": "{icon}{capacity}% {time}",
     "format-good": "", // An empty format will hide the module
     "format-full": "",
     "format-icons": ["", "", "", "", ""],
