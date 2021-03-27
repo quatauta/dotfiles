@@ -60,6 +60,8 @@ bindsym $mod+Return          exec rofi -show run -modi "run,drun,ssh,window,keys
 bindsym $mod+Space           exec rofi -show run -modi "run,drun,ssh,window,keys"
 bindsym XF86Mail             exec xdg-open https://app.hey.com/
 bindsym $mod+a               exec xdg-open https://app.hey.com/
+bindsym XF86Mail+Shift       exec xdg-open https://3.basecamp.com/4279922/
+bindsym $mod+a+Shift         exec xdg-open https://3.basecamp.com/4279922/
 # bindsym XF86Mail             exec $term ~/bin/m
 # bindsym $mod+a               exec $term ~/bin/m
 bindsym XF86Calculator       exec qalculate-gtk
