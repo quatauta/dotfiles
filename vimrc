@@ -114,6 +114,7 @@ let g:PaperColor_Theme_Options = {
 call plug#begin('~/.vim/plugged')
   Plug 'dense-analysis/ale'
   Plug 'editorconfig/editorconfig-vim'
+  Plug 'elixir-editors/vim-elixir'
   Plug 'NLKNguyen/papercolor-theme'
   Plug 'preservim/nerdtree'
 call plug#end()
