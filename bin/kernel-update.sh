@@ -20,6 +20,6 @@ INSTALLED_KERNEL="$(_installed_kernel)"
 if [ "${RUNNING_KERNEL}" == "${INSTALLED_KERNEL}" ] ; then
     false
 else
-    echo "Kernel update ${RUNNING_KERNEL} -> ${INSTALLED_KERNEL}"
+    echo "Kernel update ${RUNNING_KERNEL}❯${INSTALLED_KERNEL}"
     true
 fi
