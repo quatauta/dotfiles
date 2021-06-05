@@ -9,6 +9,7 @@
 default-key 0xYOUR_DEFAULT_KEYID
 encrypt-to  0xYOUR_DEFAULT_KEYID
 
+auto-key-retrieve
 cert-digest-algo SHA512
 charset utf-8
 default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 BLOWFISH AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed

@@ -75,8 +75,6 @@ set tabstop=8
 set termguicolors
 set textwidth=90
 set title
-set undofile
-set undolevels=1000
 set virtualedit=block
 set wildmenu
 set wildmode=list:full

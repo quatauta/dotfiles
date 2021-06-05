@@ -43,9 +43,6 @@ newHighlight = green bold 22
 [commit]
 gpgSign = true
 
-[core]
-pager = /usr/share/git/diff-highlight/diff-highlight | less -FRX
-
 [credential]
 helper = cache
 

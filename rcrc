@@ -18,12 +18,9 @@ EXCLUDES="
 "
 
 SYMLINK_DIRS="
-  aria2
-  bash
-  bin
-  emacs.d
-  fluxbox
-  lbdb
-  muttrc.d
-  pry
+"
+
+UNDOTTED="
+  Library
+  Library/LaunchAgents
 "
