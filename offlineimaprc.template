@@ -23,8 +23,8 @@ trashfolder  = trash
 [Repository gmx]
 type             = IMAP
 remotehost       = imap.gmx.net
-remoteuser       = daniel.schoemer@gmx.net
-remotepass       = PZFQUQN74VWSQKECWELW
+remoteuser       = EMAIL
+remotepass       = PASSWORD
 ssl              = yes
 ssl_version      = tls1_2
 tls_level        = tls_secure
