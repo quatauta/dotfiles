@@ -1,0 +1,7 @@
+#!/bin/sh
+
+notmuch new --quiet |
+grep -v 'Ignoring non-mail file'
+true
+echo
+mailcheck
