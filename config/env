@@ -1,11 +1,19 @@
 # ~/.config/env
 # vim:syntax=sh:
 
+command -v brew 1>/dev/null && eval "$(brew shellenv | grep -v PATH)"
+
 for BIN_DIR in "${HOME}/bin" \
                "${HOME}/.local/bin" \
-               "$(ruby -r rubygems -e 'puts "#{Gem.user_dir}/bin"' 2>/dev/null)" ; do
-    test -d "${BIN_DIR}" && [ -n "${PATH##*${BIN_DIR}*}" ] && PATH="${BIN_DIR}:${PATH}"
+               "${HOME}/.dotfiles/bin" \
+               "/usr/local/opt/ruby/bin" ; do
+    [ -e "${BIN_DIR}" ] && PATH="${BIN_DIR}:${PATH}"
 done
+for BIN_DIR in "$(ruby -r rubygems -e 'puts "#{Gem.user_dir}/bin"' 2>/dev/null)" ; do
+    [ -e "${BIN_DIR}" ] && PATH="${BIN_DIR}:${PATH}"
+done
+
+typeset -U PATH path
 
 export BUNDLE_JOBS="$(nproc)"
 export BUNDLE_PATH="${HOME}/.gem"
@@ -16,7 +24,7 @@ export HISTSIZE="1000"
 export HTML_TIDY="~/.tidyrc"
 export LESS="${LESS} -FMSX"
 export MAKEOPTS="${MAKEOPTS:--j$(nproc)}"
-export PATH="${HOME}/.dotfiles/bin:/usr/local/opt/ruby/bin:${PATH}"
+export PATH
 export QT_STYLE_OVERRIDE="gtk"
 export SAVEHIST="${HISTSIZE}"
 export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-Unity}"
