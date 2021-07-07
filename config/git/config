@@ -139,5 +139,7 @@ submoduleSummary = true
 [submodule]
 recurse = true
 
-[transfer]
-fsckObjects = true
+[core]
+	excludesFile = ~/.config/git/ignore
+[init]
+	defaultBranch = main

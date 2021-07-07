@@ -1,18 +1,18 @@
 # Daniel Schömer's muttrc
 # vim:syntax=muttrc:
 
-set folder    = "$HOME/Mail"
-set mbox      = "=.local"
-set postponed = "=.postponed"
+source "~/.mutt/muttrc.local"
+
+set folder    = "imaps://imap.gmx.net/INBOX"
+set mbox      = "="
+#set postponed = "=.postponed"
 set record    = "="
 #set trash    = "=.trash" # Set via folder-hooks in ~/.mutt/muttrc_hooks
-set nm_default_uri = "notmuch://$HOME/Mail"
+#set nm_default_uri = "notmuch://$HOME/Mail"
 
-mailboxes "!" "=" "=.local" "=.spam"
+mailboxes "imaps://imap.gmx.net"
 
 set signature = "/usr/bin/signify|"
-
-source "~/.mutt/muttrc.local"
 
 source "~/.mutt/muttrc.d/autoview"
 source "~/.mutt/muttrc.d/colors"

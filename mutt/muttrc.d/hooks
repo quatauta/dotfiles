@@ -3,17 +3,17 @@
 
 # hooks
 
-folder-hook "\.*"      "set trash==.trash"
-folder-hook "!"        "set trash==.local"
-folder-hook "=\.local" "unset trash"
-folder-hook "=\.spam"  "unset trash"
+#folder-hook "\.*"      "set trash==.trash"
+#folder-hook "!"        "set trash==.local"
+#folder-hook "=\.local" "unset trash"
+#folder-hook "=\.spam"  "unset trash"
 
-mbox-hook "!" "=.local"
+# mbox-hook "!" "=.local"
 
 save-hook "." "=.INBOX.%[%Y]"
 
 send-hook "."       unmy_hdr From Fcc
-send-hook "\.local" my_hdr Fcc: =.local
+# send-hook "\.local" my_hdr Fcc: =.local
 
-send2-hook "."       'set sendmail = "$HOME/bin/msmtp-enqueue.sh"'
-send2-hook "\.local" 'set sendmail = "/usr/sbin/sendmail -oem -oi"'
+# send2-hook "."       'set sendmail = "$HOME/bin/msmtp-enqueue.sh"'
+# send2-hook "\.local" 'set sendmail = "/usr/sbin/sendmail -oem -oi"'

@@ -110,11 +110,13 @@ let g:PaperColor_Theme_Options = {
 " Make sure you use single quotes
 " To update: reload ~/.vimrc and :PlugInstall
 call plug#begin('~/.vim/plugged')
+  Plug 'NLKNguyen/papercolor-theme'
   Plug 'dense-analysis/ale'
   Plug 'editorconfig/editorconfig-vim'
   Plug 'elixir-editors/vim-elixir'
-  Plug 'NLKNguyen/papercolor-theme'
   Plug 'preservim/nerdtree'
+  Plug 'tpope/vim-rails'
+  Plug 'vim-ruby/vim-ruby'
 call plug#end()
 
 if &t_Co >= 256 || has("gui_running")
