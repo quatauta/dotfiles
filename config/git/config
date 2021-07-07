@@ -12,11 +12,14 @@ c = commit
 co = checkout
 d = diff
 f = fetch --all --prune --recurse-submodules --tags
+fa = !find . -type d -iname .git -printf '%h\\n' -exec git -C {}/.. f "';'"
 i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
 l = "!git log --pretty=decorate --decorate --graph --left-right --cherry-pick --boundary ${1:---all} #"
 p = pull --prune
+pa = !find . -type d -iname .git -printf '%h\\n' -exec git -C {}/.. p "';'"
 pl = pull --prune
+pla = !find . -type d -iname .git -printf '%h\\n' -exec git -C {}/.. p "';'"
 ps = push --prune --set-upstream
 psm = push --prune --set-upstream -o merge_request.create
 s = status
