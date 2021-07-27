@@ -22,5 +22,6 @@ SYMLINK_DIRS="
 
 UNDOTTED="
   Library
+  Library/Keyboard\ Layouts
   Library/LaunchAgents
 "
