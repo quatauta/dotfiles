@@ -38,7 +38,6 @@ require-cross-certification
 s2k-cipher-algo AES256
 s2k-digest-algo SHA512
 use-agent
-verify-options pka-lookups
 verify-options show-keyserver-urls
 verify-options show-notations
 verify-options show-policy-urls
