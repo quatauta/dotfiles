@@ -15,6 +15,7 @@ EXCLUDES="
   *.swp
   _*
   bin
+  setup
 "
 
 SYMLINK_DIRS="

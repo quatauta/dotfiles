@@ -1,0 +1,44 @@
+#!/bin/bash
+
+readonly HOMEBREW_INSTALL_URL="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+readonly OHMYZSH_INSTALL_URL="https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+readonly DOTFILES_GIT_URL="https://gitlab.com/quatauta/dotfiles"
+
+_install_homebrew() {
+  test -r "/opt/homebrew/bin/brew" && eval "$(/opt/homebrew/bin/brew shellenv)"  
+
+  if ! command -v brew ; then
+    /bin/bash -c "$(curl -fsSL "${HOMEBREW_INSTALL_URL}")"
+    eval "$(/opt/homebrew/bin/brew shellenv)"  
+  fi
+}
+
+_install_rcm() {
+  if ! command -v rcup ; then
+    command -v apt-get && apt-get install rcm
+    command -v dnf && dnf install rcm
+    command -v pacman && pacman -S rcm
+    command -v yum && yum install rcm
+
+    command -v brew && brew install rcm
+    command -v rcm || _install_homebrew && brew install rcm
+  fi
+}
+
+_install_ohmyzsh() {
+  test -d "${HOME}/.ohmyzsh" || sh -c "$(curl -fsSL "${OHMYZSH_INSTALL_URL}")"
+}
+
+_clone_dotfiles() {
+  test -d "${HOME}/.dotfiles" || git clone "${DOTFILES_GIT_URL}" "${HOME}/.dotfiles"
+}
+
+_setup_dotfiles() {
+  ln -fsv "${HOME}/.dotfiles/rcrc" "${HOME}/.rcrc"
+  rcup
+}
+
+_install_rcm
+_install_ohmyzsh
+_clone_dotfiles
+_setup_dotfiles
