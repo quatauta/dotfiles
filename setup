@@ -38,7 +38,17 @@ _setup_dotfiles() {
   rcup
 }
 
+_macos_launchctl_load() {
+  if command -v launchctl >/dev/null ; then
+    for PLIST in "${HOME}"/Library/LaunchAgents/*.plist ; do
+      echo launchctl load -F "${PLIST}"
+      launchctl load -F "${PLIST}"
+    done
+  fi
+}
+
 _install_rcm
 _install_ohmyzsh
 _clone_dotfiles
 _setup_dotfiles
+_macos_launchctl_load
