@@ -19,6 +19,7 @@ EXCLUDES="
 "
 
 SYMLINK_DIRS="
+  *.bundle
 "
 
 UNDOTTED="

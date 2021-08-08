@@ -25,10 +25,8 @@ brew "tmux"
 cask "aldente"
 cask "alfred"
 cask "amethyst"
-cask "bitwarden"
 cask "dropbox"
 cask "easy-move-plus-resize"
-cask "firefox"
 cask "font-fira-code"
 cask "font-fira-code-nerd-font"
 cask "font-fira-sans"
@@ -40,8 +38,10 @@ cask "opera-developer"
 cask "scroll-reverser"
 cask "shifty"
 cask "signal"
+cask "skype"
 cask "slack"
 cask "smooze"
+cask "sonos-s1-controller"
 cask "tunnelblick"
 cask "ukelele"
 cask "visual-studio-code"
@@ -49,8 +49,6 @@ cask "whichspace"
 cask "zoom"
 mas "Amphetamine", id: 937984704
 mas "Bitwarden", id: 1352778147
-mas "GarageBand", id: 682658836
-mas "iMovie", id: 408981434
 mas "Ka-Block!", id: 1335413823
 mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825

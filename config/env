@@ -1,3 +1,4 @@
+#!/bin/bash
 # ~/.config/env
 # vim:syntax=sh:
 
@@ -5,11 +6,7 @@ command -v brew 1>/dev/null && eval "$(brew shellenv | grep -v PATH)"
 
 for BIN_DIR in "${HOME}/bin" \
                "${HOME}/.local/bin" \
-               "${HOME}/.dotfiles/bin" \
-               "/usr/local/opt/ruby/bin" ; do
-    [ -e "${BIN_DIR}" ] && PATH="${BIN_DIR}:${PATH}"
-done
-for BIN_DIR in "$(ruby -r rubygems -e 'puts "#{Gem.user_dir}/bin"' 2>/dev/null)" ; do
+               "${HOME}/.dotfiles/bin" ; do
     [ -e "${BIN_DIR}" ] && PATH="${BIN_DIR}:${PATH}"
 done
 
@@ -23,6 +20,7 @@ export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
 export HISTSIZE="1000"
 export HTML_TIDY="~/.tidyrc"
 export LESS="${LESS} -FMSX"
+export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
 export MAKEOPTS="${MAKEOPTS:--j$(nproc)}"
 export PATH
 export QT_STYLE_OVERRIDE="gtk"
