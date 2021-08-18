@@ -5,7 +5,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>org.sil.ukelele.keyboardlayout.german-programmer-nodeadkeys</string>
 	<key>CFBundleName</key>
-	<string>german-programmer</string>
+	<string>german-programmer-nodeadkeys</string>
 	<key>CFBundleVersion</key>
 	<string></string>
 	<key>KLInfo_German - Programmer - No dead keys</key>
