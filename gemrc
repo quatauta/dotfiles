@@ -1,3 +1,5 @@
 # vim:syntax=yaml:
 ---
 gem: --no-document
+install: --user-install
+update: --user-install
