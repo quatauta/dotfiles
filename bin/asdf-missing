@@ -1,0 +1,117 @@
+#!/usr/bin/env ruby
+
+require "bundler/inline"
+require "rubygems"
+
+gemfile do
+  source "https://rubygems.org"
+  gem "cri", "~>2.15"
+end
+
+module Asdf
+  module Missing
+    class CliCommand
+      def initialize
+        @command = root_command
+        @command.add_command(cmd_outdated)
+        @command.add_command(cmd_update)
+      end
+
+      def run(opts_and_args)
+        @command.run(opts_and_args)
+      end
+
+      def root_command
+        cmd = Cri::Command.define do
+          name $PROGRAM_NAME.to_s
+          usage "#{$PROGRAM_NAME} outdated|update"
+          summary "Some add-ons to asdf which I am missing"
+          description "List outdated versions, and update them."
+
+          flag :h, :help, "show help for this command" do |_value, cmd|
+            puts cmd.help
+            exit 0
+          end
+
+          run do |opts, args, cmd|
+            puts cmd.help
+            exit 0
+          end
+        end
+      end
+
+      def cmd_outdated
+        Cri::Command.define do
+          name "outdated"
+
+          run do |opts, args, cmd|
+            outdated_plugins = ::Asdf::Missing.outdated
+
+            unless outdated_plugins.empty?
+              format = "%<plugin>-8s  %<current>-20s  %<latest>-20s  %<note>s"
+
+              puts format % { plugin: "Plugin", current: "current", latest: "latest", note: "" }
+              puts format % { plugin: "------", current: "-------", latest: "------", note: "" }
+
+              outdated_plugins.each do |outdated|
+                puts format % outdated
+              end
+            end
+          end
+        end
+      end
+
+      def cmd_update
+        Cri::Command.define do
+          name "update"
+
+          run do |opts, args, cmd|
+            ::Asdf::Missing.currents.each do |plugin, _|
+              `asdf install #{plugin} latest`
+              `asdf local #{plugin} latest`
+            end
+          end
+        end
+      end
+    end
+
+    def self.currents
+      versions = %x[asdf current 2>&1].lines.map { |line| line.split[0..1] }
+      versions = Hash[versions].select { |plugin, version| valid_version? version }
+    end
+
+    def self.latest(plugin)
+      %x[asdf latest "#{plugin}"].strip
+    end
+
+    def self.valid_version?(text)
+      text !~ /\Asystem|latest|__+\Z/
+    end
+
+    def self.version(text)
+      Gem::Version.new(text)
+    rescue
+      text
+    end
+
+    def self.outdated
+      currents.reduce([]) do |memo, current|
+        plugin, current_version = current
+        latest_version = latest(plugin)
+
+        if (version(latest_version) <=> version(current_version)) == 1
+           memo << { plugin: plugin,
+                     current: current_version,
+                     latest: latest_version,
+                     note: "To update, run asdf install #{plugin} latest && asdf local #{plugin} latest" }
+        end
+
+        memo
+      end
+    end
+  end
+end
+
+if __FILE__ == $0
+  Asdf::Missing::CliCommand.new.run(ARGV)
+end
