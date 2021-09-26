@@ -6,6 +6,7 @@ require "rubygems"
 gemfile do
   source "https://rubygems.org"
   gem "cri", "~>2.15"
+  gem "table_print", "~>1.5.7"
 end
 
 module Asdf
@@ -23,8 +24,8 @@ module Asdf
 
       def root_command
         cmd = Cri::Command.define do
-          name $PROGRAM_NAME.to_s
-          usage "#{$PROGRAM_NAME} outdated|update"
+          name File.basename($PROGRAM_NAME)
+          usage "#{File.basename($PROGRAM_NAME)} outdated|update]"
           summary "Some add-ons to asdf which I am missing"
           description "List outdated versions, and update them."
 
@@ -43,20 +44,13 @@ module Asdf
       def cmd_outdated
         Cri::Command.define do
           name "outdated"
+          usage "outdated"
+          summary "Print all outdated tool versions."
+          description "Compare each tool's version to the latest available version, and print available updates."
 
           run do |opts, args, cmd|
             outdated_plugins = ::Asdf::Missing.outdated
-
-            unless outdated_plugins.empty?
-              format = "%<plugin>-8s  %<current>-20s  %<latest>-20s  %<note>s"
-
-              puts format % { plugin: "Plugin", current: "current", latest: "latest", note: "" }
-              puts format % { plugin: "------", current: "-------", latest: "------", note: "" }
-
-              outdated_plugins.each do |outdated|
-                puts format % outdated
-              end
-            end
+            tp outdated_plugins unless outdated_plugins.empty?
           end
         end
       end
@@ -64,6 +58,9 @@ module Asdf
       def cmd_update
         Cri::Command.define do
           name "update"
+          usage "update"
+          summary "Update all tools to their latest version."
+          description "Update each tool to its latest available version."
 
           run do |opts, args, cmd|
             ::Asdf::Missing.currents.each do |plugin, _|
@@ -100,10 +97,7 @@ module Asdf
         latest_version = latest(plugin)
 
         if (version(latest_version) <=> version(current_version)) == 1
-           memo << { plugin: plugin,
-                     current: current_version,
-                     latest: latest_version,
-                     note: "To update, run asdf install #{plugin} latest && asdf local #{plugin} latest" }
+           memo << { plugin: plugin, current: current_version, latest: latest_version }
         end
 
         memo
