@@ -28,8 +28,10 @@ brew "starship"
 brew "tmux"
 cask "aldente"
 cask "alfred"
+cask "alt-tab"
 cask "amethyst"
 cask "brave-browser"
+cask "discord"
 cask "dropbox"
 cask "easy-move-plus-resize"
 cask "font-fira-code"
@@ -43,21 +45,16 @@ cask "nomachine-enterprise-client"
 cask "opera"
 cask "scroll-reverser"
 cask "shifty"
-cask "signal"
 cask "skype"
 cask "slack"
 cask "smooze"
 cask "sonos-s1-controller"
-cask "stats"
 cask "tunnelblick"
 cask "ukelele"
 cask "visual-studio-code"
 cask "vivaldi"
 cask "whichspace"
-cask "zoom"
-mas "Amphetamine", id: 937984704
 mas "Bitwarden", id: 1352778147
-mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Slack", id: 803453959
