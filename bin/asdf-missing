@@ -25,9 +25,9 @@ module Asdf
       def root_command
         cmd = Cri::Command.define do
           name File.basename($PROGRAM_NAME)
-          usage "#{File.basename($PROGRAM_NAME)} outdated|update]"
+          usage "#{File.basename($PROGRAM_NAME)} [outdated|update]"
           summary "Some add-ons to asdf which I am missing"
-          description "List outdated versions, and update them."
+          description "List outdated versions, and update them all. You may abbreviate the subcommand names."
 
           flag :h, :help, "show help for this command" do |_value, cmd|
             puts cmd.help
@@ -59,13 +59,15 @@ module Asdf
         Cri::Command.define do
           name "update"
           usage "update"
+          aliases "upgrade"
           summary "Update all tools to their latest version."
           description "Update each tool to its latest available version."
 
           run do |opts, args, cmd|
             ::Asdf::Missing.currents.each do |plugin, _|
-              `asdf install #{plugin} latest`
-              `asdf local #{plugin} latest`
+              %w[install local].each do |cmd|
+                `asdf #{cmd} #{plugin} latest`
+              end
             end
           end
         end
