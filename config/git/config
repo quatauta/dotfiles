@@ -13,18 +13,19 @@ c = commit
 co = checkout
 d = diff
 f = fetch --all --prune --recurse-submodules --tags
-fa = !git for-all-repos f
+fa = for-all-repos f
 for-all-repos = !find . -type d -iname .git -print -exec git -C {}/.. "${@}" "';' 2>/dev/null #"
 i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
 l = "!git log --pretty=decorate --decorate --graph --left-right --cherry-pick --boundary ${1:---all} #"
 p = pull --prune
 pl = pull --prune
-pa = !git for-all-repos p --quiet
-pla = !git for-all-repos p --quiet
+pa = for-all-repos p --quiet
+pla = for-all-repos p --quiet
 psm = push --prune --set-upstream -o merge_request.create
 ps = push --prune --set-upstream
 s = status
+sa = for-all-repos s
 
 [branch]
 autosetupmerge = always
