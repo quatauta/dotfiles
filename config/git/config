@@ -22,7 +22,7 @@ p = pull --prune
 pl = pull --prune
 pa = for-all-repos p --quiet
 pla = for-all-repos p --quiet
-psm = push --prune --set-upstream -o merge_request.create
+psm = push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -o merge_request.assign=quatauta
 ps = push --prune --set-upstream
 s = status
 sa = for-all-repos s
