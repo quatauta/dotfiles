@@ -1,4 +1,5 @@
 Host *
+    AddKeysToAgent yes
     ControlMaster auto
     ControlPath ~/.ssh/controlmaster-%C
     ControlPersist 60
