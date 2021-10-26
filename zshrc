@@ -70,7 +70,14 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(asdf dotenv gpg-agent history rails tmux)
 
-test -r "/opt/homebrew/bin/brew" && eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ "${VENDOR}" == "apple" ]] ; then
+    plugins+=osx
+fi
+
+if [[ -r "/opt/homebrew/bin/brew" ]] ; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
