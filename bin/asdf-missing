@@ -75,7 +75,7 @@ module Asdf
     end
 
     def self.currents
-      versions = %x[asdf current 2>&1].lines.map { |line| line.split[0..1] }
+      versions = %x[asdf current 2>&1].lines.select { |line| line =~ /\/\.tool-versions/ }.map { |line| line.split[0..1] }
       versions = Hash[versions].select { |plugin, version| valid_version? version }
     end
 
@@ -108,6 +108,4 @@ module Asdf
   end
 end
 
-if __FILE__ == $0
-  Asdf::Missing::CliCommand.new.run(ARGV)
-end
+Asdf::Missing::CliCommand.new.run(ARGV) if $PROGRAM_NAME == __FILE__
