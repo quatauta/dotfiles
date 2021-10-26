@@ -47,17 +47,13 @@ cask "libreoffice"
 cask "nomachine-enterprise-client"
 cask "opera"
 cask "scroll-reverser"
-cask "shifty"
-cask "skype"
 cask "slack"
 cask "smooze"
-cask "sonos-s1-controller"
 cask "tunnelblick"
 cask "ukelele"
 cask "visual-studio-code"
 cask "vivaldi"
 cask "vscodium"
-cask "whichspace"
 mas "Bitwarden", id: 1352778147
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
