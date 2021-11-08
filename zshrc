@@ -71,7 +71,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(asdf dotenv gpg-agent history rails tmux)
 
 if [[ "${VENDOR}" == "apple" ]] ; then
-    plugins+=osx
+    plugins+=macos
 fi
 
 if [[ -r "/opt/homebrew/bin/brew" ]] ; then
