@@ -53,6 +53,7 @@ cask "ukelele"
 cask "visual-studio-code"
 cask "vivaldi"
 cask "vscodium"
+cask "zoom"
 mas "Amphetamine", id: 937984704
 mas "Bitwarden", id: 1352778147
 mas "Numbers", id: 409203825
