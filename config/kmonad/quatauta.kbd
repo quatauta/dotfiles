@@ -1,0 +1,48 @@
+;; kmonad keyboard configuration for quatauta
+;;
+;; For now, I am testing home row modifiers (home-row-mods)
+;; with a MacBook with a German QWERTZ keyboard.
+;;
+;; My home row: caps a s d f g h j k l ;ö 'ä
+;;    Ctrl left ┘      | | |     | | |
+;;     Option/Alt left ┘ | |     | | └ Option/Alt right
+;;             Ctrl left ┘ |     | | └ Ctrl right
+;;              Shift left ┘     └ Shift right
+;;
+;; I am using the Command/Windows/Meta keys with my thumbs in the regular positions
+;; left/right of the space bar.
+
+(defcfg
+  input (iokit-name)
+  output (kext)
+  fallthrough true
+)
+
+;;(defsrc
+;;  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+;;  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+;;  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+;;  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+;;  lsft z    x    c    v    b    n    m    ,    .    /    rsft up
+;;  fn   lctl lalt lmet           spc            rmet ralt left down rght
+;;)
+
+(defsrc
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+)
+
+(defalias
+  m_a (tap-hold-next-release 500 a lmet)
+  a_s (tap-hold-next-release 500 s lalt)
+  c_d (tap-hold-next-release 500 d lctl)
+  s_f (tap-hold-next-release 500 f lsft)
+
+  s_j (tap-hold-next-release 500 j rsft)
+  c_k (tap-hold-next-release 500 k rctl)
+  a_l (tap-hold-next-release 500 l lalt)
+  m_; (tap-hold-next-release 500 ; rmet)
+)
+
+(deflayer homerowmods
+  lctl a     @a_s @c_d @s_f g    h    @s_j @c_k @a_l ;    '    ret
+)
