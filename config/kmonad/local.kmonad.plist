@@ -7,12 +7,12 @@
     <array>
       <string>/Users/daniel/.local/bin/kmonad</string>
       <string>--log-level</string>
-      <string>info</string>
+      <string>debug</string>
       <string>/Users/daniel/.dotfiles/config/kmonad/quatauta.kbd</string>
     </array>
     <key>RunAtLoad</key><false/>
     <key>KeepAlive</key><dict><key>Crashed</key><true/></dict>
-    <key>ThrottleInterval</key><integer>1</integer>
+    <key>ThrottleInterval</key><integer>5</integer>
     <key>StandardOutPath</key><string>/tmp/kmonad.log</string>
     <key>StandardErrorPath</key><string>/tmp/kmonad.log</string>
   </dict>
