@@ -15,9 +15,9 @@
 ;;              Shift left ╯     ╰ Shift left
 ;;
 ;; I am using the Command/Windows/Meta keys with my thumbs in the regular positions
-;; left/light of the space bar.
-        l
-(defcfg l
+;; left/right of the space bar.
+
+(defcfg
   input (iokit-name)
   output (kext)
   fallthrough true
