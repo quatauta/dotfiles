@@ -2,10 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <key>Label</key>
-    <string>local.kmonad</string>
-    <key>Program</key>
-    <string>/Users/daniel/.local/bin/kmonad</string>
+    <key>Label</key><string>local.kmonad</string>
     <key>ProgramArguments</key>
     <array>
       <string>/Users/daniel/.local/bin/kmonad</string>
@@ -13,11 +10,10 @@
       <string>info</string>
       <string>/Users/daniel/.dotfiles/config/kmonad/quatauta.kbd</string>
     </array>
-    <key>RunAtLoad</key>
-    <true />
-    <key>StandardOutPath</key>
-    <string>/tmp/kmonad.stdout</string>
-    <key>StandardErrorPath</key>
-    <string>/tmp/kmonad.stderr</string>
+    <key>RunAtLoad</key><false/>
+    <key>KeepAlive</key><dict><key>Crashed</key><true/></dict>
+    <key>ThrottleInterval</key><integer>1</integer>
+    <key>StandardOutPath</key><string>/tmp/kmonad.log</string>
+    <key>StandardErrorPath</key><string>/tmp/kmonad.log</string>
   </dict>
 </plist>
