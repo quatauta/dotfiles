@@ -66,6 +66,7 @@ module Asdf
           run do |opts, args, cmd|
             ::Asdf::Missing.currents.each do |plugin, _|
               %w[install local].each do |cmd|
+                puts("asdf #{cmd} #{plugin} latest ...")
                 `asdf #{cmd} #{plugin} latest`
               end
             end
@@ -76,7 +77,7 @@ module Asdf
 
     def self.currents
       versions = %x[asdf current 2>&1].lines.select { |line| line =~ /\/\.tool-versions/ }.map { |line| line.split[0..1] }
-      versions = Hash[versions].select { |plugin, version| valid_version? version }
+      Hash[versions].select { |plugin, version| valid_version? version }
     end
 
     def self.latest(plugin)
