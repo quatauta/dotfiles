@@ -39,7 +39,6 @@ set endofline
 set expandtab
 set formatoptions=12cjlmnoqrt
 set guifont=Fira\ Code\ 11
-set updatetime=300
 set guioptions=acgLmrt
 set hidden
 set history=50
@@ -66,6 +65,8 @@ set ruler
 set scrolloff=8
 set shiftround
 set shiftwidth=4
+set shortmess+=c
+set signcolumn=number
 set smartcase
 set smartindent
 set smarttab
@@ -75,6 +76,7 @@ set tabstop=8
 set termguicolors
 set textwidth=90
 set title
+set updatetime=300
 set virtualedit=block
 set wildmenu
 set wildmode=list:full
@@ -114,9 +116,16 @@ call plug#begin('~/.vim/plugged')
   Plug 'dense-analysis/ale'
   Plug 'editorconfig/editorconfig-vim'
   Plug 'elixir-editors/vim-elixir'
+  Plug 'prabirshrestha/vim-lsp'
   Plug 'preservim/nerdtree'
   Plug 'tpope/vim-rails'
   Plug 'vim-ruby/vim-ruby'
+  Plug 'vim-test/vim-test'
+  Plug 'kassio/neoterm'
+  let test#strategy = "neoterm"
+
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 call plug#end()
 
 if &t_Co >= 256 || has("gui_running")
