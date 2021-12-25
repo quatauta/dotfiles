@@ -65,10 +65,8 @@ module Asdf
 
           run do |opts, args, cmd|
             ::Asdf::Missing.currents.each do |plugin, _|
-              %w[install local].each do |cmd|
-                puts("asdf #{cmd} #{plugin} latest ...")
-                `asdf #{cmd} #{plugin} latest`
-              end
+              puts("asdf install #{plugin} latest && asdf local #{plugin} latest ...")
+              `asdf install #{plugin} latest && asdf local #{plugin} latest`
             end
           end
         end
