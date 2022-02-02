@@ -5,7 +5,6 @@ path = ~/.config/git/config.local
 path = ~/.git.local
 
 [alias]
-[alias]
 b = branch
 bcl = branch-clean-local
 branch-clean-local = ! "git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -rt git branch -d"
@@ -34,23 +33,81 @@ autosetuprebase = always
 [color]
 ui = auto
 
-[color "diff"]
-meta = 11
-frag = magenta bold
-commit = yellow bold
-whitespace = red reverse
-
-[color "diff-highlight"]
-oldNormal = red
-oldHighlight = red bold 52
-newNormal = green
-newHighlight = green bold 22
+# [color "diff"]
+# meta = 11
+# frag = magenta bold
+# commit = yellow bold
+# whitespace = red reverse
+# 
+# [color "diff-highlight"]
+# oldNormal = red
+# oldHighlight = red bold 52
+# newNormal = green
+# newHighlight = green bold 22
 
 [commit]
 gpgSign = false
 
+[core]
+excludesFile = ~/.config/git/ignore
+pager = delta
+
 [credential]
 helper = cache
+
+[delta]
+line-numbers = true
+navigate = true
+relative-paths = true
+
+[diff]
+colorMoved = default
+
+[fetch]
+prune = true
+
+[help]
+autocorrect = -1
+
+[include]
+path = ~/.git.local
+
+[interactive]
+diffFilter = delta --color-only
+
+[init]
+defaultBranch = main
+
+[log]
+date = iso
+
+[merge]
+ff = only
+conflictstyle = diff3
+
+[pretty]
+decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,trunc) (%C(auto,yellow)%ad %C(auto,magenta)%G?%C(auto,reset))
+
+[pull]
+ff = only
+
+[push]
+default = current
+followTags = true
+
+[rebase]
+autosquash = true
+
+[rerere]
+enable = true
+
+[status]
+branch = true
+short = true
+submoduleSummary = true
+
+[submodule]
+recurse = true
 
 [diff]
 colormoved = default
@@ -104,48 +161,3 @@ textconv = xzcat
 [diff "zip"]
 binary = true
 textconv = unzip -p
-
-[fetch]
-prune = true
-
-[help]
-autocorrect = -1
-
-[include]
-path = ~/.git.local
-
-[log]
-date = iso
-
-[merge]
-ff = only
-tool = meld
-
-[pretty]
-decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,trunc) (%C(auto,yellow)%ad %C(auto,magenta)%G?%C(auto,reset))
-
-[pull]
-ff = only
-
-[push]
-default = current
-followTags = true
-
-[rebase]
-autosquash = true
-
-[rerere]
-enable = true
-
-[status]
-branch = true
-short = true
-submoduleSummary = true
-
-[submodule]
-recurse = true
-
-[core]
-	excludesFile = ~/.config/git/ignore
-[init]
-	defaultBranch = main
