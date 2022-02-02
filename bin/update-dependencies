@@ -1,0 +1,27 @@
+#!/bin/bash
+
+git checkout main &&
+git pull --autostash || exit 1
+
+[[ -r .tool-versions ]] && asdf-missing up
+[[ -r Gemfile.lock ]] && bundle update --all
+[[ -r yarn.lock ]] && yarn upgrade --interactive
+[[ -r mix.lock ]] && mix deps.update --all
+
+[[ -z "$(git ls-files -m)" ]] && exit
+
+git branch -D dependencies-"$(date +%Y-%m-%d)"
+git checkout -b dependencies-"$(date +%Y-%m-%d)" &&
+git push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD || exit 1
+
+while [[ -n "$(git ls-files -m)" ]] ; do
+    echo -e 'y\nq\n' |
+    git commit -p -m "Update dependencies" &&
+    git push || exit 1
+done
+
+glab mr update -a quatauta -r
+glab mr merge -dsy
+git checkout main
+git pull --autostash
+git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == "[gone]" {print $1}' | xargs -rt git branch -d
