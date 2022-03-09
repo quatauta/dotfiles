@@ -31,7 +31,7 @@ augroup END
 set autoindent
 set autoread
 set autowrite
-"set background=dark
+set background=
 set backspace=indent,eol,start
 set cmdheight=2
 set copyindent
