@@ -20,8 +20,7 @@ export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
 export GTK_OVERLAY_SCROLLING=0
 export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
 export HISTSIZE="1000"
-export HTML_TIDY="~/.tidyrc"
-export HOMEBREW_INSTALL_FROM_API="yes"
+export HTML_TIDY="${HOME}/.tidyrc"
 export KERL_CONFIGURE_OPTIONS="--with-ssl=$(brew --prefix openssl@1.1)"
 export LESS="${LESS} -FMSX"
 export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
@@ -44,7 +43,7 @@ else
     export ALTERNATE_EDITOR="emacs"
 fi
 
-GPGAGENT="`which gpg-agent 2>/dev/null`"
+GPGAGENT="$(which gpg-agent 2>/dev/null)"
 if [ -n "${GPGAGENT}" ] && [ -x "${GPGAGENT}" ] ; then
     if ! pgrep -U "${UID}" -f "${GPGAGENT}" 1>/dev/null ; then
         eval "$("${GPGAGENT}" --enable-ssh-support --sh --daemon --default-cache-ttl 300 --max-cache-ttl 3600 2>/dev/null)"
