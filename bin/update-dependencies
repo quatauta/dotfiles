@@ -24,4 +24,4 @@ glab mr update -a quatauta -r
 glab mr merge -dsy
 git checkout main
 git pull --autostash
-git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == "[gone]" {print $1}' | xargs -rt git branch -d
+git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == "[gone]" {print $1}' | xargs -rt git branch -D
