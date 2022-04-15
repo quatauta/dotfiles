@@ -129,7 +129,16 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 
 if &t_Co >= 256 || has("gui_running")
-  " colorscheme inkpot
+  let g:PaperColor_Theme_Options = {
+    \   'theme': {
+    \     'default.light': {
+    \       'override' : {
+    \         'color00' : ['#ffffff', '15'],
+    \         'linenumber_bg' : ['#ffffff', '15'],
+    \       }
+    \     }
+    \   }
+    \ }
   colorscheme PaperColor
   let &guicursor = &guicursor . ",a:blinkon0"
 endif
