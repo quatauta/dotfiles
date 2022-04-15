@@ -6,7 +6,6 @@ require "rubygems"
 gemfile do
   source "https://rubygems.org"
   gem "cri", "~>2.15"
-  gem "table_print", "~>1.5.7"
 end
 
 module Asdf

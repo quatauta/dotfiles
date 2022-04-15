@@ -6,7 +6,7 @@ git pull --autostash || exit 1
 [[ -r .tool-versions ]] && asdf-missing up
 [[ -r Gemfile.lock ]] && bundle update --all
 [[ -r yarn.lock ]] && yarn upgrade --interactive
-[[ -r mix.lock ]] && mix deps.update --all
+[[ -r mix.lock ]] && ( mix local.hex --force ; mix local.rebar --force ; mix deps.update --all )
 
 [[ -z "$(git ls-files -m)" ]] && exit
 
@@ -16,7 +16,7 @@ git push --prune --set-upstream -o merge_request.create -o merge_request.remove_
 
 while [[ -n "$(git ls-files -m)" ]] ; do
     echo -e 'y\nq\n' |
-    git commit -p -m "Update dependencies" &&
+    git commit -a -m "Update dependencies" &&
     git push || exit 1
 done
 
