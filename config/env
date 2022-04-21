@@ -61,4 +61,5 @@ fi
 alias g >/dev/null 2>&1 && type -p g >/dev/null 2>&1 && unalias g >/dev/null 2>&1 ; true
 
 command -v nvim 1>/dev/null && alias vim=nvim
+command -v nvim 1>/dev/null && alias vimdiff="nvim -d"
 command -v vim  1>/dev/null && alias vi=vim
