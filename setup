@@ -16,11 +16,11 @@ _install_homebrew() {
 _install_rcm() {
   if ! command -v rcup ; then
     command -v apt-get && apt-get install rcm
-    command -v dnf && dnf install rcm
-    command -v pacman && pacman -S rcm
-    command -v yum && yum install rcm
+    command -v brew    && brew    install rcm
+    command -v dnf     && dnf     install rcm
+    command -v pacman  && pacman -S       rcm
+    command -v yum     && yum     install rcm
 
-    command -v brew && brew install rcm
     command -v rcm || _install_homebrew && brew install rcm
   fi
 }
@@ -51,4 +51,4 @@ _install_rcm
 _install_ohmyzsh
 _clone_dotfiles
 _setup_dotfiles
-_macos_launchctl_load
+# _macos_launchctl_load
