@@ -23,6 +23,7 @@ brew "htop"
 brew "jdupes"
 brew "jpegoptim"
 brew "jq"
+brew "libpst"
 brew "libyaml"
 brew "mas"
 brew "mcfly"
@@ -49,6 +50,7 @@ cask "amethyst"
 cask "backblaze"
 cask "backblaze-downloader"
 cask "basecamp"
+cask "calibre"
 cask "discord"
 cask "dropbox"
 cask "easy-move-plus-resize"
@@ -73,7 +75,6 @@ cask "visual-studio-code"
 cask "vivaldi"
 cask "whatsapp"
 cask "zoom"
-mas "Amphetamine", id: 937984704
 mas "Bitwarden", id: 1352778147
 mas "Duplicate File Finder", id: 1032755628
 mas "Slack", id: 803453959
