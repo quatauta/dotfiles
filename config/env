@@ -17,11 +17,16 @@ typeset -U PATH path
 export BUNDLE_JOBS="$(nproc || sysctl -n hw.logicalcpu)"
 export BUNDLE_PATH="${HOME}/.gem"
 export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
+export ERL_AFLAGS="-kernel shell_history_enabled"
 export GTK_OVERLAY_SCROLLING=0
 export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
 export HISTSIZE="1000"
 export HTML_TIDY="${HOME}/.tidyrc"
-export KERL_CONFIGURE_OPTIONS="--with-ssl=$(brew --prefix openssl@1.1)"
+export KERL_BUILD_DOCS="yes"
+export KERL_CONFIGURE_OPTIONS="--disable-debug --disable-silent-rules --without-javac --enable-shared-zlib --enable-dynamic-ssl-lib --enable-threads --enable-kernel-poll --enable-wx --enable-webview --with-ssl=$(brew --prefix openssl@1.1)"
+export ELIXIR_ERL_OPTIONS="+sbwt none"
+# https://www.erlang.org/doc/man/erl.html
+# ELIXIR_ERL_OPTIONS="+P 16777216 +Q 16777216 +K true +A 128 +sbt db +sbwt very_long +swt very_low +sub true +Mulmbcs 32767 +Mumbcgs 1 +Musmbcs 2047
 export LESS="${LESS} -FMSX"
 export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
 export MAKEOPTS="${MAKEOPTS:--j$(nproc)}"
@@ -59,6 +64,9 @@ if [ -n "${GPGAGENT}" ] && [ -x "${GPGAGENT}" ] ; then
 fi
 
 alias g >/dev/null 2>&1 && type -p g >/dev/null 2>&1 && unalias g >/dev/null 2>&1 ; true
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 
 command -v nvim 1>/dev/null && alias vim=nvim
 command -v nvim 1>/dev/null && alias vimdiff="nvim -d"

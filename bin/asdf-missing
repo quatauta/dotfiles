@@ -2,6 +2,7 @@
 
 require "bundler/inline"
 require "rubygems"
+require "table_print"
 
 gemfile do
   source "https://rubygems.org"
@@ -73,7 +74,7 @@ module Asdf
     end
 
     def self.currents
-      versions = %x[asdf current 2>&1].lines.select { |line| line =~ /\/\.tool-versions/ }.map { |line| line.split[0..1] }
+      versions = %x[asdf current 2>&1].lines.select { |line| line =~ /\/\.tool-versions|not installed/i }.map { |line| line.split[0..1] }
       Hash[versions].select { |plugin, version| valid_version? version }
     end
 
