@@ -13,7 +13,7 @@ co = checkout
 d = diff
 f = fetch --all --prune --recurse-submodules
 fa = for-all-repos f
-for-all-repos = !find . -type d -iname .git -print -exec git -C {}/.. "${@}" "';' 2>/dev/null #"
+for-all-repos = !find . -type d -iname .git -print -execdir git "${@}" "';' 2>/dev/null #"
 i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
 l = "!git log --pretty=decorate --decorate --graph --left-right --cherry-pick --boundary ${1:---all} #"
