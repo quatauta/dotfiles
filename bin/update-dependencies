@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "### $(pwd) ###"
+
 git checkout main &&
 git pull --autostash || exit 1
 
@@ -16,7 +18,7 @@ git push --prune --set-upstream -o merge_request.create -o merge_request.remove_
 
 while [[ -n "$(git ls-files -m)" ]] ; do
     echo -e 'y\nq\n' |
-    git commit -a -m "Update dependencies" &&
+    git commit -p -m "Update dependencies" &&
     git push || exit 1
 done
 

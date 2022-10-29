@@ -33,18 +33,6 @@ autosetuprebase = always
 [color]
 ui = auto
 
-# [color "diff"]
-# meta = 11
-# frag = magenta bold
-# commit = yellow bold
-# whitespace = red reverse
-# 
-# [color "diff-highlight"]
-# oldNormal = red
-# oldHighlight = red bold 52
-# newNormal = green
-# newHighlight = green bold 22
-
 [commit]
 gpgSign = false
 
@@ -56,6 +44,7 @@ excludesFile = ~/.config/git/ignore
 helper = cache
 
 [delta]
+light = true
 line-numbers = true
 navigate = true
 relative-paths = true
@@ -162,3 +151,8 @@ textconv = xzcat
 [diff "zip"]
 binary = true
 textconv = unzip -p
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

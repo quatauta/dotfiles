@@ -12,7 +12,7 @@ for BIN_DIR in /opt/homebrew/opt/{git,ruby}/bin \
     [ -e "${BIN_DIR}" ] && PATH="${BIN_DIR}:${PATH}"
 done
 
-typeset -U PATH path
+# typeset -U PATH path
 
 export BUNDLE_JOBS="$(nproc || sysctl -n hw.logicalcpu)"
 export BUNDLE_PATH="${HOME}/.gem"
@@ -32,6 +32,7 @@ export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
 export MAKEOPTS="${MAKEOPTS:--j$(nproc)}"
 export PATH
 export QT_STYLE_OVERRIDE="gtk"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 export SAVEHIST="${HISTSIZE}"
 export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-Unity}"
 

@@ -115,13 +115,17 @@ call plug#begin('~/.vim/plugged')
   Plug 'NLKNguyen/papercolor-theme'
   Plug 'dense-analysis/ale'
   Plug 'editorconfig/editorconfig-vim'
-  Plug 'editorconfig/editorconfig-vim'
   Plug 'elixir-editors/vim-elixir'
+  Plug 'jose-elias-alvarez/null-ls.nvim'
   Plug 'kassio/neoterm'
+  Plug 'mfussenegger/nvim-dap'
+  Plug 'mfussenegger/nvim-lint'
+  Plug 'neovim/nvim-lspconfig'
   Plug 'prabirshrestha/vim-lsp'
   Plug 'preservim/nerdtree'
   Plug 'tpope/vim-rails'
   Plug 'vim-ruby/vim-ruby'
+
   Plug 'vim-test/vim-test'
   let test#strategy = "neoterm"
 
