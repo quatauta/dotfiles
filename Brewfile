@@ -108,8 +108,6 @@ cask "skype"
 cask "ukelele"
 cask "whatsapp"
 cask "zoom"
-mas "AdGuard for Safari", id: 1440147259
-mas "Bee DICOM Viewer", id: 1590273176
 mas "Bitwarden", id: 1352778147
 mas "Duplicate File Finder", id: 1032755628
 mas "Noir", id: 1592917505
