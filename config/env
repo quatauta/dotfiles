@@ -15,7 +15,7 @@ done
 # typeset -U PATH path
 
 export BUNDLE_JOBS="$(nproc || sysctl -n hw.logicalcpu)"
-export BUNDLE_PATH="${HOME}/.gem"
+# export BUNDLE_PATH="${HOME}/.gem"
 export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
 export ERL_AFLAGS="-kernel shell_history_enabled"
 export GTK_OVERLAY_SCROLLING=0
