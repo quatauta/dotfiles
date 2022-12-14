@@ -83,7 +83,7 @@ module Asdf
     end
 
     def self.latest(plugin)
-      %x[asdf latest "#{plugin}"].strip
+      `asdf latest "#{plugin}"`.strip
     end
 
     def self.valid_version?(text)
@@ -97,12 +97,12 @@ module Asdf
     end
 
     def self.outdated
-      currents.reduce([]) do |memo, current|
+      currents.each_with_object([]) do |memo, current|
         plugin, current_version = current
         latest_version = latest(plugin)
 
         if (version(latest_version) <=> version(current_version)) == 1
-           memo << { plugin: plugin, current: current_version, latest: latest_version }
+          memo << {plugin: plugin, current: current_version, latest: latest_version}
         end
 
         memo
