@@ -74,8 +74,12 @@ module Asdf
     end
 
     def self.currents
-      versions = %x[asdf current 2>&1].lines.select { |line| line =~ /\/\.tool-versions|not installed/i }.map { |line| line.split[0..1] }
-      Hash[versions].select { |plugin, version| valid_version? version }
+      `asdf current 2>&1`.lines
+        .reject { |line| line =~ %r{#{ENV["USER"]}/\.tool-versions} }
+        .select { |line| line =~ %r{\.tool-versions|not installed} }
+        .map { |line| line.split[0..1] }
+        .to_h
+        .select { |plugin, version| valid_version? version }
     end
 
     def self.latest(plugin)
