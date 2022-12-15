@@ -11,7 +11,3 @@ for a in env functions prompt ; do
         source "${script}"
     done
 done
-
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/daniel/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
