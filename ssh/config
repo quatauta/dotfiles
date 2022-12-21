@@ -4,5 +4,6 @@ Host *
     ControlPath ~/.ssh/controlmaster-%C
     ControlPersist 60
     ServerAliveInterval 5
+    UseKeychain yes
 
 Include ~/.ssh/config.local
