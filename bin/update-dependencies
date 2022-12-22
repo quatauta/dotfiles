@@ -1,29 +1,51 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 echo "### $(pwd) ###"
 
 git checkout main &&
 git pull --autostash || exit 1
 
-[[ -r .tool-versions ]] && asdf-missing up
-[[ -r Gemfile.lock ]] && bundle update --all
-[[ -r yarn.lock ]] && yarn upgrade
-[[ -r mix.lock ]] && ( mix local.hex --force ; mix local.rebar --force ; mix deps.update --all )
+if [[ -r .tool-versions ]] ; then
+  asdf install 2>&1 | grep -Fv "is already installed"
+  asdf-missing up
+fi
 
-[[ -z "$(git ls-files -m)" ]] && exit
+if [[ -r Gemfile.lock ]] ; then
+  bundle update --all 2>&1 | grep -Fv "Using"
+fi
 
-git branch -D dependencies-"$(date +%Y-%m-%d)"
-git checkout -b dependencies-"$(date +%Y-%m-%d)" &&
-git push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD || exit 1
+if [[ -r yarn.lock ]] ; then
+  yarn upgrade | grep -Fv -e "├─" -e "└─"
+fi
+
+if [[ -r mix.lock ]] ; then
+  mix local.hex --force
+  mix local.rebar --force
+  mix deps.update --all
+fi
+
+if [[ -z "$(git ls-files -m)" ]] ; then
+  echo "No changes :-)"
+  exit
+fi
+
+git branch -D dependencies-"$(date +%Y-%m-%d)" &>/dev/null
+git checkout -b dependencies-"$(date +%Y-%m-%d)"
+git push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD
 
 while [[ -n "$(git ls-files -m)" ]] ; do
-    echo -e 'y\nq\n' |
-    git commit -p -m "Update dependencies" &&
-    git push || exit 1
+  echo -e 'y\nq\n' | git commit -p -m "Update dependencies $(date +%Y-%m-%d)"
+  git push -u origin HEAD
 done
 
 glab mr update -a quatauta -r
 glab mr merge -dsy
 git checkout main
 git pull --autostash
-git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == "[gone]" {print $1}' | xargs -rt git branch -D
+git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' |
+  awk '$2 == "[gone]" {print $1}' |
+  xargs -rt git branch -D

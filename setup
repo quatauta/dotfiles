@@ -26,11 +26,16 @@ _install_rcm() {
 }
 
 _install_ohmyzsh() {
-  test -d "${HOME}/.ohmyzsh" || sh -c "$(curl -fsSL "${OHMYZSH_INSTALL_URL}")"
+  test -d "${HOME}/.ohmyzsh" || sh -c "$(curl -fsSL "${OHMYZSH_INSTALL_URL}")"
 }
 
 _clone_dotfiles() {
   test -d "${HOME}/.dotfiles" || git clone "${DOTFILES_GIT_URL}" "${HOME}/.dotfiles"
+
+  if ! test -d "${HOME}/.dotfiles/.oh-my-tmux/.oh-my-tmux/.tmux.conf" ; then
+    git -C "${HOME}/.dotfiles" submodule init
+    git -C "${HOME}/.dotfiles" pull --recurse-submodule
+  fi
 }
 
 _setup_dotfiles() {

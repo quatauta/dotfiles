@@ -9,66 +9,33 @@ for BIN_DIR in /opt/homebrew/opt/{git,ruby}/bin \
                "${HOME}/.dotfiles/bin" \
                "${HOME}/.local/bin" \
                "${HOME}/bin" ; do
-    [ -e "${BIN_DIR}" ] && PATH="${BIN_DIR}:${PATH}"
+  [ -e "${BIN_DIR}" ] && export PATH="${BIN_DIR}:${PATH}"
 done
 
-# typeset -U PATH path
+[[ -n "${ZSH_PATCHLEVEL}" ]] && typeset -U PATH path
 
 export BUNDLE_JOBS="$(nproc || sysctl -n hw.logicalcpu)"
-# export BUNDLE_PATH="${HOME}/.gem"
-export DESKTOP_SESSION="${DESKTOP_SESSION:-gnome}"
+export ELIXIR_ERL_OPTIONS="+sbwt none" # "+P 16777216 +Q 16777216 +K true +A 128 +sbt db +sbwt very_long +swt very_low +sub true +Mulmbcs 32767 +Mumbcgs 1 +Musmbcs 2047 # https://www.erlang.org/doc/man/erl.html
 export ERL_AFLAGS="-kernel shell_history_enabled"
-export GTK_OVERLAY_SCROLLING=0
 export HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/shell-history"
 export HISTSIZE="1000"
 export HTML_TIDY="${HOME}/.tidyrc"
-export KERL_BUILD_DOCS="yes"
-export KERL_CONFIGURE_OPTIONS="--disable-debug --disable-silent-rules --without-javac --enable-shared-zlib --enable-dynamic-ssl-lib --enable-threads --enable-kernel-poll --enable-wx --enable-webview --with-ssl=$(brew --prefix openssl@1.1)"
-export ELIXIR_ERL_OPTIONS="+sbwt none"
-# https://www.erlang.org/doc/man/erl.html
-# ELIXIR_ERL_OPTIONS="+P 16777216 +Q 16777216 +K true +A 128 +sbt db +sbwt very_long +swt very_low +sub true +Mulmbcs 32767 +Mumbcgs 1 +Musmbcs 2047
 export LESS="${LESS} -FMSX"
 export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
 export MAKEOPTS="${MAKEOPTS:--j$(nproc)}"
-export PATH
-export QT_STYLE_OVERRIDE="gtk"
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 export SAVEHIST="${HISTSIZE}"
-export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-Unity}"
-
-gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.UpdateActivationEnvironment '{"GTK_OVERLAY_SCROLLING": "0"}' 1>/dev/null 2>&1
-
-if [ -n "${DISPLAY}" ] ; then
-    command -v gvim >/dev/null     && export EDITOR="gvim -f"
-    command -v nvim-gtk >/dev/null && export EDITOR="nvim-gtk --no-fork"
-    export ALTERNATE_EDITOR="emacs"
-else
-    command -v vi >/dev/null   && export EDITOR="vi"
-    command -v vim >/dev/null  && export EDITOR="vim"
-    command -v nvim >/dev/null && export EDITOR="nvim"
-    export ALTERNATE_EDITOR="emacs"
-fi
-
-GPGAGENT="$(which gpg-agent 2>/dev/null)"
-if [ -n "${GPGAGENT}" ] && [ -x "${GPGAGENT}" ] ; then
-    if ! pgrep -U "${UID}" -f "${GPGAGENT}" 1>/dev/null ; then
-        eval "$("${GPGAGENT}" --enable-ssh-support --sh --daemon --default-cache-ttl 300 --max-cache-ttl 3600 2>/dev/null)"
-    fi
-
-    [ -n "${GPG_AGENT_INFO}" ] && export GPG_AGENT_INFO
-    [ -n "${SSH_AUTH_SOCKET}" ] && export SSH_AUTH_SOCKET
-    [ -n "${SSH_AGENT_PID}" ] && export SSH_AGENT_PID
-
-    if [ -z "${SSH_AUTH_SOCKET}" ] && [ -S "$(gpgconf --list-dirs agent-ssh-socket)" ] ; then
-        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-    fi
-fi
 
 alias g >/dev/null 2>&1 && type -p g >/dev/null 2>&1 && unalias g >/dev/null 2>&1 ; true
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-command -v nvim 1>/dev/null && alias vim=nvim
-command -v nvim 1>/dev/null && alias vimdiff="nvim -d"
-command -v vim  1>/dev/null && alias vi=vim
+if command -v nvim 1>/dev/null ; then
+  alias vim="nvim"
+  alias vimdiff="nvim -d"
+fi
+
+command -v vim 1>/dev/null && alias vi=vim
+command -v vi >/dev/null   && export EDITOR="vi"
+command -v vim >/dev/null  && export EDITOR="vim"
+command -v nvim >/dev/null && export EDITOR="nvim"

@@ -3,8 +3,11 @@
 # Configuration for rcm (https://github.com/thoughtbot/rcm)
 
 COPY_ALWAYS="
-  [!t][!m][!u][!u]*.local
-  **/.local
+  [!t]*.local
+  [!t][!m]*.local
+  [!t][!m][!u]*.local
+  [!t][!m][!u][!x]*.local
+  **/*.local
 "
 
 EXCLUDES="

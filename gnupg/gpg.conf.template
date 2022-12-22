@@ -18,7 +18,6 @@ display-charset utf-8
 enable-progress-filter
 fixed-list-mode
 keyid-format 0xlong
-keyserver hkps://keys.openpgp.org
 keyserver-options auto-key-retrieve
 keyserver-options no-honor-keyserver-url
 keyserver-options timeout=5
