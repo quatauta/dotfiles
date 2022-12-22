@@ -1,6 +1,0 @@
-# Daniel Schömer's muttrc
-# vim:syntax=muttrc:
-
-# source ~/.mutt/muttrc.d/colors_daniel
-source ~/.mutt/muttrc.d/colors_zenburn.mod
-# source ~/.mutt/muttrc.d/colors_zenburn

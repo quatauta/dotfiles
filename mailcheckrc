@@ -1,7 +1,0 @@
-# ~/.mailcheckrc - configuration for Mailcheck program
-
-/var/mail/$(USER)
-$(HOME)/Mail
-$(HOME)/Mail/.postponed
-$(HOME)/Mail/.spam
-$(HOME)/Mail/.trash
