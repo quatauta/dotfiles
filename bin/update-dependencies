@@ -10,16 +10,16 @@ git checkout main &&
 git pull --autostash || exit 1
 
 if [[ -r .tool-versions ]] ; then
-  asdf install 2>&1 | grep -Fv "is already installed"
+  asdf install 2>&1 | grep -Fv "is already installed" || true
   asdf-missing up
 fi
 
 if [[ -r Gemfile.lock ]] ; then
-  bundle update --all 2>&1 | grep -Fv "Using"
+  bundle update --all 2>&1 | grep -FEv "(Fetching|Installing|Using|updated)" || true
 fi
 
 if [[ -r yarn.lock ]] ; then
-  yarn upgrade | grep -Fv -e "├─" -e "└─"
+  yarn upgrade | grep -Fv -e "├─" -e "└─" || true
 fi
 
 if [[ -r mix.lock ]] ; then
