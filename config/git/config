@@ -11,7 +11,7 @@ branch-clean-local = ! "git fetch -p && git for-each-ref --format '%(refname:sho
 c = commit
 co = checkout
 d = diff
-f = fetch --all --prune --recurse-submodules
+f = fetch --all --prune --prune-tags --recurse-submodules
 fa = for-all-repos f
 for-all-repos = !find . -type d -iname .git -print -execdir git "${@}" "';' 2>/dev/null #"
 i = !git ignored
@@ -83,7 +83,6 @@ ff = only
 
 [push]
 default = current
-followTags = true
 
 [rebase]
 autosquash = true
