@@ -1,5 +1,11 @@
 #!/bin/bash
 
+exit_trap () {
+  echo "'${BASH_COMMAND}' exited with code $?"
+}
+
+trap exit_trap EXIT
+
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -33,7 +39,7 @@ if [[ -z "$(git ls-files -m)" ]] ; then
   exit
 fi
 
-git branch -D dependencies-"$(date +%Y-%m-%d)" &>/dev/null
+git branch -D dependencies-"$(date +%Y-%m-%d)" &>/dev/null || true
 git checkout -b dependencies-"$(date +%Y-%m-%d)"
 git push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD
 
@@ -49,3 +55,5 @@ git pull --autostash
 git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' |
   awk '$2 == "[gone]" {print $1}' |
   xargs -rt git branch -D
+
+echo "Done :-)"
