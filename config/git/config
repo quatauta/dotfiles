@@ -38,17 +38,9 @@ gpgSign = true
 
 [core]
 excludesFile = ~/.config/git/ignore
-# pager = delta
 
 [credential]
 helper = cache
-
-[delta]
-light = true
-line-numbers = true
-navigate = true
-relative-paths = true
-syntax-theme = ansi
 
 [diff]
 colorMoved = default
@@ -70,9 +62,6 @@ autocorrect = -1
 
 [include]
 path = ~/.git.local
-
-[interactive]
-# diffFilter = delta --color-only
 
 [init]
 defaultBranch = main
