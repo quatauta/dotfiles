@@ -7,7 +7,7 @@ path = ~/.git.local
 [alias]
 b = branch
 bcl = branch-clean-local
-branch-clean-local = ! "git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -rt git branch -d"
+branch-clean-local = ! "git fetch -np && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -rt git branch -d"
 c = commit
 co = checkout
 d = diff
