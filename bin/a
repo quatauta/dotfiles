@@ -1,3 +1,18 @@
 #!/bin/sh
 
-nice ionice -c3 atool "$@"
+IONICE="$(command -v ionice)"
+TASKPOLICY="$(command -v taskpolicy)"
+
+if [[ -n "${IONICE}" ]] ; then
+  IONICE="${IONICE} -c3"
+else
+  unset IONICE
+fi
+
+if [[ -n "${TASKPOLICY}" ]] ; then
+  TASKPOLICY="${TASKPOLICY} -d utility"
+else
+  unset TASKPOLICY
+fi
+
+nice ${IONICE} ${TASKPOLICY} atool "$@"
