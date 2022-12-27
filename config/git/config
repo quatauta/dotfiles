@@ -57,6 +57,9 @@ required = true
 [gpg]
 format = ssh
 
+[gpg "ssh"]
+allowedSignersFile = /Users/daniel/.ssh/allowed_signers
+
 [help]
 autocorrect = -1
 
