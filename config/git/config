@@ -34,7 +34,7 @@ autosetuprebase = always
 ui = auto
 
 [commit]
-gpgSign = false
+gpgSign = true
 
 [core]
 excludesFile = ~/.config/git/ignore
@@ -55,6 +55,15 @@ colorMoved = default
 
 [fetch]
 prune = true
+
+[filter "lfs"]
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
+
+[gpg]
+format = ssh
 
 [help]
 autocorrect = -1
@@ -150,8 +159,3 @@ textconv = xzcat
 [diff "zip"]
 binary = true
 textconv = unzip -p
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true

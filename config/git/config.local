@@ -1,6 +1,7 @@
 [user]
 email = EMAIL
 name = NAME
+signingkey = ~/.ssh/id_ed25519
 
 [github]
 token = TOKEN
