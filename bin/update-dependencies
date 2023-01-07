@@ -1,59 +1,99 @@
 #!/bin/bash
 
-exit_trap () {
+set -o errexit
+set -o nounset
+set -o pipefail
+
+exit_trap() {
   echo "'${BASH_COMMAND}' exited with code $?"
 }
 
 trap exit_trap EXIT
 
-set -o errexit
-set -o nounset
-set -o pipefail
+_main() {
+  for REPO in "${@:-.}"; do
+    _update_dependencies "${REPO}"
+  done
+}
 
-echo "### $(pwd) ###"
+_update_dependencies() {
+  local REPO="${1}"
 
-git checkout main &&
-git pull --autostash || exit 1
+  pushd "${REPO}" 1>/dev/null
+  echo "### $(pwd) ###"
 
-if [[ -r .tool-versions ]] ; then
-  asdf install 2>&1 | grep -Fv "is already installed" || true
-  asdf-missing up
-fi
+  git checkout main && git pull --autostash || return
 
-if [[ -r Gemfile.lock ]] ; then
-  bundle update --all 2>&1 | grep -FEv "(Fetching|Installing|Using|updated)" || true
-fi
+  _asdf_update_tool_versions
+  _ruby_bundler_update
+  _javascript_yarn_update
+  _elixir_mix_update
 
-if [[ -r yarn.lock ]] ; then
-  yarn upgrade | grep -Fv -e "├─" -e "└─" || true
-fi
+  if [[ -z "$(git ls-files -m)" ]]; then
+    echo "No changes :-)"
+    return
+  fi
 
-if [[ -r mix.lock ]] ; then
-  mix local.hex --force
-  mix local.rebar --force
-  mix deps.update --all
-fi
+  _git_new_branch_and_merge_request
+  _git_commit_and_push
+  _git_merge_and_pull_main
 
-if [[ -z "$(git ls-files -m)" ]] ; then
-  echo "No changes :-)"
-  exit
-fi
+  popd 1>/dev/null
+  echo "Done :-)"
+}
 
-git branch -D dependencies-"$(date +%Y-%m-%d)" &>/dev/null || true
-git checkout -b dependencies-"$(date +%Y-%m-%d)"
-git push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD
+_asdf_update_tool_versions() {
+  if [[ -r .tool-versions ]]; then
+    asdf install 2>&1 | grep -Fv "is already installed" || true
+    asdf-missing up
+  fi
+}
 
-while [[ -n "$(git ls-files -m)" ]] ; do
-  echo -e 'y\nq\n' | git commit -p -m "Update dependencies $(date +%Y-%m-%d)"
-  git push -u origin HEAD
-done
+_ruby_bundler_update() {
+  if [[ -r Gemfile.lock ]]; then
+    bundle update --all 2>&1 | grep -FEv "(Fetching|Installing|Using|updated)" || true
+  fi
+}
 
-glab mr update -a quatauta -r
-glab mr merge -dsy
-git checkout main
-git pull --autostash
-git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' |
-  awk '$2 == "[gone]" {print $1}' |
-  xargs -rt git branch -D
+_javascript_yarn_update() {
+  if [[ -r yarn.lock ]]; then
+    yarn upgrade | grep -Fv -e "├─" -e "└─" || true
+  fi
+}
 
-echo "Done :-)"
+_elixir_mix_update() {
+  if [[ -r mix.lock ]]; then
+    mix local.hex --force
+    mix local.rebar --force
+    mix deps.update --all
+  fi
+}
+
+_git_new_branch_and_merge_request() {
+  git branch -D dependencies-"$(date +%Y-%m-%d)" &>/dev/null || true
+  git checkout -b dependencies-"$(date +%Y-%m-%d)"
+  git push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD
+}
+
+_git_commit_and_push() {
+  while [[ -n "$(git ls-files -m)" ]]; do
+    echo -e 'y\nq\n' | git commit -p -m "Update dependencies $(date +%Y-%m-%d)"
+    git push -u origin HEAD
+  done
+
+}
+
+_git_merge_and_pull_main() {
+  glab mr update -a quatauta -r
+  glab mr merge -dsy --when-pipeline-succeeds
+  git checkout main
+  git pull --autostash
+}
+
+_git_prune_remote_branches() {
+  git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' |
+    awk '$2 == "[gone]" {print $1}' |
+    xargs -rt git branch -D
+}
+
+_main "${@}"
