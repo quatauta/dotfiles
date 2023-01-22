@@ -44,7 +44,6 @@ _update_dependencies() {
 
 _asdf_update_tool_versions() {
   if [[ -r .tool-versions ]]; then
-    asdf install 2>&1 | grep -Fv "is already installed" || true
     asdf-missing up
   fi
 }
