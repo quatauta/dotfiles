@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+API_RESOURCES_OPTS=(-o name)
+GET_OPTS=(--show-kind=true --ignore-not-found=true)
+
+if [[ "${@}" =~ -n|--namespace|-A|--all-namespaces ]] ; then
+  API_RESOURCES_OPTS+=(--namespaced=true)
+else
+  API_RESOURCES_OPTS+=(--namespaced=false)
+fi
+
+API_RESOURCES="$(kubectl api-resources "${API_RESOURCES_OPTS[@]}" | grep -v '^events' | tr '\n' ',')"
+API_RESOURCES="${API_RESOURCES%,}"
+
+kubectl get "${OPTS[@]}" "${API_RESOURCES}" "${@}"
