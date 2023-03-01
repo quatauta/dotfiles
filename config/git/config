@@ -13,14 +13,14 @@ co = checkout
 d = diff
 f = fetch --all --no-tags --prune --recurse-submodules
 fa = for-all-repos f
-for-all-repos = !find . -type d -iname .git -print -execdir git "${@}" "';' 2>/dev/null #"
+for-all-repos = !find . -type d -iname .git -print0 2>/dev/null | xargs -0rtn1 -I DIR git -C DIR/../
+for-all-repos-parallel = !find . -type d -iname .git -print0 2>/dev/null | xargs -0rtn1 -P"$(nproc)" -I DIR git -C DIR/../
 i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
 l = "!git log --pretty=decorate --decorate --graph --left-right --cherry-pick --boundary ${1:---all} #"
 p = pull --prune --no-tags
-pl = pull --prune --no-tags
 pa = for-all-repos p --quiet
-pla = for-all-repos p --quiet
+pap = for-all-repos-parallel p --quiet
 psm = push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -o merge_request.assign=quatauta
 ps = push --prune --set-upstream
 s = status
