@@ -1,8 +1,14 @@
 #!/bin/bash
+# vim:set shiftwidth=2:
 
 set -o errexit
 set -o nounset
 set -o pipefail
+
+FIND_PROJECTS_BASEDIR="${HOME}/work"
+FIND_PROJECTS_GIT_USER="quatauta"
+FIND_PROJECTS_MAX_DEPTH="4"
+FIND_PROJECTS_IGNORE="/(gdk)/"
 
 exit_trap() {
   echo "'${BASH_COMMAND}' exited with code $?"
@@ -12,7 +18,9 @@ trap exit_trap EXIT
 
 _main() {
   for REPO in "${@:-.}"; do
-    _update_dependencies "${REPO}"
+    if [[ -n "${REPO}" ]]; then
+      _update_dependencies "${REPO}"
+    fi
   done
 }
 
@@ -20,9 +28,11 @@ _update_dependencies() {
   local REPO="${1}"
 
   pushd "${REPO}" 1>/dev/null
-  echo "### $(pwd) ###"
+  echo "##############################################"
+  echo "### $(pwd)"
+  echo "###"
 
-  git checkout main && git pull --autostash || return
+  _git_checkout_main_pull || return
 
   _asdf_update_tool_versions
   _ruby_bundler_update
@@ -42,8 +52,22 @@ _update_dependencies() {
   echo "Done :-)"
 }
 
+_find_project_directories() {
+  local BASE_DIR="$1"
+  local GIT_REMOTE_USERNAME="$2"
+  local MAX_DEPTH="$3"
+  local IGNORE="$4"
+
+  find "${BASE_DIR}" -maxdepth "${MAX_DEPTH}" -path "*/.git/config" \
+                     -exec grep -El "(git@|https?:).*[:/]${GIT_REMOTE_USERNAME}/.*\.git$" {} + |
+  sed -e 's_/\.git/config$__' |
+  grep -Ev "${IGNORE}" |
+  sort
+}
+
 _asdf_update_tool_versions() {
   if [[ -r .tool-versions ]]; then
+    asdf install
     asdf-missing up
   fi
 }
@@ -68,31 +92,59 @@ _elixir_mix_update() {
   fi
 }
 
+_git_has_remote() {
+  git remote | grep -q .
+}
+
+_git_checkout_main_pull() {
+  if [[ -d .git ]] ; then
+    git checkout main
+    if _git_has_remote ; then
+      git pull --autostash
+    fi
+  fi
+}
+
 _git_new_branch_and_merge_request() {
-  git branch -D dependencies-"$(date +%Y-%m-%d)" &>/dev/null || true
-  git checkout -b dependencies-"$(date +%Y-%m-%d)"
-  git push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD
+  if [[ -d .git ]] ; then
+    git branch -D dependencies-"$(date +%Y-%m-%d)" &>/dev/null || true
+    git checkout -b dependencies-"$(date +%Y-%m-%d)"
+    if _git_has_remote ; then
+      git push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD
+    fi
+  fi
 }
 
 _git_commit_and_push() {
-  while [[ -n "$(git ls-files -m)" ]]; do
-    echo -e 'y\nq\n' | git commit -p -m "Update dependencies $(date +%Y-%m-%d)"
-    git push -u origin HEAD
-  done
-
+  if [[ -d .git ]] ; then
+    while [[ -n "$(git ls-files -m)" ]]; do
+      echo -e 'y\nq\n' | git commit -p -m "Update dependencies $(date +%Y-%m-%d)"
+      if _git_has_remote ; then
+        git push -u origin HEAD
+      fi
+    done
+  fi
 }
 
 _git_merge_and_pull_main() {
-  glab mr update -a quatauta -r
-  glab mr merge -dsy --when-pipeline-succeeds
-  git checkout main
-  git pull --autostash
+  if [[ -d .git ]] && _git_has_remote ; then
+    glab mr update -a quatauta -r
+    glab mr merge -dsy --when-pipeline-succeeds
+    git checkout main
+    git pull --autostash
+  fi
 }
 
 _git_prune_remote_branches() {
-  git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' |
-    awk '$2 == "[gone]" {print $1}' |
-    xargs -rt git branch -D
+  if [[ -d .git ]] ; then
+    git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' |
+      awk '$2 == "[gone]" {print $1}' |
+      xargs -rt git branch -D
+  fi
 }
 
-_main "${@}"
+if [[ "${#@}" -eq 0 ]]; then
+  set -- $(_find_project_directories "${FIND_PROJECTS_BASEDIR}" "${FIND_PROJECTS_GIT_USER}" "${FIND_PROJECTS_MAX_DEPTH}" "${FIND_PROJECTS_IGNORE}")
+fi
+
+_main "${@:-}"

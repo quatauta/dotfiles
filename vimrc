@@ -33,6 +33,7 @@ set autoread
 set autowrite
 set background=
 set backspace=indent,eol,start
+"set bg=dark
 set cmdheight=2
 set copyindent
 set endofline
@@ -59,8 +60,8 @@ set nojoinspaces
 set noswapfile
 set number
 set path+=**
-set printoptions=number:y
-set printoptions=paper:A4,left:15mm,right:8mm,top:8mm,bottom:8mm,syntax:y,number:y,wrap:y
+"set printoptions=number:y
+"set printoptions=paper:A4,left:15mm,right:8mm,top:8mm,bottom:8mm,syntax:y,number:y,wrap:y
 set ruler
 set scrolloff=8
 set shiftround
@@ -74,7 +75,7 @@ set softtabstop=4
 set switchbuf+=useopen,usetab
 set tabstop=8
 set termguicolors
-set textwidth=90
+set textwidth=120
 set title
 set updatetime=300
 set virtualedit=block
@@ -97,22 +98,14 @@ endfunction
 
 map! # <C-R>=HashCompletePrev()<CR>
 
-let g:PaperColor_Theme_Options = {
-  \   'theme': {
-  \     'default.dark': {
-  \       'override' : {
-  \         'color00' : ['#000000', '0'],
-  \         'linenumber_bg' : ['#000000', '0'],
-  \       }
-  \     }
-  \   }
-  \ }
-
 " https://github.com/junegunn/vim-plug
 " Make sure you use single quotes
 " To update: reload ~/.vimrc and :PlugInstall
-call plug#begin('~/.vim/plugged')
+call plug#begin()
   Plug 'NLKNguyen/papercolor-theme'
+  Plug 'uloco/bluloco.nvim'
+  Plug 'rktjmp/lush.nvim'
+
   Plug 'dense-analysis/ale'
   Plug 'editorconfig/editorconfig-vim'
   Plug 'elixir-editors/vim-elixir'
@@ -125,6 +118,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'preservim/nerdtree'
   Plug 'tpope/vim-rails'
   Plug 'vim-ruby/vim-ruby'
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
   Plug 'vim-test/vim-test'
   let test#strategy = "neoterm"
@@ -134,16 +128,9 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 
 if &t_Co >= 256 || has("gui_running")
-  let g:PaperColor_Theme_Options = {
-    \   'theme': {
-    \     'default.light': {
-    \       'override' : {
-    \         'color00' : ['#ffffff', '15'],
-    \         'linenumber_bg' : ['#ffffff', '15'],
-    \       }
-    \     }
-    \   }
-    \ }
+  :lua require("bluloco")
+
   colorscheme PaperColor
+" colorscheme bluloco
   let &guicursor = &guicursor . ",a:blinkon0"
 endif

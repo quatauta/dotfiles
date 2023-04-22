@@ -46,6 +46,7 @@ helper = cache
 colorMoved = default
 
 [fetch]
+parallel = 0
 prune = true
 
 [filter "lfs"]

@@ -24,6 +24,8 @@
 	<false/>
 	<key>EnableProxyIcon</key>
 	<true/>
+	<key>EscapeWithQuotes</key>
+	<true/>
 	<key>FlashTabBarInFullscreen</key>
 	<false/>
 	<key>FocusFollowsMouse</key>
@@ -56,7 +58,7 @@
 			<key>ASCII Anti Aliased</key>
 			<true/>
 			<key>ASCII Ligatures</key>
-			<false/>
+			<true/>
 			<key>Allow Title Reporting</key>
 			<true/>
 			<key>Ambiguous Double Width</key>
@@ -724,7 +726,7 @@
 				<key>Green Component</key>
 				<real>1</real>
 				<key>Red Component</key>
-				<real>1</real>
+				<real>0.99999994039535522</real>
 			</dict>
 			<key>Background Image Location</key>
 			<string></string>
@@ -1501,12 +1503,16 @@
 			<array/>
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
+			<key>Thin Strokes</key>
+			<integer>4</integer>
 			<key>Title Components</key>
 			<integer>2</integer>
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Triggers</key>
 			<array/>
+			<key>Unicode Normalization</key>
+			<integer>0</integer>
 			<key>Unlimited Scrollback</key>
 			<true/>
 			<key>Use Bold Font</key>
@@ -1611,7 +1617,7 @@
 	<key>SeparateStatusBarsPerPane</key>
 	<true/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>ShowNewOutputIndicator</key>
 	<false/>
 	<key>ShowPaneTitles</key>

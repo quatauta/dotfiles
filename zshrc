@@ -70,10 +70,12 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(asdf dotenv gpg-agent history mcfly)
+plugins=(asdf dotenv gpg-agent history mcfly mix-fast)
 
 if [[ "${VENDOR}" == "apple" ]] ; then
+    plugins+=iterm2
     plugins+=macos
+    zstyle :omz:plugins:iterm2 shell-integration yes
 fi
 
 if [[ -r "/opt/homebrew/bin/brew" ]] ; then
