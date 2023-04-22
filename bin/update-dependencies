@@ -148,3 +148,5 @@ if [[ "${#@}" -eq 0 ]]; then
 fi
 
 _main "${@:-}"
+curl -sS "https://gitlab.com/users/${FIND_PROJECTS_GIT_USER}/calendar.json" |
+jq ".[\"$(date +%F)\"]"
