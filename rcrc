@@ -19,6 +19,8 @@ EXCLUDES="
   _*
   bin
   setup
+  Gemfile
+  Gemfile.lock
 "
 
 SYMLINK_DIRS="

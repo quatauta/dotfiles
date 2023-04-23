@@ -1,4 +1,5 @@
-bundler
 gitlab-development-kit
-htmlbeautifier
-table_print
+rubocop-performance
+rubocop-rake
+solargraph
+standard

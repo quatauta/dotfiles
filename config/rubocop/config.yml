@@ -2,13 +2,11 @@
 require:
   - rubocop-performance
   - rubocop-rake
-  - rubocop-rspec
   - standard
 
 inherit_gem:
   rubocop-performance: config/default.yml
   rubocop-rake: config/default.yml
-  rubocop-rspec: config/default.yml
   standard: config/base.yml
 
 AllCops:
@@ -26,9 +24,6 @@ Lint/HeredocMethodCallPosition:
 
 Lint/NumberConversion:
   Enabled: true
-
-Metrics/BlockLength:
-  IgnoredMethods: ["describe", "context", "let"]
 
 Style/AutoResourceCleanup:
   Enabled: true
