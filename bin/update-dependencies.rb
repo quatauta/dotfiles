@@ -88,13 +88,11 @@ module UpdateDependencies
       {files: [".git/config"], commands: {
         "checkout new update branch": 'if [[ -n "$(git ls-files --modified)" ]] ; then git checkout --quiet -b "$(cat .git/update-dependencies-new-branch)" ; fi',
         "push new branch with MR": 'if [[ -n "$(git ls-files --modified)" ]] && git remote | grep -q . ; then git push --quiet --prune --set-upstream --push-option merge_request.create --push-option merge_request.remove_source_branch origin HEAD ; fi',
-        "commit changes": 'git ls-files --modified | while read -r FILE ; do git commit --quiet --message "Update dependencies - ${FILE}" -- "${FILE}" ; if git remote | grep -q . ; then git push --quiet origin HEAD ; fi ; done',
+        "commit and push changes": 'git ls-files --modified | while read -r FILE ; do git commit --quiet --message "Update dependencies - ${FILE}" -- "${FILE}" ; if git remote | grep -q . ; then git push --quiet origin HEAD ; fi ; done',
         "merge MR": 'if git rev-parse "$(cat .git/update-dependencies-new-branch)" &>/dev/null && git remote --verbose | grep -Fq gitlab.com ; then glab mr update --ready ; glab mr merge --yes --remove-source-branch --squash --when-pipeline-succeeds ; fi',
-        "checkout default branch": 'git checkout --quiet "$(cat .git/update-dependencies-pre-branch)"',
-        "pull": "if git remote --verbose | grep -q . ; then git pull --quiet --autostash ; fi",
+        "checkout default branch and pull": 'git checkout --quiet "$(cat .git/update-dependencies-pre-branch)" ; if git remote --verbose | grep -q . ; then git pull --quiet --autostash ; fi',
         "stash pop": "if git stash list | grep -q .; then git stash pop --index --quiet ; fi",
-        "delete update branch": 'if git rev-parse "$(cat .git/update-dependencies-new-branch)" &>/dev/null && [[ "$(git rev-parse "$(cat .git/update-dependencies-pre-branch)")" == "$(git rev-parse "$(cat .git/update-dependencies-new-branch)")" ]] ; then git branch --quiet -D "$(cat .git/update-dependencies-new-branch)" ; fi',
-        "forget branch names": "rm .git/update-dependencies-pre-branch .git/update-dependencies-new-branch"
+        "delete and forget branchs": 'if git rev-parse "$(cat .git/update-dependencies-new-branch)" &>/dev/null && [[ "$(git rev-parse "$(cat .git/update-dependencies-pre-branch)")" == "$(git rev-parse "$(cat .git/update-dependencies-new-branch)")" ]] ; then git branch --quiet -D "$(cat .git/update-dependencies-new-branch)" ; fi ; rm .git/update-dependencies-pre-branch .git/update-dependencies-new-branch'
       }}
     ]
     public_constant :UPDATERS
