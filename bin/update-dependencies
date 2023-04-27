@@ -1,152 +1,228 @@
-#!/bin/bash
-# vim:set shiftwidth=2:
+#!/usr/bin/env ruby
 
-set -o errexit
-set -o nounset
-set -o pipefail
+require "bundler/inline"
 
-FIND_PROJECTS_BASEDIR="${HOME}/work"
-FIND_PROJECTS_GIT_USER="quatauta"
-FIND_PROJECTS_MAX_DEPTH="4"
-FIND_PROJECTS_IGNORE="/(gdk)/"
+gemfile do
+  source "https://rubygems.org"
+  gem "command_kit", "~>0.4"
+  # gem "git", "~>1.18"
+  gem "pastel", "~>0.8"
+  gem "tty-command", "~>0.10"
+  gem "tty-spinner", "~>0.9"
+end
 
-exit_trap() {
-  echo "'${BASH_COMMAND}' exited with code $?"
-}
+require "command_kit/xdg"
 
-trap exit_trap EXIT
+module UpdateDependencies
+  module CLI
+    class Cmd < CommandKit::Command
+      include CommandKit::XDG
 
-_main() {
-  for REPO in "${@:-.}"; do
-    if [[ -n "${REPO}" ]]; then
-      _update_dependencies "${REPO}"
-    fi
-  done
-}
+      command_name File.basename(__FILE__, ".rb")
+      usage "[OPTIONS] [DIRECTORY...]"
+      description [
+        "Update the dependencies of your local git repositories, commit the changes in new git branch, create a pull/merge request, and merge.",
+        "",
+        "If your repository has executable bin/update-dependencies, I will start this executable.",
+        "",
+        "If your repository has no executable bin/update-dependencies, I will update:",
+        "- asdf tool versions (https://asdf-vm.com)",
+        "- Elixir mix packages (https://hexdocs.pm/mix/Mix.html)",
+        "- Ruby Bundler Gemfile (https://bundler.io)",
+        "- JavaScript npm packages (https://www.npmjs.com/) using npm (https://docs.npmjs.com/cli) or yarn (https://yarnpkg.com)"
+      ]
 
-_update_dependencies() {
-  local REPO="${1}"
+      option(:find, short: "-f", category: "Find options", desc: "Find git repositories in each DIRECTORY")
+      option(:maxdepth, short: "-d", category: "Find options", desc: "Maximum sub-path depth to search git repositories", value: {type: Integer, usage: "DEPTH"})
+      option(:exclude, short: "-x", category: "Find options", desc: "Exclude git repositories matching this Ruby regular expression", value: {type: Regexp, usage: "REGEX"})
+      option(:git_commit, short: "-c", category: "Git commit options", desc: "Add changes to a new git branch")
+      option(:gitlab_mr, short: "-m", category: "Git commit options", desc: "Create GitLab merge request")
+      option(:dry_run, short: "-n", desc: "Do not run any commands")
+      option(:fail_fast, short: "-F", desc: "Stop if updating dependencies fails")
+      option(:printer, short: "-p", desc: "Command progress formatter: pretty, spinner, progress, quiet, null", value: {type: {pretty: :pretty, spinner: :spinner, progress: :progress, quiet: :quiet, null: :null}})
+      argument(:directory, repeats: true, required: true, usage: "DIRECTORY", desc: "Directories to search git repositories")
+      examples(["~/work/"])
 
-  pushd "${REPO}" 1>/dev/null
-  echo "##############################################"
-  echo "### $(pwd)"
-  echo "###"
+      def initialize(**kwargs)
+        super(**kwargs)
+      end
 
-  _git_checkout_main_pull || return
+      def run(*directories)
+        directories = GitRepoLocator.new(directories).locate(maxdepth: options[:maxdepth], exclude: options[:exclude]) if options[:find]
+        directories.select! { |directory| File.directory? directory }
+        Updater.new(directories, options).run
+      end
+    end
+  end
 
-  _asdf_update_tool_versions
-  _ruby_bundler_update
-  _javascript_yarn_update
-  _elixir_mix_update
+  class GitRepoLocator
+    def initialize(directories)
+      @directories = directories || []
+    end
 
-  if [[ -z "$(git ls-files -m)" ]]; then
-    echo "No changes :-)"
-    return
-  fi
+    def locate(maxdepth: nil, exclude: nil)
+      @directories.map { |directory|
+        git_configs = Pathname(directory).glob("**/.git/config")
+        git_configs.select! { |path| path.relative_path_from(directory).to_s.split("/").length <= maxdepth + 2 } if maxdepth
+        git_configs.reject! { |path| path.to_s =~ exclude } if exclude
+        git_configs.map { |path| path.dirname.dirname }
+      }.flatten
+    end
+  end
 
-  _git_new_branch_and_merge_request
-  _git_commit_and_push
-  _git_merge_and_pull_main
+  class Updater
+    UPDATERS = [
+      {
+        name: "git stash/pull",
+        files: [".git/config"],
+        command: [
+          "git branch --show-current >.git/update-dependencies-pre-branch",
+          'echo "dependencies/$(date -u "+%F-%H-%M-%S%z")" >.git/update-dependencies-new-branch',
+          'if [[ -n "$(git ls-files --modified --others)" ]] ; then git stash push --quiet --all --include-untracked --message "update-dependencies git stash push $(date -u "+%F %T%z")"; fi',
+          "git checkout --quiet main || git checkout --quiet master || git checkout --quiet trunk",
+          "git pull --quiet"
+        ].join(" && ")
+      },
+      {
+        name: "homebrew bundle",
+        files: ["Brewfile.lock.json"],
+        command: "nice brew bundle install"
+      },
+      {
+        name: "asdf install/update",
+        files: [".tool-versions"],
+        command: "nice asdf install && asdf-missing update"
+      },
+      {
+        name: "mix local.hex local.rebar deps.update",
+        files: ["mix.lock"],
+        command: "nice mix do local.hex --force --if-missing, local.rebar --force --if-missing, deps.update --all"
+      },
+      {
+        name: "bundle update",
+        files: ["Gemfile.lock"],
+        command: "nice bundle update --all --quiet"
+      },
+      {
+        name: "npm update",
+        files: ["package.lock", "npm-shrinkwrap.json"],
+        command: "nice npm update"
+      },
+      {
+        name: "yarn upgrade",
+        files: ["yarn.lock"],
+        command: "nice yarn upgrade --silent"
+      },
+      {
+        name: "git commit/push/merge/pull",
+        files: [".git/config"],
+        command: '
+          if [[ -n "$(git ls-files --modified)" ]] ; then
+            git checkout --quiet -b "$(cat .git/update-dependencies-new-branch)" ;
+            if git remote | grep -q . ; then
+              git push --quiet --prune --set-upstream --push-option merge_request.create --push-option merge_request.remove_source_branch origin HEAD ;
+            fi ;
+            git ls-files --modified |
+            while read -r FILE ; do
+              git commit --quiet --message "Update dependencies - ${FILE}" -- "${FILE}" ;
+              if git remote | grep -q . ; then
+                git push --quiet origin HEAD ;
+              fi ;
+            done ;
+            if git remote --verbose | grep -Fq gitlab.com ; then
+              sleep 1 ;
+              glab mr update --ready ;
+              sleep 2 ;
+              glab mr merge --yes --remove-source-branch --squash --when-pipeline-succeeds ;
+            fi ;
+            git checkout --quiet "$(cat .git/update-dependencies-pre-branch)" ;
+            if git remote | grep -q . ; then
+              git pull --quiet --autostash ;
+            fi ;
+          fi'.gsub(/\s\s+/, " ")
+      },
+      {
+        name: "git repo restore",
+        files: [".git/config"],
+        command: [
+          "if git stash list | grep -q .; then git stash pop --index --quiet ; fi",
+          'if git rev-parse "$(cat .git/update-dependencies-new-branch)" &>/dev/null && [[ "$(git rev-parse "$(cat .git/update-dependencies-pre-branch)")" == "$(git rev-parse "$(cat .git/update-dependencies-new-branch)")" ]] ; then git branch --quiet -D "$(cat .git/update-dependencies-new-branch)" ; fi',
+          "rm .git/update-dependencies-pre-branch .git/update-dependencies-new-branch"
+        ].join(" && ")
+      }
+    ]
+    public_constant :UPDATERS
 
-  popd 1>/dev/null
-  echo "Done :-)"
-}
+    attr_reader :directories, :printer
 
-_find_project_directories() {
-  local BASE_DIR="$1"
-  local GIT_REMOTE_USERNAME="$2"
-  local MAX_DEPTH="$3"
-  local IGNORE="$4"
+    def initialize(directories, options)
+      @directories = directories
+      @dry_run = options.fetch(:dry_run, false)
+      @fail_fast = options.fetch(:fail_fast, false)
+      @printer = options.fetch(:printer, :pretty)
+    end
 
-  find "${BASE_DIR}" -maxdepth "${MAX_DEPTH}" -path "*/.git/config" \
-                     -exec grep -El "(git@|https?:).*[:/]${GIT_REMOTE_USERNAME}/.*\.git$" {} + |
-  sed -e 's_/\.git/config$__' |
-  grep -Ev "${IGNORE}" |
-  sort
-}
+    def dry_run?
+      @dry_run
+    end
 
-_asdf_update_tool_versions() {
-  if [[ -r .tool-versions ]]; then
-    asdf install
-    asdf-missing up
-  fi
-}
+    def fail_fast?
+      @fail_fast
+    end
 
-_ruby_bundler_update() {
-  if [[ -r Gemfile.lock ]]; then
-    bundle update --all 2>&1 | grep -FEv "(Fetching|Installing|Using|updated)" || true
-  fi
-}
+    def run
+      directories.each do |directory|
+        Dir.chdir(directory) do
+          run_updaters(directory)
+        end
+      end
+    end
 
-_javascript_yarn_update() {
-  if [[ -r yarn.lock ]]; then
-    yarn upgrade | grep -Fv -e "├─" -e "└─" || true
-  fi
-}
+    def run_updaters(directory)
+      dir_spinner = TTY::Spinner::Multi.new(
+        "[:spinner] #{replace_home(directory)}",
+        format: :dots, interval: 5,
+        success_mark: Pastel.new.green(TTY::Spinner::TICK),
+        error_mark: Pastel.new.bold.red(TTY::Spinner::CROSS)
+      )
 
-_elixir_mix_update() {
-  if [[ -r mix.lock ]]; then
-    mix local.hex --force
-    mix local.rebar --force
-    mix deps.update --all
-  fi
-}
+      updaters = UPDATERS.select { |updater| updater[:files].any? { |file| File.exist?(File.join(directory, file)) } }
+      max_name_length = updaters.map { |updater| updater[:name].length }.max
+      spinners = []
 
-_git_has_remote() {
-  git remote | grep -q .
-}
+      puts replace_home(directory) if printer == :pretty && !updaters.empty?
 
-_git_checkout_main_pull() {
-  if [[ -d .git ]] ; then
-    git checkout --quiet main
-    if _git_has_remote ; then
-      git pull --quiet --autostash
-    fi
-  fi
-}
+      updaters.each_with_index do |updater, updater_index|
+        name = updater[:name]
+        command = updater[:command]
+        if printer == :spinner
+          spinners << dir_spinner.register("[:spinner] %-#{max_name_length}s" % name) do |spinner|
+            spinners.each_with_index do |other_spinner, other_spinner_index|
+              other_spinner.join if other_spinner_index < updater_index
+            end
+            result = run_command(command, :null)
+            result.success? ? spinner.success : spinner.error
+            exit result.exitstatus if fail_fast? && result.failure?
+          end
+        else
+          result = run_command(command, printer)
+          exit result.exitstatus if fail_fast? && result.failure?
+        end
+      end
 
-_git_new_branch_and_merge_request() {
-  if [[ -d .git ]] ; then
-    git branch --quiet -D dependencies-"$(date +%Y-%m-%d)" &>/dev/null || true
-    git checkout --quiet -b dependencies-"$(date +%Y-%m-%d)"
-    if _git_has_remote ; then
-      git push --quiet --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -u origin HEAD
-    fi
-  fi
-}
+      dir_spinner.auto_spin unless spinners.empty?
+    end
 
-_git_commit_and_push() {
-  if [[ -d .git ]] ; then
-    while [[ -n "$(git ls-files -m)" ]]; do
-      echo -e 'y\nq\n' | git commit --quiet -p -m "Update dependencies $(date +%Y-%m-%d)"
-      if _git_has_remote ; then
-        git push --quiet -u origin HEAD
-      fi
-    done
-  fi
-}
+    def run_command(command, printer)
+      TTY::Command.new(dry_run: dry_run?, printer: printer).run!(command)
+    end
 
-_git_merge_and_pull_main() {
-  if [[ -d .git ]] && _git_has_remote ; then
-    glab mr update -a quatauta -r
-    glab mr merge -dsy --when-pipeline-succeeds
-    git checkout --quiet main
-    git pull --quiet --autostash
-  fi
-}
+    private
 
-_git_prune_remote_branches() {
-  if [[ -d .git ]] ; then
-    git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' |
-      awk '$2 == "[gone]" {print $1}' |
-      xargs -rt git branch --quiet -D
-  fi
-}
+    def replace_home(path)
+      path.to_s.sub(ENV["HOME"], "~")
+    end
+  end
+end
 
-if [[ "${#@}" -eq 0 ]]; then
-  set -- $(_find_project_directories "${FIND_PROJECTS_BASEDIR}" "${FIND_PROJECTS_GIT_USER}" "${FIND_PROJECTS_MAX_DEPTH}" "${FIND_PROJECTS_IGNORE}")
-fi
-
-_main "${@:-}"
-curl -sS "https://gitlab.com/users/${FIND_PROJECTS_GIT_USER}/calendar.json" |
-jq ".[\"$(date +%F)\"]"
+UpdateDependencies::CLI::Cmd.start
