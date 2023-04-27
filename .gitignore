@@ -6,3 +6,4 @@ emacs.d/auctex/auto-global
 emacs.d/auto-save-list
 emacs.d/elpa
 vim/autoload/plug.vim.old
+Gemfile.lock

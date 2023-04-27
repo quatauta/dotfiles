@@ -39,7 +39,7 @@ module UpdateDependencies
       option(:gitlab_mr, short: "-m", category: "Git commit options", desc: "Create GitLab merge request")
       option(:dry_run, short: "-n", desc: "Do not run any commands")
       option(:fail_fast, short: "-F", desc: "Stop if updating dependencies fails")
-      option(:printer, short: "-p", desc: "Command progress formatter: pretty, spinner, progress, quiet, null", value: {type: {"pretty": :pretty, "spinner": :spinner, "progress": :progress, "quiet": :quiet, "null": :null}})
+      option(:printer, short: "-p", desc: "Command progress formatter: pretty, spinner, progress, quiet, null", value: {type: {pretty: :pretty, spinner: :spinner, progress: :progress, quiet: :quiet, null: :null}})
       argument(:directory, repeats: true, required: true, usage: "DIRECTORY", desc: "Directories to search git repositories")
       examples(["~/work/"])
 
@@ -77,7 +77,7 @@ module UpdateDependencies
       {files: [".git/config"], commands: {
         "store branch names": 'git branch --show-current >.git/update-dependencies-pre-branch ; echo "dependencies/$(date -u "+%F-%H-%M-%S%z")" >.git/update-dependencies-new-branch',
         "stash push": 'if [[ -n "$(git ls-files --modified --others)" ]] ; then git stash push --quiet --all --include-untracked --message "update-dependencies git stash push $(date -u "+%F %T%z")"; fi',
-        "checkout default branch": 'git checkout --quiet "$((git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || git symbolic-ref --short HEAD) | sed -E \'s_[^/]+/__\')"'
+        "checkout default branch": "git checkout --quiet main || git checkout --quiet master || git checkout --quiet trunk"
       }},
       {files: ["Brewfile.lock.json"], commands: {"brew bundle install": "brew bundle install"}},
       {files: [".tool-versions"], commands: {"asdf install": "asdf install", "asdf-missing update": "asdf-missing update"}},
@@ -144,7 +144,7 @@ module UpdateDependencies
             exit result.exitstatus if fail_fast? && result.failure?
           end
         else
-          result = run_command(directory, command, printer)
+          result = run_command(command, printer)
           exit result.exitstatus if fail_fast? && result.failure?
         end
       end
@@ -153,8 +153,7 @@ module UpdateDependencies
     end
 
     def run_command(command, printer)
-      result = TTY::Command.new(dry_run: dry_run?, printer: printer).run!(command)
-      result
+      TTY::Command.new(dry_run: dry_run?, printer: printer).run!(command)
     end
 
     private
