@@ -1,12 +1,10 @@
 ---
 require:
   - rubocop-performance
-  - rubocop-rake
   - standard
 
 inherit_gem:
   rubocop-performance: config/default.yml
-  rubocop-rake: config/default.yml
   standard: config/base.yml
 
 AllCops:
