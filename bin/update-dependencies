@@ -35,8 +35,6 @@ module UpdateDependencies
       option(:find, short: "-f", category: "Find options", desc: "Find git repositories in each DIRECTORY")
       option(:maxdepth, short: "-d", category: "Find options", desc: "Maximum sub-path depth to search git repositories", value: {type: Integer, usage: "DEPTH"})
       option(:exclude, short: "-x", category: "Find options", desc: "Exclude git repositories matching this Ruby regular expression", value: {type: Regexp, usage: "REGEX"})
-      option(:git_commit, short: "-c", category: "Git commit options", desc: "Add changes to a new git branch")
-      option(:gitlab_mr, short: "-m", category: "Git commit options", desc: "Create GitLab merge request")
       option(:dry_run, short: "-n", desc: "Do not run any commands")
       option(:fail_fast, short: "-F", desc: "Stop if updating dependencies fails")
       option(:printer, short: "-p", desc: "Command progress formatter: pretty, spinner, progress, quiet, null", value: {type: {pretty: :pretty, spinner: :spinner, progress: :progress, quiet: :quiet, null: :null}})
@@ -206,7 +204,10 @@ module UpdateDependencies
           end
         else
           result = run_command(command, printer)
-          exit result.exitstatus if fail_fast? && result.failure?
+          if fail_fast? && result.failure?
+            pp(result)
+            exit(result.exitstatus)
+          end
         end
       end
 

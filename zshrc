@@ -70,7 +70,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(asdf dotenv gpg-agent history mcfly mix-fast)
+plugins=(asdf dotenv gpg-agent history kubectl mcfly mix-fast)
 
 if [[ "${VENDOR}" == "apple" ]] ; then
     plugins+=iterm2
@@ -109,4 +109,3 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -o errexit
-set -o nounset
+# set -o nounset
 set -o pipefail
 
 API_RESOURCES_OPTS=(-o name)
