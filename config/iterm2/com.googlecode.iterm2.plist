@@ -4,7 +4,13 @@
 <dict>
 	<key>AllowClipboardAccess</key>
 	<true/>
+	<key>AlwaysWarnBeforePastingOverSize</key>
+	<integer>-1</integer>
+	<key>BracketedPasteMode</key>
+	<true/>
 	<key>CheckTestRelease</key>
+	<true/>
+	<key>ConvertDosNewlines</key>
 	<true/>
 	<key>CopyLastNewline</key>
 	<false/>
@@ -24,6 +30,8 @@
 	<false/>
 	<key>EnableProxyIcon</key>
 	<true/>
+	<key>EscapeShellCharsWithBackslash</key>
+	<false/>
 	<key>EscapeWithQuotes</key>
 	<true/>
 	<key>FlashTabBarInFullscreen</key>
@@ -1570,6 +1578,12 @@
 	<key>OptionClickMovesCursor</key>
 	<false/>
 	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
+	<key>PasteSpecialRegex</key>
+	<string></string>
+	<key>PasteSpecialSubstitution</key>
+	<string></string>
+	<key>PasteSpecialUseRegexSubstitution</key>
 	<false/>
 	<key>PerPaneBackgroundImage</key>
 	<true/>
