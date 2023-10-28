@@ -103,8 +103,6 @@ map! # <C-R>=HashCompletePrev()<CR>
 " To update: reload ~/.vimrc and :PlugInstall
 call plug#begin()
   Plug 'NLKNguyen/papercolor-theme'
-  Plug 'uloco/bluloco.nvim'
-  Plug 'rktjmp/lush.nvim'
 
   Plug 'dense-analysis/ale'
   Plug 'editorconfig/editorconfig-vim'
@@ -128,9 +126,6 @@ call plug#begin()
 call plug#end()
 
 if &t_Co >= 256 || has("gui_running")
-  :lua require("bluloco")
-
-  colorscheme PaperColor
-" colorscheme bluloco
+" colorscheme PaperColor
   let &guicursor = &guicursor . ",a:blinkon0"
 endif
