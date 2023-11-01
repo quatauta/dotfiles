@@ -44,15 +44,19 @@ yabai -m config                               \
 #   window_opacity               off
 
 FLOATING_APPS=(
-  Activitiy Monitor
+  Activity Monitor
+  AlDente
   App Store
   Bitwarden
   Calculator
   Calendar
+  Dictionary
   Discord
   FaceTime
   FindMy
+  Finder
   Home
+  Mail
   Music
   Notes
   Overcast
@@ -61,11 +65,13 @@ FLOATING_APPS=(
   Raycast
   Reminders
   Stocks
+  System Information
   System Preferences
   Tailscale
   Voice Memos
   Zoom
 )
+FLOATING_APPS_REGEX="$(IFS=\| ; echo "${FLOATING_APPS[*]}")"
 
 yabai -m rule --add app="$(IFS=\| ; echo "${FLOATING_APPS[*]}")" manage=off
 
