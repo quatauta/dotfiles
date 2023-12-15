@@ -28,7 +28,7 @@ yabai -m config                               \
   right_padding                0              \
   window_gap                   0              \
   layout                       bsp            \
-  mouse_modifier               fn             \
+  mouse_modifier               alt            \
   mouse_action1                move           \
   mouse_action2                resize         \
   mouse_drop_action            swap
@@ -56,6 +56,7 @@ FLOATING_APPS=(
   FindMy
   Finder
   Home
+  Lunar
   Mail
   Music
   Notes
