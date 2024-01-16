@@ -13,6 +13,16 @@ _install_homebrew() {
   fi
 }
 
+_install_mise() {
+  if ! command -v mise ; then
+    command -v apt-get && apt-get install mise
+    command -v brew    && brew    install mise
+    command -v dnf     && dnf     install mise
+    command -v pacman  && pacman -S       mise
+    command -v yum     && yum     install mise
+  fi
+}
+
 _install_rcm() {
   if ! command -v rcup ; then
     command -v apt-get && apt-get install rcm
@@ -54,6 +64,7 @@ _macos_launchctl_load() {
 
 _install_rcm
 _install_ohmyzsh
+_install_mise
 _clone_dotfiles
 _setup_dotfiles
 # _macos_launchctl_load
