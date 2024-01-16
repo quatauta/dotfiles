@@ -50,6 +50,7 @@ FLOATING_APPS=(
   Bitwarden
   Calculator
   Calendar
+  Contacts
   Dictionary
   Discord
   FaceTime
@@ -60,6 +61,7 @@ FLOATING_APPS=(
   Mail
   Music
   Notes
+  OrbStack
   Overcast
   PhotoBooth
   Raivo
@@ -70,6 +72,7 @@ FLOATING_APPS=(
   System Preferences
   Tailscale
   Voice Memos
+  Weather
   Zoom
 )
 FLOATING_APPS_REGEX="$(IFS=\| ; echo "${FLOATING_APPS[*]}")"
