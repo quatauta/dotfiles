@@ -26,7 +26,7 @@ module UpdateDependencies
         "If your repository has executable bin/update-dependencies, I will start this executable.",
         "",
         "If your repository has no executable bin/update-dependencies, I will update:",
-        "- asdf tool versions (https://asdf-vm.com)",
+        "- mise tool versions (https://mise.jdx.dev/)",
         "- Elixir mix packages (https://hexdocs.pm/mix/Mix.html)",
         "- Ruby Bundler Gemfile (https://bundler.io)",
         "- JavaScript npm packages (https://www.npmjs.com/) using npm (https://docs.npmjs.com/cli) or yarn (https://yarnpkg.com)"
@@ -87,9 +87,9 @@ module UpdateDependencies
         command: "nice brew bundle install"
       },
       {
-        name: "asdf install/update",
+        name: "mise upgrade",
         files: [".tool-versions"],
-        command: "nice asdf install && asdf-missing update"
+        command: "awk '/^\s*[^[:space:]]/ { print $1 }' .tool-versions | xargs -n1 nice mise use --pin"
       },
       {
         name: "mix local.hex local.rebar deps.update",
