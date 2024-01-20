@@ -82,6 +82,11 @@ module UpdateDependencies
         ].join(" && ")
       },
       {
+        name: "bin/update-dependencies",
+        files: ["bin/update-dependencies"],
+        command: "bin/update-dependencies"
+      },
+      {
         name: "homebrew bundle",
         files: ["Brewfile.lock.json"],
         command: "nice brew bundle install"
