@@ -37,8 +37,6 @@ if command -v nvim 1>/dev/null ; then
   alias vimdiff="nvim -d"
 fi
 
-command -v mise >/dev/null && alias asdf="mise"
-
 command -v vim  >/dev/null && alias vi=vim
 command -v vi   >/dev/null && export EDITOR="vi"
 command -v vim  >/dev/null && export EDITOR="vim"
