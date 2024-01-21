@@ -7,6 +7,7 @@ command -v brew 1>/dev/null && eval "$(brew shellenv | grep -v PATH)"
 for BIN_DIR in /opt/homebrew/bin \
                "${HOME}/.dotfiles/bin" \
                "${HOME}/.local/bin" \
+               "${HOME}/.local/share/mise/shims" \
                "${HOME}/bin" ; do
   [ -e "${BIN_DIR}" ] && export PATH="${BIN_DIR}:${PATH}"
 done
