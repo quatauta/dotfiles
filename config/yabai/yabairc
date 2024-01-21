@@ -74,6 +74,7 @@ FLOATING_APPS=(
   Voice Memos
   Weather
   Zoom
+  zoom.us
 )
 FLOATING_APPS_REGEX="$(IFS=\| ; echo "${FLOATING_APPS[*]}")"
 
