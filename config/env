@@ -26,19 +26,23 @@ export LESS="${LESS} -FMSX"
 export MAKEFLAGS="${MAKEFLAGS:--j$(nproc || sysctl -n hw.logicalcpu)}"
 export MAKEOPTS="${MAKEOPTS:--j$(nproc || sysctl -n hw.logicalcpu)}"
 export MCFLY_INTERFACE_VIEW="BOTTOM"
+export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep.conf"
 export SAVEHIST="${HISTSIZE}"
 
 alias g >/dev/null 2>&1 && type -p g >/dev/null 2>&1 && unalias g >/dev/null 2>&1 ; true
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias o='less'
 
 if command -v nvim 1>/dev/null ; then
-  alias vim="nvim"
-  alias vimdiff="nvim -d"
+  alias vim='nvim'
+  alias vimdiff='nvim -d'
 fi
 
-command -v vim  >/dev/null && alias vi=vim
-command -v vi   >/dev/null && export EDITOR="vi"
-command -v vim  >/dev/null && export EDITOR="vim"
-command -v nvim >/dev/null && export EDITOR="nvim"
+command -v bat  >/dev/null && alias cat='bat' less='bat'
+command -v eza  >/dev/null && alias ls='eza'
+command -v vim  >/dev/null && alias vi='vim'
+command -v vi   >/dev/null && export EDITOR='vi'
+command -v vim  >/dev/null && export EDITOR='vim'
+command -v nvim >/dev/null && export EDITOR='nvim'

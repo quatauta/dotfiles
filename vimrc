@@ -112,18 +112,18 @@ call plug#begin()
   Plug 'mfussenegger/nvim-dap'
   Plug 'mfussenegger/nvim-lint'
   Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'prabirshrestha/vim-lsp'
   Plug 'preservim/nerdtree'
   Plug 'tpope/vim-rails'
   Plug 'vim-ruby/vim-ruby'
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
   Plug 'vim-test/vim-test'
   let test#strategy = "neoterm"
 
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'elixir-editors/vim-elixir'
   Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 if &t_Co >= 256 || has("gui_running")

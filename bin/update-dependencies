@@ -94,7 +94,7 @@ module UpdateDependencies
       {
         name: "mise upgrade",
         files: [".tool-versions"],
-        command: "awk '/^\s*[^[:space:]]/ { print $1 }' .tool-versions | xargs -n1 nice mise use --pin"
+        command: "awk '/^\s*[^[:space:]]/ { print $1 }' .tool-versions | while read TOOL ; do mise install \"${TOOL}@latest\" && mise use --pin \"${TOOL}@latest\" ; done"
       },
       {
         name: "mix local.hex local.rebar deps.update",
@@ -114,7 +114,7 @@ module UpdateDependencies
       {
         name: "yarn upgrade",
         files: ["yarn.lock"],
-        command: "nice yarn upgrade --silent"
+        command: "corepack enable && nice yarn upgrade --silent"
       },
       {
         name: "git commit/push/merge/pull",
@@ -136,7 +136,7 @@ module UpdateDependencies
               sleep 1 ;
               glab mr update --ready ;
               sleep 2 ;
-              glab mr merge --dry ;
+              glab mr merge -dy ;
             fi ;
             git checkout --quiet "$(cat .git/update-dependencies-pre-branch)" ;
             if git remote | grep -q . ; then

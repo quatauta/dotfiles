@@ -2,5 +2,12 @@
 
 COMMAND="$1"
 shift
-set -x
-exec mise "${COMMAND}" -- "${@}"
+
+case "${COMMAND}" in
+  exec )
+    exec mise "${COMMAND}" -- "${@}"
+    ;;
+  * )
+    exec mise "${COMMAND}" "${@}"
+    ;;
+esac
