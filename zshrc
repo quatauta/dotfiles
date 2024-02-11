@@ -1,3 +1,6 @@
+# ~/.zshrc for OhMyZsh
+# vim:shiftwidth=2:
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/Users/daniel/.rd/bin:$PATH"
@@ -23,7 +26,7 @@ ZSH_THEME="starship"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
+# HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -112,3 +115,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+if [[ -n "${HOMEBREW_PREFIX}" ]] ; then
+  source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
