@@ -22,7 +22,7 @@ l = "!git log --pretty=decorate --decorate --graph --left-right --cherry-pick --
 p = pull --prune --no-tags
 pa = for-all-repos p --quiet
 pap = for-all-repos-parallel p --quiet
-psm = push -u origin --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -o merge_request.assign=quatauta HEAD
+psm = push -u origin --set-upstream -o merge_request.create -o merge_request.remove_source_branch HEAD
 ps = push --prune --set-upstream
 s = status
 sa = for-all-repos s

@@ -116,6 +116,12 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-if [[ -n "${HOMEBREW_PREFIX}" ]] ; then
-  source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-fi
+INCLUDES=(
+  "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+)
+
+for INCLUDE in "${INCLUDES[@]}" ; do
+  if [[ -r "${INCLUDE}" ]] ; then
+    source "${INCLUDE}"
+  fi
+done
