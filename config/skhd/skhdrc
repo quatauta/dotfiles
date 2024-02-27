@@ -1,12 +1,6 @@
 # float / unfloat window and center on screen
 alt - t : yabai -m window --toggle float
 
-# swap window position up/down/left/right
-shift + alt - up    : yabai -m window --swap north
-shift + alt - down  : yabai -m window --swap south
-shift + alt - left  : yabai -m window --swap west
-shift + alt - right : yabai -m window --swap east
-
 # stop/start/restart yabai
 ctrl + alt - q : yabai --stop-service
 ctrl + alt - r : yabai --restart-service || yabai --start-service ; skhd --restart-service || skhd --restart-service
