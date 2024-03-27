@@ -18,13 +18,9 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
 export BUNDLE_JOBS="$(nproc || sysctl -n hw.logicalcpu)"
-export ELIXIR_ERL_OPTIONS="+sbwt none" # "+P 16777216 +Q 16777216 +K true +A 128 +sbt db +sbwt very_long +swt very_low +sub true +Mulmbcs 32767 +Mumbcgs 1 +Musmbcs 2047 # https://www.erlang.org/doc/man/erl.html
-export ERL_AFLAGS="-kernel shell_history_enabled"
 export HISTFILE="${XDG_CACHE_HOME}/shell-history"
 export HISTSIZE="10000"
 export HTML_TIDY="${HOME}/.tidyrc"
-export KERL_BUILD_DOCS="true"
-export KERL_CONFIGURE_OPTIONS="--disable-debug --disable-silent-rules --enable-shared-zlib --enable-dynamic-ssl-lib --enable-threads --enable-kernel-poll --enable-wx --enable-webview --with-termcap"
 export LESS="${LESS} -FMSX"
 export MAKEFLAGS="${MAKEFLAGS:--j$(nproc || sysctl -n hw.logicalcpu)}"
 export MAKEOPTS="${MAKEOPTS:--j$(nproc || sysctl -n hw.logicalcpu)}"
