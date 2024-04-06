@@ -94,7 +94,7 @@ module UpdateDependencies
       {
         name: "mise upgrade",
         files: [".tool-versions"],
-        command: "awk '/^\s*[^[:space:]]/ { print $1 }' .tool-versions | while read TOOL ; do mise install \"${TOOL}@latest\" && mise use --pin \"${TOOL}@latest\" ; done"
+        command: "awk '/^\s*[^[:space:]]/ { print $1 }' .tool-versions | while read TOOL ; do mise install --yes \"${TOOL}@latest\" && mise use --pin \"${TOOL}@latest\" ; done"
       },
       {
         name: "mix local.hex local.rebar deps.update",
