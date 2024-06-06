@@ -1,0 +1,79 @@
+#!/usr/bin/env ruby
+
+require "bundler/inline"
+require "mkmf"
+
+gemfile do
+  source "https://rubygems.org"
+  gem "amazing_print"
+  gem "parallel"
+  gem "ruby-progressbar"
+end
+
+def ogg2m4a(files_or_folders = ["."])
+  files = glob_files(files_or_folders, "ogg").select { |file| !File.exist?(file.sub(/\.ogg$/, ".m4a")) }
+
+  Parallel.each(files, progress: "#{files.length} .ogg → .m4a") { |file|
+    ffmpeg_cmd = ffmpeg_cmd_to_m4a(file)
+    system(*ffmpeg_cmd)
+  }
+end
+
+def webm2m4a(files_or_folders = ["."])
+  files = glob_files(files_or_folders, "webm").select { |file| !File.exist?(file.sub(/\.webm$/, ".m4a")) }
+
+  Parallel.each(files, progress: "#{files.length} .webm → .m4a") { |file|
+    ffmpeg_cmd = ffmpeg_cmd_to_m4a(file)
+    system(*ffmpeg_cmd)
+  }
+end
+
+def ogg2mp3(files_or_folders = ["."])
+  files = glob_files(files_or_folders, "ogg").select { |file| !File.exist?(file.sub(/\.ogg$/, ".mp3")) }
+
+  Parallel.each(files, progress: "#{files.length} .ogg → .mp3") { |file|
+    ffmpeg_cmd = ffmpeg_cmd_to_mp3(file)
+    system(*ffmpeg_cmd)
+  }
+end
+
+def ffmpeg_cmd_to_mp3(input_file)
+  ffmpeg_args = %w[-q:a 0 -map_metadata 0:s:0 -id3v2_version 3 -write_id3v1 1]
+  ffmpeg_cmd = %w[ffmpeg -n -v quiet -i]
+  ffmpeg_cmd.push(input_file)
+  ffmpeg_cmd += ffmpeg_args
+  ffmpeg_cmd.push(input_file.sub(/\.[^.]+$/, ".mp3"))
+end
+
+def ffmpeg_cmd_to_m4a(input_file)
+  ffmpeg_args = %w[-c:a aac_at -global_quality:a 0 -q:a 0 -map_metadata 0:s:0 -id3v2_version 3 -write_id3v1 1]
+  ffmpeg_cmd = %w[ffmpeg -n -v quiet -i]
+  ffmpeg_cmd.push(input_file)
+  ffmpeg_cmd += ffmpeg_args
+  ffmpeg_cmd.push(input_file.sub(/\.[^.]+$/, ".m4a"))
+end
+
+def glob_files(files_or_folders, extension)
+  Dir.glob(patterns(files_or_folders, extension))
+    .map { |f| Pathname.new(f).relative_path_from(".").to_s }
+    .sort.uniq
+end
+
+def patterns(files_or_folders = [], file_extension = "ogg")
+  files_or_folders.map { |file_or_folder|
+    if File.directory?(file_or_folder)
+      "#{file_or_folder}/**/*.#{file_extension}"
+    else
+      file_or_folder
+    end
+  }
+end
+
+if __FILE__ == $0
+  abort("Cannot find 'ffmpeg' executable in $PATH") unless find_executable0("ffmpeg")
+
+  ARGV.push(".") if ARGV.empty?
+  # ogg2mp3(ARGV)
+  # ogg2m4a(ARGV)
+  webm2m4a(ARGV)
+end
