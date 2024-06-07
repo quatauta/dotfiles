@@ -31,9 +31,8 @@ augroup END
 set autoindent
 set autoread
 set autowrite
-set background=
+set background&
 set backspace=indent,eol,start
-"set bg=dark
 set cmdheight=2
 set copyindent
 set endofline
