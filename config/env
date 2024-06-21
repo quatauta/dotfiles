@@ -40,7 +40,7 @@ if command -v nvim 1>/dev/null ; then
 fi
 
 command -v bat  >/dev/null && alias cat='bat' less='bat'
-command -v eza  >/dev/null && alias ls='eza'
+command -v eza  >/dev/null && alias ls='eza --group-directories-first --binary --smart-group --mounts --git --git-repos --time-style=long-iso'
 command -v vim  >/dev/null && alias vi='vim'
 command -v vi   >/dev/null && export EDITOR='vi'
 command -v vim  >/dev/null && export EDITOR='vim'
