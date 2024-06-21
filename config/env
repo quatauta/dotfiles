@@ -45,3 +45,7 @@ command -v vim  >/dev/null && alias vi='vim'
 command -v vi   >/dev/null && export EDITOR='vi'
 command -v vim  >/dev/null && export EDITOR='vim'
 command -v nvim >/dev/null && export EDITOR='nvim'
+
+if ! command -v tailscale >/dev/null && [[ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]]; then
+  alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fi
