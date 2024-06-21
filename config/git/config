@@ -26,6 +26,7 @@ psm = push -u origin --set-upstream -o merge_request.create -o merge_request.rem
 ps = push --prune --set-upstream
 s = status
 sa = for-all-repos s
+sw = switch
 
 [branch]
 autosetupmerge = always
