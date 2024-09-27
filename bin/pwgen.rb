@@ -62,7 +62,7 @@ module Pwgen
   # * Left-right-hand keyboard key distribution
   # * Undesired characters
   class Rating
-    UNDESIRED_CHARS = 'zZyYäÄöÖüÜ^°"§&/=ß?´`({[]})€+~#<>|\'\\'
+    UNDESIRED_CHARS = 'zZyYäÄöÖüÜ^°"§&/=ß?´`({[]})€+~;:_#<>|\'\\'
 
     LEFT_HAND = %w[
       ^123456
@@ -122,7 +122,7 @@ if __FILE__ == $0
   number = 10000
   length = 14
   top = 20
-  passwords = Pwgen::Generator.generate(number: number, length: length).sort[-top..-1].reverse
+  passwords = Pwgen::Generator.generate(number: number, length: length).sort[-top..].reverse
 
   puts "The #{passwords.size} best rated passwords:"
   puts
@@ -130,5 +130,4 @@ if __FILE__ == $0
   puts fmt % ["Rating", "Password"]
   puts fmt % ["------", "-" * length]
   puts passwords.map { |p| fmt % [p.rating, p.password] }
-
 end
