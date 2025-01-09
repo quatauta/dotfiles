@@ -104,7 +104,7 @@ module UpdateDependencies
       {
         name: "bundle update",
         files: ["Gemfile.lock"],
-        command: "nice bundle install && nice bundle update --all --quiet"
+        command: "(nice bundle install || rm -fv Gemfile.lock ; true) && nice bundle update --all --quiet"
       },
       {
         name: "npm update",
