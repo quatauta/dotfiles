@@ -2,15 +2,13 @@
 # ~/.config/env
 # vim:syntax=sh:
 
-command -v brew 1>/dev/null && eval "$(brew shellenv | grep -v PATH)"
-
-for BIN_DIR in /opt/homebrew/bin \
+for BIN_DIR in "${HOME}/.local/share/devbox/global/default/.devbox/virtenv/runx/bin" \
                "${HOME}/.dotfiles/bin" \
-               "${HOME}/.local/bin" \
-               "${HOME}/.local/share/mise/shims" \
-               "${HOME}/bin" ; do
+               "${HOME}/.local/bin" ; do
   [ -e "${BIN_DIR}" ] && export PATH="${BIN_DIR}:${PATH}"
 done
+
+command -v brew 1>/dev/null && eval "$(brew shellenv | grep -v PATH)"
 
 [[ -n "${ZSH_PATCHLEVEL}" ]] && typeset -U PATH path
 
