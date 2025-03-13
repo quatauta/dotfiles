@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -e -o pipefail
+
+brew update -q &&
+brew upgrade -q &&
+brew autoremove -q &&
+brew cleanup -q -s
+
+devbox global update
+
+(yabai --restart-service &)
+(skhd --restart-service &)
+
+mas upgrade &&
+softwareupdate -i -a

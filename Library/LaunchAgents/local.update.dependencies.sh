@@ -36,6 +36,8 @@ _wait_for_inexpensive_network() {
   return 1
 }
 
+exit
+
 cd "$HOME"
 _wait_for_inexpensive_network 10 || exit
 sleep 60
