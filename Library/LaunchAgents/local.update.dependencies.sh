@@ -41,7 +41,6 @@ exit
 cd "$HOME"
 _wait_for_inexpensive_network 10 || exit
 sleep 60
-eval "$(mise activate bash)"
-set -x
-update-dependencies --find --maxdepth 2 -exclude 'dotfiles' --printer null "$HOME/work/q"
-mise prune -y
+# eval "$(devbox global shellenv)"
+# set -x
+# update-dependencies --find --maxdepth 2 -exclude 'dotfiles' --printer null "$HOME/work/q"

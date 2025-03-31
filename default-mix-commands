@@ -1,5 +1,0 @@
-local.rebar --force
-local.hex --force
-archive.install github hexpm/hex branch latest
-archive.install hex phx_new --force
-archive.install hex nerves_bootstrap --force

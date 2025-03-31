@@ -8,23 +8,24 @@ path = ~/.git.local
 b = branch
 bcl = branch-clean-local
 branch-clean-local = ! "git fetch -np && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -rt git branch -d"
-branch-clean-local-force = ! "git fetch -np && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -rt git branch -D"
 c = commit
 co = checkout
 d = diff
+dt = -c diff.external=difft diff
 f = fetch --all --no-tags --prune --recurse-submodules
 fa = for-all-repos f
-for-all-repos = !find . -type d -iname .git -print0 2>/dev/null | xargs -0rtn1 -I DIR git -C DIR/../
-for-all-repos-parallel = !find . -type d -iname .git -print0 2>/dev/null | xargs -0rtn1 -P"$(nproc)" -I DIR git -C DIR/../
+for-all-repos = !find . '(' -type d -iname .git '!' -path '*/.terra*' ')' -print0 2>/dev/null | xargs -0rtn1 -I DIR git -C DIR/../
+for-all-repos-parallel = !find . '(' -type d -iname .git '!' -path '*/.terra*' ')' -print0 2>/dev/null | xargs -0rtn1 -P"$(nproc)" -I DIR git -C DIR/../
 i = !git ignored
 ignored = !sh -c 'git status -s --ignored | awk -vFS=\"!! \" \"/^!/ { printf(\\\"%s\\0\\\", \\$2) }\" | xargs -0r git check-ignore -v | awk -vFS=\"[\t]\" \"{ printf(\\\"%-50s %s\\n\\\", \\$2, \\$1) }\"'
 l = "!git log --pretty=decorate --decorate --graph --left-right --cherry-pick --boundary ${1:---all} #"
-m = "!git switch $(git rev-parse --abbrev-ref origin/HEAD | sed -e 's_origin/__') && git pull --prune --no-tags --autostash && git branch-clean-local"
+m = "!git switch \"$(git rev-parse --abbrev-ref origin/HEAD | sed -e 's_^origin/__')\" && git pull --autostash && git branch-clean-local"
 p = pull --prune --no-tags
 pa = for-all-repos p --quiet
 pap = for-all-repos-parallel p --quiet
-psm = push -u origin --set-upstream -o merge_request.create -o merge_request.remove_source_branch HEAD
+# psm = push --prune --set-upstream -o merge_request.create -o merge_request.remove_source_branch -o merge_request.assign=quatauta
 ps = push --prune --set-upstream
+r = restore
 s = status
 sa = for-all-repos s
 sw = switch
@@ -32,12 +33,14 @@ sw = switch
 [branch]
 autosetupmerge = always
 autosetuprebase = always
+sort = -committerdate
 
 [color]
 ui = auto
 
 [commit]
 gpgSign = true
+verbose = true
 
 [core]
 excludesFile = ~/.config/git/ignore
@@ -46,7 +49,12 @@ excludesFile = ~/.config/git/ignore
 helper = cache
 
 [diff]
-colorMoved = default
+algorithm = histogram
+colorMoved = plain # dimmed-zebra
+mnemonicPrefix = true
+renames = copies
+renames = true
+submodule = log
 
 [fetch]
 parallel = 0
@@ -62,10 +70,10 @@ required = true
 format = ssh
 
 [gpg "ssh"]
-allowedSignersFile = /Users/daniel/.ssh/allowed_signers
+allowedSignersFile = /Users/bp1174/.ssh/allowed_signers
 
 [help]
-autocorrect = -1
+autocorrect = 0
 
 [include]
 path = ~/.git.local
@@ -75,10 +83,11 @@ defaultBranch = main
 
 [log]
 date = iso
+sort = version:refname
 
 [merge]
 ff = only
-conflictstyle = diff3
+conflictstyle = zdiff3
 
 [pretty]
 decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,trunc) (%C(auto,yellow)%ad %C(auto,magenta)%G?%C(auto,reset))
@@ -87,13 +96,18 @@ decorate = format:%C(auto)%h %C(auto,green)%<(12,trunc)%aN %C(auto)%s%d%<(12,tru
 ff = only
 
 [push]
-default = current
+autoSetupRemote = true
+default = current # simple
+followTags = true
 
 [rebase]
 autosquash = true
 
 [rerere]
+autoSquash = true
+autoStash = true
 enable = true
+updateRefs = true
 
 [status]
 branch = true
@@ -102,12 +116,6 @@ submoduleSummary = true
 
 [submodule]
 recurse = true
-
-[diff]
-colormoved = default
-mnemonicprefix = true
-renames = copies
-submodule = log
 
 [diff "bin"]
 binary = true

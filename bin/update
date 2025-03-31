@@ -2,15 +2,18 @@
 
 set -e -o pipefail
 
-brew update -q &&
-brew upgrade -q &&
-brew autoremove -q &&
-brew cleanup -q -s
+if command -v brew &>/dev/null ; then
+  brew update -q &&
+  brew upgrade -q &&
+  brew autoremove -q &&
+  brew cleanup -q -s
+fi
 
-devbox global update
+command -v devbox    &>/dev/null && devbox global update
+command -v nix-store &>/dev/null && nix-store --gc 2>&1 | grep 'freed$' && nix-store --optimise
 
-(yabai --restart-service &)
-(skhd --restart-service &)
+command -v yabai  &>/dev/null && (yabai --restart-service &)
+command -v skhd   &>/dev/null && (skhd  --restart-service &)
 
-mas upgrade &&
-softwareupdate -i -a
+command -v mas            &>/dev/null && mas upgrade
+command -v softwareupdate &>/dev/null && softwareupdate -i -a
