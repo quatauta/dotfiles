@@ -1,25 +1,26 @@
 #!/bin/bash
 
-set -u
+set -eu
 
 EXT="NEF"
 DST_DIR="${HOME}/Pictures"
 SRC_DIR="$1"
 
 LAST_RUN_FILE="${DST_DIR}/.$(basename "$0").last_run"
-LAST_NEF="$(find "${DST_DIR}" -iname "*.${EXT}" 2>/dev/null | sort | tail -n1)"
+LAST_NEF="$(find "${DST_DIR}" -iname "*.${EXT}" 2>/dev/null | sort -r | head -n1)"
 
 if [[ "${LAST_NEF}" -nt "${LAST_RUN_FILE}" ]]; then
-  exiftool -if '$DateTimeOriginal' -DateTimeOriginal -d "%Y:%m:%d %H:%M:%S" -s3 "${LAST_NEF}" >"${LAST_RUN_FILE}"
-  touch -r "${LAST_NEF}" "${LAST_RUN_FILE}"
+  LAST_RUN="$(exiftool -if '$DateTimeOriginal' -DateTimeOriginal -d "%Y-%m-%d %H:%M:%S" -s3 "${LAST_NEF}")"
+  echo "${LAST_RUN}" | tr "-" ":" >"${LAST_RUN_FILE}"
+  touch -d "${LAST_RUN}" "${LAST_RUN_FILE}"
 fi
 
 LAST_RUN="$(cat "${LAST_RUN_FILE}")"
 
-find "${SRC_DIR}" -iname "*.${EXT}" -newer "${LAST_RUN_FILE}" -print0 |
-xargs -0rt exiftool -P -progress \
+find "${SRC_DIR}" -iname "*.${EXT}" -newer "${LAST_RUN_FILE}" -print0 2>/dev/null |
+xargs -0r exiftool -P -progress \
   -if "\${CreateDate} gt \"${LAST_RUN}\"" \
-  "-FileName<${DST_DIR}/\${createdate;DateFmt(\"%Y/%m/%d/%Y-%m-%d\")}_\${Filename}" \
-  "-SubjectDistance<FocusDistance"
+  "-FileName<${DST_DIR}/\${CreateDate;DateFmt(\"%Y/%m/%d/%Y-%m-%d\")}_\${Filename}" \
+  "-SubjectDistance<FocusDistance" || true
 
 date +"%Y:%m:%d %H:%M:%S" >"${LAST_RUN_FILE}"

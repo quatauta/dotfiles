@@ -4,7 +4,6 @@
     "atool@latest",
     "bash@latest",
     "bat@latest",
-    "coreutils@latest",
     "direnv@latest",
     "elixir@latest",
     "entr@latest",
@@ -42,7 +41,8 @@
     "yamllint@latest",
     "yq-go@latest",
     "zsh-autosuggestions@latest",
-    "gnupg@latest"
+    "gnupg@latest",
+    "coreutils-full@latest"
   ],
   "shell": {
     "init_hook": [
