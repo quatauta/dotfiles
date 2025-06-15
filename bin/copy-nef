@@ -2,25 +2,30 @@
 
 set -eu
 
-EXT="NEF"
 DST_DIR="${HOME}/Pictures"
 SRC_DIR="$1"
 
 LAST_RUN_FILE="${DST_DIR}/.$(basename "$0").last_run"
-LAST_NEF="$(find "${DST_DIR}" -iname "*.${EXT}" 2>/dev/null | sort -r | head -n1)"
+LAST_IMG="$(find "${DST_DIR}"/2* \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) 2>/dev/null | sort -r | head -n1)"
 
-if [[ "${LAST_NEF}" -nt "${LAST_RUN_FILE}" ]]; then
-  LAST_RUN="$(exiftool -if '$DateTimeOriginal' -DateTimeOriginal -d "%Y-%m-%d %H:%M:%S" -s3 "${LAST_NEF}")"
+if [[ "${LAST_IMG}" -nt "${LAST_RUN_FILE}" ]]; then
+  LAST_RUN="$(exiftool -if '$DateTimeOriginal' -DateTimeOriginal -d "%Y-%m-%d %H:%M:%S" -s3 "${LAST_IMG}")"
   echo "${LAST_RUN}" | tr "-" ":" >"${LAST_RUN_FILE}"
   touch -d "${LAST_RUN}" "${LAST_RUN_FILE}"
 fi
 
 LAST_RUN="$(cat "${LAST_RUN_FILE}")"
 
-find "${SRC_DIR}" -iname "*.${EXT}" -newer "${LAST_RUN_FILE}" -print0 2>/dev/null |
-xargs -0r exiftool -P -progress \
-  -if "\${CreateDate} gt \"${LAST_RUN}\"" \
-  "-FileName<${DST_DIR}/\${CreateDate;DateFmt(\"%Y/%m/%d/%Y-%m-%d\")}_\${Filename}" \
-  "-SubjectDistance<FocusDistance" || true
+find "${SRC_DIR}" \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) -newer "${LAST_RUN_FILE}" -print0 2>/dev/null |
+sort -z |
+(
+  xargs -0r exiftool -P -progress \
+    -if "\${CreateDate} gt \"${LAST_RUN}\"" \
+    "-FileName<${DST_DIR}/\${CreateDate;DateFmt(\"%Y/%m/%d/%Y-%m-%d\")}_\${Filename}" \
+    "-SubjectDistance<FocusDistance" 2>&1 ||
+  true
+) |
+grep -v -e '^Error: .* already exists - ' \
+        -e '^Warning: Condition FocusPositionHorizontal'
 
 date +"%Y:%m:%d %H:%M:%S" >"${LAST_RUN_FILE}"

@@ -31,7 +31,6 @@
     "pwgen@latest",
     "rcm@latest",
     "ripgrep@latest",
-    "rsync@latest",
     "ruby@latest",
     "skhd@latest",
     "starship@latest",
@@ -42,7 +41,8 @@
     "yq-go@latest",
     "zsh-autosuggestions@latest",
     "gnupg@latest",
-    "coreutils-full@latest"
+    "coreutils-full@latest",
+    "rclone@latest"
   ],
   "shell": {
     "init_hook": [
