@@ -9,6 +9,7 @@ if command -v brew &>/dev/null ; then
   brew cleanup -q -s
 fi
 
+command -v devbox    &>/dev/null && devbox version update
 command -v devbox    &>/dev/null && devbox global update 2>&1 | grep -Ev '(Already up-to-date|Updated system information for|Attempting to upgrade|Computed the Devbox environment|Failed to upgrade darwin.apple_sdk)'
 command -v nix-store &>/dev/null && nix-store --gc 2>&1 | grep 'freed$' && nix-store --optimise
 

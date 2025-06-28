@@ -4,6 +4,9 @@
 
 vim.g.autoformat = false
 vim.g.minipairs_disable = true
+vim.g.snacks_animate = false
+vim.g.snacks_indent = false
+vim.o.conceallevel = 0
 vim.o.incsearch = true
 vim.o.smarttab = true
 vim.o.softtabstop = 2

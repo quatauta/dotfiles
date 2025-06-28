@@ -2,7 +2,7 @@
 # ~/.config/env
 # vim:syntax=sh:
 
-for BIN_DIR in "${HOME}/.local/share/devbox/global/default/.devbox/virtenv/runx/bin" \
+for BIN_DIR in "${HOME}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin" \
                "${HOME}/.dotfiles/bin" \
                "${HOME}/.local/bin" ; do
   [ -e "${BIN_DIR}" ] && export PATH="${BIN_DIR}:${PATH}"

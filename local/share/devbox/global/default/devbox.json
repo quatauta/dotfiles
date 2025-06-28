@@ -42,7 +42,8 @@
     "zsh-autosuggestions@latest",
     "gnupg@latest",
     "coreutils-full@latest",
-    "rclone@latest"
+    "rclone@latest",
+    "nodejs@latest"
   ],
   "shell": {
     "init_hook": [
