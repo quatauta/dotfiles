@@ -1,13 +1,17 @@
 return {
-  {
-   -- "NLKNguyen/papercolor-theme",
-   "arongp/PaperColor",
-   lazy = false,
-   priority = 1000,
-   config = function()
-     vim.g.PaperColor_Theme_Options = { theme = { default = { transparent_background = 0, }, }, }
-   end,
-  },
+  -- { "NLKNguyen/papercolor-theme", },
+  -- { "LazyVim/LazyVim", opts = { colorscheme = "PaperColor" } },
 
-  { "LazyVim/LazyVim", opts = { colorscheme = "PaperColor" } },
+  {
+    "folke/tokyonight.nvim",
+    opts = {
+      style = "night",
+      transparent = true,
+      terminal_colors = true,
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
+      },
+    },
+  },
 }
