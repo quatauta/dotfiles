@@ -7,7 +7,6 @@
     "coreutils-full@latest",
     "direnv@latest",
     "elixir@latest",
-    "entr@latest",
     "erlang@latest",
     "exiftool@latest",
     "exiv2@latest",
@@ -23,15 +22,13 @@
     "jdupes@latest",
     "jpegoptim@latest",
     "jq@latest",
-    "just@latest",
-    "keymap-drawer@latest",
     "mas@latest",
     "mcfly@latest",
     "mmv@latest",
     "moreutils@latest",
     "ncdu@latest",
     "neovim@latest",
-    "nodejs@24.2",
+    "nodejs@latest",
     "pstree@latest",
     "pwgen@latest",
     "rclone@latest",
@@ -45,7 +42,8 @@
     "yabai@latest",
     "yamllint@latest",
     "yq-go@latest",
-    "zsh-autosuggestions@latest"
+    "zsh-autosuggestions@latest",
+    "nightlight@latest"
   ],
   "shell": {
     "init_hook": [

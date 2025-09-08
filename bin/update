@@ -11,12 +11,12 @@ fi
 
 command -v devbox    &>/dev/null && devbox version update -q
 command -v devbox    &>/dev/null && devbox global update -q 2>&1 | grep -Ev '(Already up-to-date|Updated system information for|Attempting to upgrade|Computed the Devbox environment|Failed to upgrade darwin.apple_sdk)'
-command -v nix-store &>/dev/null && nix-store --gc --quiet 2>&1 | grep 'freed$' && nix-store --optimise
+command -v nix-store &>/dev/null && nix store gc --quiet 2>&1 | grep 'freed$' && nix store optimise --quiet
 
 for CMD in yabai skhd ; do
   command -v "${CMD}" &>/dev/null &&
   printf '%s\n' stop uninstall install start |
-  xargs -r -I ACTION bash -c "'${CMD}' '--ACTION-service' ; sleep 0.2" &
+  xargs -r -I ACTION bash -c "'${CMD}' '--ACTION-service' ; sleep 0.1" &
 done
 
 command -v mas            &>/dev/null && mas upgrade

@@ -1,9 +1,10 @@
 # ~/.config/starship.toml
 
-add_newline = false
+add_newline = true
 
 [directory]
 fish_style_pwd_dir_length = 1
+truncate_to_repo = true
 truncation_length = 4
 truncation_symbol = "…/"
 
@@ -15,4 +16,8 @@ disabled = false
 
 [status]
 disabled = false
+map_symbol = true
 pipestatus = true
+
+[sudo]
+disabled = false
