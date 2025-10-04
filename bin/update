@@ -20,4 +20,4 @@ for CMD in yabai skhd ; do
 done
 
 command -v mas            &>/dev/null && mas upgrade
-command -v softwareupdate &>/dev/null && softwareupdate -i -a
+# command -v softwareupdate &>/dev/null && softwareupdate -i -a

@@ -12,16 +12,19 @@ command -v brew 1>/dev/null && eval "$(brew shellenv | grep -v PATH)"
 
 [[ -n "${ZSH_PATCHLEVEL}" ]] && typeset -U PATH path
 
+CPU_COUNT="$(nproc || sysctl -n hw.logicalcpu)"
+
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
-export BUNDLE_JOBS="$(nproc || sysctl -n hw.logicalcpu)"
+export BUNDLE_JOBS="${CPU_COUNT}"
 export HISTFILE="${XDG_CACHE_HOME}/shell-history"
 export HISTSIZE="10000"
 export HTML_TIDY="${HOME}/.tidyrc"
 export LESS="${LESS} -FMSX"
-export MAKEFLAGS="${MAKEFLAGS:--j$(nproc || sysctl -n hw.logicalcpu)}"
-export MAKEOPTS="${MAKEOPTS:--j$(nproc || sysctl -n hw.logicalcpu)}"
+export MAKEFLAGS="${MAKEFLAGS:--j${CPU_COUNT}}"
+export MAKEOPTS="${MAKEOPTS:--j${CPU_COUNT}}"
+export MIX_OS_DEPS_COMPILE_PARTITION_COUNT="${CPU_COUNT}"
 export MANPATH="${HOME}/.local/share/devbox/global/default/.devbox/nix/profile/default/share/man:${MANPATH}"
 export MCFLY_INTERFACE_VIEW="BOTTOM"
 export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep.conf"

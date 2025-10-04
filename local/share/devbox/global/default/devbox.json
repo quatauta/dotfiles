@@ -19,7 +19,6 @@
     "glab@latest",
     "gnupg@latest",
     "icloudpd@latest",
-    "jdupes@latest",
     "jpegoptim@latest",
     "jq@latest",
     "mas@latest",
@@ -28,6 +27,7 @@
     "moreutils@latest",
     "ncdu@latest",
     "neovim@latest",
+    "nightlight@latest",
     "nodejs@latest",
     "pstree@latest",
     "pwgen@latest",
@@ -43,7 +43,7 @@
     "yamllint@latest",
     "yq-go@latest",
     "zsh-autosuggestions@latest",
-    "nightlight@latest"
+    "jdupes@1.28"
   ],
   "shell": {
     "init_hook": [
