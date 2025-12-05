@@ -34,6 +34,5 @@ setopt numeric_glob_sort
 # setopt sh_word_split
 
 export REPORTTIME=60
-export TMPPREFIX="${TMP}/zsh"
 export WORDCHARS='!%^(){}'
 export ZSH_COMPDUMP="${HOME}/.cache/zcompdump"

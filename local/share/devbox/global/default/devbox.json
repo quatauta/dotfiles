@@ -5,7 +5,6 @@
     "bash@latest",
     "bat@latest",
     "coreutils-full@latest",
-    "direnv@latest",
     "elixir@latest",
     "erlang@latest",
     "exiftool@latest",
@@ -13,7 +12,6 @@
     "eza@latest",
     "ffmpeg@latest",
     "findutils@latest",
-    "flyctl@latest",
     "fzf@latest",
     "git@latest",
     "glab@latest",
@@ -43,7 +41,8 @@
     "yamllint@latest",
     "yq-go@latest",
     "zsh-autosuggestions@latest",
-    "jdupes@1.28"
+    "jdupes@1.28",
+    "flyctl@latest"
   ],
   "shell": {
     "init_hook": [
