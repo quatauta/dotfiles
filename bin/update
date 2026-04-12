@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e -o pipefail
+set -o pipefail
 
 if command -v brew &>/dev/null ; then
   brew update -q &&
@@ -11,7 +11,7 @@ fi
 
 command -v devbox    &>/dev/null && devbox version update -q
 command -v devbox    &>/dev/null && devbox global update -q 2>&1 | grep -Ev '(Already up-to-date|Updated system information for|Attempting to upgrade|Computed the Devbox environment|Failed to upgrade darwin.apple_sdk)'
-command -v nix-store &>/dev/null && nix store gc --quiet && nix store optimise --quiet 2>&1 | grep 'freed$'
+command -v nix-store &>/dev/null && nix store gc --quiet && nix store optimise --quiet
 
 for CMD in yabai skhd ; do
   command -v "${CMD}" &>/dev/null &&
