@@ -2,8 +2,8 @@
 
 set -eu
 
-DST_DIR="${HOME}/Pictures"
-SRC_DIR="$1"
+SRC_DIR="${1:?Please provide the source dir for photos as first parameter}"
+DST_DIR="${2:-${HOME}/Pictures}"
 
 LAST_RUN_FILE="${DST_DIR}/.$(basename "$0").last_run"
 LAST_IMG="$(find "${DST_DIR}"/2* \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) 2>/dev/null | sort -r | head -n1)"
@@ -15,6 +15,13 @@ if [[ "${LAST_IMG}" -nt "${LAST_RUN_FILE}" ]]; then
 fi
 
 LAST_RUN="$(cat "${LAST_RUN_FILE}")"
+
+echo "Source:        ${SRC_DIR}"
+echo "Destination:   ${DST_DIR}"
+echo "Last run file: ${LAST_RUN_FILE}"
+echo "Last image:    ${LAST_IMG}"
+echo "Last run:      ${LAST_RUN}"
+echo
 
 find "${SRC_DIR}" \( \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) -newer "${LAST_RUN_FILE}" \! -ipath '*reject*' \) -print0 2>/dev/null |
 sort -z |
