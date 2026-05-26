@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -eu
+# set -eu
 
 SRC_DIR="${1:?Please provide the source dir for photos as first parameter}"
 DST_DIR="${2:-${HOME}/Pictures}"
@@ -23,16 +23,38 @@ echo "Last image:    ${LAST_IMG}"
 echo "Last run:      ${LAST_RUN}"
 echo
 
-find "${SRC_DIR}" \( \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) -newer "${LAST_RUN_FILE}" \! -ipath '*reject*' \) -print0 2>/dev/null |
-sort -z |
+TMP_OUT="$(mktemp -q)"
+trap 'rm -f "${TMP_OUT}" &>/dev/null' EXIT
+
 (
-  xargs -0r exiftool -P -progress \
-    -if "\${CreateDate} gt \"${LAST_RUN}\"" \
-    "-FileName<${DST_DIR}/\${CreateDate;DateFmt(\"%Y/%m/%d/%Y-%m-%d\")}_\${Filename}" \
-    "-SubjectDistance<FocusDistance" 2>&1 ||
-  true
-) |
-grep -v -e '^Error: .* already exists - ' \
-        -e '^Warning: Condition FocusPositionHorizontal'
+  find "${SRC_DIR}" \( \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) -newer "${LAST_RUN_FILE}" \! -ipath '*reject*' \) -print0 2>/dev/null |
+  sort -z |
+  (
+    xargs -0r exiftool -P -progress \
+      -if "\${CreateDate} gt \"${LAST_RUN}\"" \
+      "-FileName<${DST_DIR}/\${CreateDate;DateFmt(\"%Y/%m/%d/%Y-%m-%d\")}_\${Filename}" \
+      "-SubjectDistance<FocusDistance" 2>&1 ||
+    true
+  ) |
+  grep -v --line-buffered \
+    -e '^Error: .* already exists - ' \
+    -e '^Warning: Condition FocusPositionHorizontal' \
+    -e ' --> '
+) &>"${TMP_OUT}" &
+
+# Print exiftool output in a 5-line rolling window
+CMD_PID=$!
+TMP_OUT_LINES="5"
+printf '\n%.0s' $(seq 0 $(($TMP_OUT_LINES - 1)) )
+while true; do
+  sleep 1
+  mapfile -t -n "${TMP_OUT_LINES}" lines < <(tail -n "${TMP_OUT_LINES}" "${TMP_OUT}")
+  buf=$'\e['"${TMP_OUT_LINES}"'A'
+  for i in $( seq 0 $(($TMP_OUT_LINES - 1)) ) ; do
+    buf+=$'\e[2K'"${lines[$i]}"$'\n'
+  done
+  printf '%s' "$buf"
+  kill -0 $CMD_PID 2>/dev/null || break
+done
 
 date +"%Y:%m:%d %H:%M:%S" >"${LAST_RUN_FILE}"

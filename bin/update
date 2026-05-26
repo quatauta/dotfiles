@@ -2,6 +2,8 @@
 
 set -o pipefail
 
+( caffeinate -w $$ & )
+
 if command -v brew &>/dev/null ; then
   brew update -q &&
   brew upgrade -q &&
