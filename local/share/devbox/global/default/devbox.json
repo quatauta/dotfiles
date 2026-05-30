@@ -23,7 +23,6 @@
     "mas@latest",
     "mcfly@latest",
     "mmv@latest",
-    "moreutils@latest",
     "ncdu@latest",
     "neovim@latest",
     "nodejs@24",
@@ -40,7 +39,8 @@
     "yabai@latest",
     "yamllint@latest",
     "yq-go@latest",
-    "zsh-autosuggestions@latest"
+    "zsh-autosuggestions@latest",
+    "parallel-full@latest"
   ],
   "shell": {
     "init_hook": [

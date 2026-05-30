@@ -4,6 +4,8 @@ set -o pipefail
 
 ( caffeinate -w $$ & )
 
+command -v nix &>/dev/null && sudo nix upgrade-nix --quiet
+
 if command -v brew &>/dev/null ; then
   brew update -q &&
   brew upgrade -q &&

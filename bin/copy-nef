@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
-# set -eu
+(parallel --version 2>/dev/null || true) | grep -q GNU || echo "Please install gnu parallel (devbox global add parallel-full)"
+touch ~/.parallel/will-cite
 
 SRC_DIR="${1:?Please provide the source dir for photos as first parameter}"
 DST_DIR="${2:-${HOME}/Pictures}"
 
 LAST_RUN_FILE="${DST_DIR}/.$(basename "$0").last_run"
-LAST_IMG="$(find "${DST_DIR}"/2* \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) 2>/dev/null | sort -r | head -n1)"
+LAST_IMG="$((find "${DST_DIR}"/2* \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) 2>/dev/null || true) | sort -r | head -n1)"
+
+if ! [[ -r "${LAST_RUN_FILE}" ]] && [[ -z "${LAST_IMG}" ]] ; then
+  echo No last run, copying all files ...
+  touch -d 1900-01-01 "${LAST_RUN_FILE}"
+fi
 
 if [[ "${LAST_IMG}" -nt "${LAST_RUN_FILE}" ]]; then
   LAST_RUN="$(exiftool -if '$DateTimeOriginal' -DateTimeOriginal -d "%Y-%m-%d %H:%M:%S" -s3 "${LAST_IMG}")"
@@ -14,7 +20,8 @@ if [[ "${LAST_IMG}" -nt "${LAST_RUN_FILE}" ]]; then
   touch -d "${LAST_RUN}" "${LAST_RUN_FILE}"
 fi
 
-LAST_RUN="$(cat "${LAST_RUN_FILE}")"
+LAST_RUN="$(date -r "${LAST_RUN_FILE}")"
+CPU_COUNT="$(nproc || sysctl -n hw.logicalcpu)"
 
 echo "Source:        ${SRC_DIR}"
 echo "Destination:   ${DST_DIR}"
@@ -28,26 +35,21 @@ trap 'rm -f "${TMP_OUT}" &>/dev/null' EXIT
 
 (
   find "${SRC_DIR}" \( \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) -newer "${LAST_RUN_FILE}" \! -ipath '*reject*' \) -print0 2>/dev/null |
+  parallel -0 -j "${CPU_COUNT}" -N100 --keep-order --quote \
+    exiftool --fast2 -q -p $'${FilePath}\t'"${DST_DIR}"$'/${CreateDate;DateFmt("%Y/%m/%d/")}${Filename}' |
   sort -z |
-  (
-    xargs -0r exiftool -P -progress \
-      -if "\${CreateDate} gt \"${LAST_RUN}\"" \
-      "-FileName<${DST_DIR}/\${CreateDate;DateFmt(\"%Y/%m/%d/%Y-%m-%d\")}_\${Filename}" \
-      "-SubjectDistance<FocusDistance" 2>&1 ||
-    true
-  ) |
-  grep -v --line-buffered \
-    -e '^Error: .* already exists - ' \
-    -e '^Warning: Condition FocusPositionHorizontal' \
-    -e ' --> '
+  while IFS=$'\t' read -r src dst; do
+    echo -ne "mkdir -pv '$(dirname "${dst}")' ; /bin/cp -cv '${src}' '${dst}'\0"
+  done |
+  xargs -0rn1 -P"${CPU_COUNT}" bash -c
 ) &>"${TMP_OUT}" &
 
-# Print exiftool output in a 5-line rolling window
+# Print copy output in a 5-line rolling window
 CMD_PID=$!
 TMP_OUT_LINES="5"
 printf '\n%.0s' $(seq 0 $(($TMP_OUT_LINES - 1)) )
 while true; do
-  sleep 1
+  sleep 0.3
   mapfile -t -n "${TMP_OUT_LINES}" lines < <(tail -n "${TMP_OUT_LINES}" "${TMP_OUT}")
   buf=$'\e['"${TMP_OUT_LINES}"'A'
   for i in $( seq 0 $(($TMP_OUT_LINES - 1)) ) ; do
