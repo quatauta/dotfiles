@@ -32,6 +32,8 @@
 	<true/>
 	<key>CheckTestRelease</key>
 	<true/>
+	<key>ClaudeCodeWorkgroupUpsellSuppressed</key>
+	<true/>
 	<key>ConvertDosNewlines</key>
 	<true/>
 	<key>CopyLastNewline</key>
