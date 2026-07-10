@@ -4,18 +4,29 @@ set -o pipefail
 
 ( caffeinate -w $$ & )
 
-command -v nix &>/dev/null && sudo nix upgrade-nix --quiet
+if command -v nix &>/dev/null ; then
+  NIX_CURRENT="$(nix --version 2>&1 | awk '/[0-9].[0-9]/ { print $NF }')"
+  NIX_LATEST="$(nix upgrade-nix --dry-run 2>&1| awk '/[0-9].[0-9]/ { print $NF }')"
+
+  if [[ "${NIX_CURRENT}" != "${NIX_LATEST}" ]] ; then
+    sudo nix upgrade-nix --quiet
+  fi
+fi
 
 if command -v brew &>/dev/null ; then
   brew update -q &&
-  brew upgrade -q &&
+  brew upgrade -q --no-ask &&
   brew autoremove -q &&
-  brew cleanup -q -s
+  brew cleanup -q -s &&
+  brew bundle dump --global -f
 fi
 
 command -v devbox    &>/dev/null && devbox version update -q
 command -v devbox    &>/dev/null && devbox global update -q 2>&1 | grep -Ev '(Already up-to-date|Updated system information for|Attempting to upgrade|Computed the Devbox environment|Failed to upgrade darwin.apple_sdk)'
-command -v nix-store &>/dev/null && nix store gc --quiet && nix store optimise --quiet
+command -v nix-store &>/dev/null && (nix store gc --quiet && nix store optimise --quiet 2>&1 | grep freed)
+command -v opencode  &>/dev/null && opencode upgrade --pure 2>&1 | grep 'upgrade'
+command -v pi        &>/dev/null && pi update && pi update --extensions
+command -v uv        &>/dev/null && uv tool upgrade --all --quiet
 
 for CMD in yabai skhd ; do
   command -v "${CMD}" &>/dev/null &&
