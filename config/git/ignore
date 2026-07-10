@@ -1,2 +1,4 @@
 .DS_Store
 .mix_tasks
+
+**/.claude/settings.local.json

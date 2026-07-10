@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if ! command -v gitleaks &>/dev/null ; then
+  echo "INFO: gitleaks is not installed. I cannot scan for sensitive information in your changes."
+  exit 0
+fi
+
+if ! gitleaks git --pre-commit --staged --no-banner --log-level=warn -v ; then
+  echo "WARNING: gitleaks has detected sensitive information in your changes."
+  exit 1
+fi
