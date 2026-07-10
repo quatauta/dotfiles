@@ -15,6 +15,8 @@ done
 
 setopt append_history
 setopt auto_continue
+setopt extended_history
+setopt hist_expire_dups_first
 # setopt auto_resume
 # setopt check_jobs
 # setopt complete_aliases
