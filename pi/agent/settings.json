@@ -1,0 +1,12 @@
+{
+  "lastChangelogVersion": "0.80.6",
+  "theme": "dark",
+  "packages": [
+    "git:github.com/DietrichGebert/ponytail",
+    "git:github.com/obra/superpowers",
+    "npm:pi-provider-litellm"
+  ],
+  "defaultProvider": "litellm",
+  "defaultModel": "claude-opus-4-6",
+  "defaultThinkingLevel": "high"
+}
