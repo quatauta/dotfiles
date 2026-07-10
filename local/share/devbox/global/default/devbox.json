@@ -41,7 +41,8 @@
     "gh@latest",
     "uv@latest",
     "beam29Packages.elixir_1_20@latest",
-    "beam29Packages.erlang@latest"
+    "beam29Packages.erlang@latest",
+    "gitleaks@latest"
   ],
   "shell": {
     "init_hook": [
