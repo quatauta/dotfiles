@@ -120,7 +120,6 @@ call plug#begin()
   Plug 'vim-test/vim-test'
   let test#strategy = "neoterm"
 
-  Plug 'elixir-editors/vim-elixir'
   Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
