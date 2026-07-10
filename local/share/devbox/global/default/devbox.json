@@ -4,8 +4,6 @@
     "atool@latest",
     "bash@latest",
     "bat@latest",
-    "beam28Packages.elixir_1_20@latest",
-    "beam28Packages.erlang@latest",
     "coreutils-full@latest",
     "exiftool@latest",
     "exiv2@latest",
@@ -25,7 +23,6 @@
     "mmv@latest",
     "ncdu@latest",
     "neovim@latest",
-    "nodejs@24",
     "pstree@latest",
     "pwgen@latest",
     "rclone@latest",
@@ -40,7 +37,11 @@
     "yamllint@latest",
     "yq-go@latest",
     "zsh-autosuggestions@latest",
-    "parallel-full@latest"
+    "nodejs@latest",
+    "gh@latest",
+    "uv@latest",
+    "beam29Packages.elixir_1_20@latest",
+    "beam29Packages.erlang@latest"
   ],
   "shell": {
     "init_hook": [
@@ -51,5 +52,8 @@
         "echo \"Error: no test specified\" && exit 1"
       ]
     }
-  }
+  },
+  "include": [
+    "github:martingreber/nodejs-global-devbox-plugin"
+  ]
 }
