@@ -1,10 +1,14 @@
 {
-  "lastChangelogVersion": "0.80.6",
+  "lastChangelogVersion": "0.80.7",
   "theme": "dark",
   "packages": [
     "git:github.com/DietrichGebert/ponytail",
     "git:github.com/obra/superpowers",
-    "npm:pi-provider-litellm"
+    "npm:pi-provider-litellm",
+    "npm:@lustepe/elixir-pi",
+    "npm:pi-elixir",
+    "../../work/github.com/oliver-kriska/claude-elixir-phoenix/targets/pi",
+    "npm:pi-subagents"
   ],
   "defaultProvider": "litellm",
   "defaultModel": "claude-opus-4-6",

@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-(parallel --version 2>/dev/null || true) | grep -q GNU || echo "Please install gnu parallel (devbox global add parallel-full)"
+if ! (parallel --version 2>/dev/null || true) | grep -q GNU ; then
+  echo "Please install gnu parallel (devbox global add parallel-full)"
+  exit
+fi
+
+mkdir -p ~/.parallel/
 touch ~/.parallel/will-cite
 
 SRC_DIR="${1:?Please provide the source dir for photos as first parameter}"

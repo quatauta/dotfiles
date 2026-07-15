@@ -3,6 +3,7 @@
 # vim:syntax=sh:
 
 for BIN_DIR in "${HOME}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin" \
+               "${HOME}/.cargo/bin" \
                "${HOME}/.dotfiles/bin" \
                "${HOME}/.local/bin" ; do
   [ -e "${BIN_DIR}" ] && export PATH="${BIN_DIR}:${PATH}"
@@ -27,6 +28,7 @@ export MAKEOPTS="${MAKEOPTS:--j${CPU_COUNT}}"
 export MIX_OS_DEPS_COMPILE_PARTITION_COUNT="${CPU_COUNT}"
 export MANPATH="${HOME}/.local/share/devbox/global/default/.devbox/nix/profile/default/share/man:${MANPATH}"
 export MCFLY_INTERFACE_VIEW="BOTTOM"
+export PI_ELIXIR_EXPERT_COMMAND="${HOME}/.local/share/nvim/mason/bin/elixir-ls"
 export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep.conf"
 export SAVEHIST="${HISTSIZE}"
 

@@ -42,7 +42,12 @@
     "uv@latest",
     "beam29Packages.elixir_1_20@latest",
     "beam29Packages.erlang@latest",
-    "gitleaks@latest"
+    "gitleaks@latest",
+    "typst@latest",
+    "dive@latest",
+    "docker-slim@latest",
+    "upx@latest",
+    "parallel-full@latest"
   ],
   "shell": {
     "init_hook": [
