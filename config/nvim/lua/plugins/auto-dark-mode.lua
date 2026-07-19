@@ -12,9 +12,8 @@ return {
     end,
     set_light_mode = function()
       vim.api.nvim_set_option_value("background", "light", { scope = "global" })
-      vim.cmd.colorscheme("flexoki-light")
-      vim.api.nvim_set_hl(0, "Normal", { fg = "#100F0F", bg = "#FFFFFF" })
-      vim.api.nvim_set_hl(0, "NormalNC", { bg = "#FFFFFF" })
+      vim.api.nvim_set_hl(0, "Normal", { fg = "#000000", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
     end,
   },
 }
