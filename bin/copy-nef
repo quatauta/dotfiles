@@ -1,67 +1,130 @@
 #!/usr/bin/env bash
 
-if ! (parallel --version 2>/dev/null || true) | grep -q GNU ; then
-  echo "Please install gnu parallel (devbox global add parallel-full)"
-  exit
-fi
+set -euo pipefail
 
-mkdir -p ~/.parallel/
-touch ~/.parallel/will-cite
+# Copy NEF/JPG/MOV photos from camera card to ~/Pictures organized by date.
+# Uses GNU parallel + exiftool for speed.
+
+readonly EXTENSIONS='( -iname *.nef -or -iname *.jpg -or -iname *.mov )'
+
+# --- Portable helpers ---
+
+die() { echo "ERROR: $*" >&2; exit 1; }
+
+# touch with a date string (GNU: -d, BSD: -t)
+touch_date() {
+  local datestr="$1" file="$2"
+  if touch -d "${datestr}" "${file}" 2>/dev/null; then
+    return
+  fi
+  # BSD: convert "YYYY-MM-DD HH:MM:SS" or "YYYY-MM-DD" to -t YYYYMMDDhhmm.SS
+  local stamp
+  stamp="$(echo "${datestr}" | sed -E 's/[^0-9]//g')"
+  # Pad to 14 digits (YYYYMMDDhhmmss)
+  stamp="${stamp}00000000000000"
+  stamp="${stamp:0:12}.${stamp:12:2}"
+  touch -t "${stamp}" "${file}"
+}
+
+# Get file mtime as "YYYY-MM-DD HH:MM:SS"
+file_mtime() {
+  local file="$1"
+  # GNU date -r FILE works; BSD date -r expects epoch
+  date -r "${file}" '+%Y-%m-%d %H:%M:%S' 2>/dev/null && return
+  # BSD stat
+  stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S' "${file}" 2>/dev/null && return
+  # GNU stat fallback
+  stat -c '%y' "${file}" 2>/dev/null | cut -d. -f1
+}
+
+check_deps() {
+  if ! (parallel --version 2>/dev/null || true) | grep -q GNU; then
+    die "Please install gnu parallel (devbox global add parallel-full)"
+  fi
+  command -v exiftool >/dev/null || die "Please install exiftool"
+  mkdir -p ~/.parallel && touch ~/.parallel/will-cite
+}
+
+cpu_count() {
+  nproc 2>/dev/null || sysctl -n hw.logicalcpu 2>/dev/null || echo 4
+}
+
+newest_image() {
+  local dir="$1"
+  find "${dir}"/2* ${EXTENSIONS} 2>/dev/null | sort | tail -n1
+}
+
+init_last_run() {
+  local last_run_file="$1" last_img="$2"
+
+  if [[ ! -r "${last_run_file}" ]] && [[ -z "${last_img}" ]]; then
+    touch_date "1900-01-01" "${last_run_file}"
+  fi
+
+  if [[ -n "${last_img}" ]] && [[ "${last_img}" -nt "${last_run_file}" ]]; then
+    local ts
+    ts="$(exiftool -if '$DateTimeOriginal' -DateTimeOriginal -d "%Y-%m-%d %H:%M:%S" -s3 "${last_img}")"
+    echo "${ts}" | tr "-" ":" >"${last_run_file}"
+    touch_date "${ts}" "${last_run_file}"
+  fi
+}
+
+# Detect best cp command (GNU cp reflink, then macOS COW clone)
+detect_cp() {
+  if cp --reflink=auto --version >/dev/null 2>&1; then
+    echo "cp --reflink=auto"
+  elif /bin/cp -c /dev/null /dev/null 2>/dev/null; then
+    echo "/bin/cp -c"
+  else
+    echo "cp"
+  fi
+}
+
+copy_file() {
+  local src="$1" dst="$2"
+  mkdir -pv "$(dirname "${dst}")"
+  ${CP_CMD} -v "${src}" "${dst}"
+}
+export -f copy_file
+
+find_and_copy() {
+  local src_dir="$1" dst_dir="$2" last_run_file="$3" cpus="$4"
+
+  find "${src_dir}" ${EXTENSIONS} -newer "${last_run_file}" \! -ipath '*reject*' -print0 2>/dev/null |
+    sort |
+    parallel -0 -j "${cpus}" -N100 --keep-order --quote exiftool --fast2 -q -p $'${FilePath}\t'"${dst_dir}"$'/${CreateDate;DateFmt("%Y/%m/%d/")}${Filename}' |
+    parallel -j "${cpus}" --colsep "\t" copy_file {1} {2}
+}
+
+print_summary() {
+  local src_dir="$1" dst_dir="$2" last_run_file="$3" last_img="$4"
+  local last_run
+  last_run="$(file_mtime "${last_run_file}")"
+
+  cat <<EOF
+Source:        ${src_dir}
+Destination:   ${dst_dir}
+Last run file: ${last_run_file}
+Last image:    ${last_img:-<none>}
+Last run:      ${last_run}
+EOF
+  echo
+}
+
+# --- Main ---
+
+check_deps
 
 SRC_DIR="${1:?Please provide the source dir for photos as first parameter}"
 DST_DIR="${2:-${HOME}/Pictures}"
-
 LAST_RUN_FILE="${DST_DIR}/.$(basename "$0").last_run"
-LAST_IMG="$((find "${DST_DIR}"/2* \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) 2>/dev/null || true) | sort -r | head -n1)"
+LAST_IMG="$(newest_image "${DST_DIR}" || true)"
+CPUS="$(cpu_count)"
+CP_CMD="$(detect_cp)"
+export CP_CMD
 
-if ! [[ -r "${LAST_RUN_FILE}" ]] && [[ -z "${LAST_IMG}" ]] ; then
-  echo No last run, copying all files ...
-  touch -d 1900-01-01 "${LAST_RUN_FILE}"
-fi
-
-if [[ "${LAST_IMG}" -nt "${LAST_RUN_FILE}" ]]; then
-  LAST_RUN="$(exiftool -if '$DateTimeOriginal' -DateTimeOriginal -d "%Y-%m-%d %H:%M:%S" -s3 "${LAST_IMG}")"
-  echo "${LAST_RUN}" | tr "-" ":" >"${LAST_RUN_FILE}"
-  touch -d "${LAST_RUN}" "${LAST_RUN_FILE}"
-fi
-
-LAST_RUN="$(date -r "${LAST_RUN_FILE}")"
-CPU_COUNT="$(nproc || sysctl -n hw.logicalcpu)"
-
-echo "Source:        ${SRC_DIR}"
-echo "Destination:   ${DST_DIR}"
-echo "Last run file: ${LAST_RUN_FILE}"
-echo "Last image:    ${LAST_IMG}"
-echo "Last run:      ${LAST_RUN}"
-echo
-
-TMP_OUT="$(mktemp -q)"
-trap 'rm -f "${TMP_OUT}" &>/dev/null' EXIT
-
-(
-  find "${SRC_DIR}" \( \( -iname "*.nef" -or -iname "*.jpg" -or -iname "*.mov" \) -newer "${LAST_RUN_FILE}" \! -ipath '*reject*' \) -print0 2>/dev/null |
-  parallel -0 -j "${CPU_COUNT}" -N100 --keep-order --quote \
-    exiftool --fast2 -q -p $'${FilePath}\t'"${DST_DIR}"$'/${CreateDate;DateFmt("%Y/%m/%d/")}${Filename}' |
-  sort -z |
-  while IFS=$'\t' read -r src dst; do
-    echo -ne "mkdir -pv '$(dirname "${dst}")' ; /bin/cp -cv '${src}' '${dst}'\0"
-  done |
-  xargs -0rn1 -P"${CPU_COUNT}" bash -c
-) &>"${TMP_OUT}" &
-
-# Print copy output in a 5-line rolling window
-CMD_PID=$!
-TMP_OUT_LINES="5"
-printf '\n%.0s' $(seq 0 $(($TMP_OUT_LINES - 1)) )
-while true; do
-  sleep 0.3
-  mapfile -t -n "${TMP_OUT_LINES}" lines < <(tail -n "${TMP_OUT_LINES}" "${TMP_OUT}")
-  buf=$'\e['"${TMP_OUT_LINES}"'A'
-  for i in $( seq 0 $(($TMP_OUT_LINES - 1)) ) ; do
-    buf+=$'\e[2K'"${lines[$i]}"$'\n'
-  done
-  printf '%s' "$buf"
-  kill -0 $CMD_PID 2>/dev/null || break
-done
+init_last_run "${LAST_RUN_FILE}" "${LAST_IMG}"
+print_summary "${SRC_DIR}" "${DST_DIR}" "${LAST_RUN_FILE}" "${LAST_IMG}"
+find_and_copy "${SRC_DIR}" "${DST_DIR}" "${LAST_RUN_FILE}" "${CPUS}"
 
 date +"%Y:%m:%d %H:%M:%S" >"${LAST_RUN_FILE}"
